@@ -1,0 +1,19 @@
+# Compiled output
+dist
+out-tsc
+coverage
+
+# Dependencies
+node_modules
+
+# IDE settings
+.vscode
+
+# Logs
+*.log
+
+# Git
+.git
+
+# Angular CLI
+.angular
