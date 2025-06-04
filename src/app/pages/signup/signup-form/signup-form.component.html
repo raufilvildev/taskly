@@ -1,1 +1,533 @@
-<p>signup-form works!</p>
+<form
+  [formGroup]="signupForm"
+  (ngSubmit)="signup(signupForm)"
+  class="mx-auto p-10 flex flex-col gap-5 bg-custom-panel max-w-200 rounded-lg shadow-sm shadow-custom-accent-dark"
+>
+  <div class="flex flex-col lg:flex-row lg:gap-5">
+    <div class="flex flex-col gap-4 w-full lg:w-1/2">
+      <fieldset class="flex flex-col">
+        <label for="firstName" class="text-sm font-bold">Nombre</label>
+        <input
+          type="text"
+          formControlName="first_name"
+          id="firstName"
+          class="px-4 py-2 mt-2 bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+          [class]="{
+            'border-custom-error':
+              signupForm.get('first_name')?.touched &&
+              (signupForm.get('first_name')?.hasError('required') ||
+                signupForm.get('first_name')?.hasError('minlength') ||
+                signupForm.get('first_name')?.hasError('maxlength')),
+            'border-custom-success': signupForm.get('first_name')?.valid,
+            'bg-red-100':
+              signupForm.get('first_name')?.touched &&
+              (signupForm.get('first_name')?.hasError('required') ||
+                signupForm.get('first_name')?.hasError('minlength') ||
+                signupForm.get('first_name')?.hasError('maxlength')),
+            'hover:border-custom-error':
+              signupForm.get('first_name')?.touched &&
+              (signupForm.get('first_name')?.hasError('required') ||
+                signupForm.get('first_name')?.hasError('minlength') ||
+                signupForm.get('first_name')?.hasError('maxlength')),
+            'hover:border-custom-success': signupForm.get('first_name')?.valid,
+            'focus:outline-custom-error':
+              signupForm.get('first_name')?.touched &&
+              (signupForm.get('first_name')?.hasError('required') ||
+                signupForm.get('first_name')?.hasError('minlength') ||
+                signupForm.get('first_name')?.hasError('maxlength')),
+            'focus:outline-custom-success': signupForm.get('first_name')?.valid,
+            'focus:shadow-custom-error':
+              signupForm.get('first_name')?.touched &&
+              (signupForm.get('first_name')?.hasError('required') ||
+                signupForm.get('first_name')?.hasError('minlength') ||
+                signupForm.get('first_name')?.hasError('maxlength')),
+            'focus:shadow-custom-success': signupForm.get('first_name')?.valid,
+          }"
+        />
+        @if (
+          signupForm.get('first_name')?.touched &&
+          signupForm.get('first_name')?.hasError('required')
+        ) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">El campo nombre es obligatorio.</p>
+        }
+        @if (
+          signupForm.get('first_name')?.touched &&
+          signupForm.get('first_name')?.hasError('minlength')
+        ) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+            El campo nombre tiene que tener al menos dos caracteres.
+          </p>
+        }
+        @if (
+          signupForm.get('first_name')?.touched &&
+          signupForm.get('first_name')?.hasError('maxlength')
+        ) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+            El campo nombre no puede tener más de cien caracteres.
+          </p>
+        }
+      </fieldset>
+      <fieldset class="flex flex-col">
+        <label for="lastName" class="text-xs font-bold">Apellidos</label>
+        <input
+          type="text"
+          formControlName="last_name"
+          id="lastName"
+          class="px-4 py-2 bg-custom-background mt-2 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+          [class]="{
+            'border-custom-error':
+              signupForm.get('last_name')?.touched &&
+              (signupForm.get('last_name')?.hasError('required') ||
+                signupForm.get('last_name')?.hasError('minlength') ||
+                signupForm.get('last_name')?.hasError('maxlength')),
+            'border-custom-success': signupForm.get('last_name')?.valid,
+            'bg-red-100':
+              signupForm.get('last_name')?.touched &&
+              (signupForm.get('last_name')?.hasError('required') ||
+                signupForm.get('last_name')?.hasError('minlength') ||
+                signupForm.get('last_name')?.hasError('maxlength')),
+            'hover:border-custom-error':
+              signupForm.get('last_name')?.touched &&
+              (signupForm.get('last_name')?.hasError('required') ||
+                signupForm.get('last_name')?.hasError('minlength') ||
+                signupForm.get('last_name')?.hasError('maxlength')),
+            'hover:border-custom-success': signupForm.get('last_name')?.valid,
+            'focus:outline-custom-error':
+              signupForm.get('last_name')?.touched &&
+              (signupForm.get('last_name')?.hasError('required') ||
+                signupForm.get('last_name')?.hasError('minlength') ||
+                signupForm.get('last_name')?.hasError('maxlength')),
+            'focus:outline-custom-success': signupForm.get('last_name')?.valid,
+            'focus:shadow-custom-error':
+              signupForm.get('last_name')?.touched &&
+              (signupForm.get('last_name')?.hasError('required') ||
+                signupForm.get('last_name')?.hasError('minlength') ||
+                signupForm.get('last_name')?.hasError('maxlength')),
+            'focus:shadow-custom-success': signupForm.get('last_name')?.valid,
+          }"
+        />
+        @if (
+          signupForm.get('last_name')?.touched && signupForm.get('last_name')?.hasError('required')
+        ) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+            El campo apellidos es obligatorio.
+          </p>
+        }
+        @if (
+          signupForm.get('last_name')?.touched && signupForm.get('last_name')?.hasError('minlength')
+        ) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+            El campo apellidos tiene que tener al menos dos caracteres.
+          </p>
+        }
+        @if (
+          signupForm.get('last_name')?.touched && signupForm.get('last_name')?.hasError('maxlength')
+        ) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+            El campo apellidos no puede tener más de cien caracteres.
+          </p>
+        }
+      </fieldset>
+      <fieldset class="flex flex-col">
+        <label class="text-sm font-bold">Género</label>
+        <div class="flex gap-5 mt-2">
+          <div class="flex gap-1 items-center">
+            <input
+              type="radio"
+              formControlName="gender"
+              value="M"
+              id="male"
+              class="accent-custom-accent-dark"
+              checked
+            />
+            <label for="male" class="text-sm">Hombre</label>
+          </div>
+          <div class="flex gap-1 items-center">
+            <input
+              type="radio"
+              formControlName="gender"
+              value="F"
+              id="female"
+              class="accent-custom-accent-dark"
+            />
+            <label for="female" class="text-sm">Mujer</label>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset class="flex flex-col">
+        <label for="birthDate" class="text-sm font-bold">Fecha de nacimiento</label>
+        <input
+          type="date"
+          formControlName="birth_date"
+          id="birthDate"
+          placeholder="dd/mm/aaaa"
+          class="px-4 py-2 mt-2 placeholder:text-custom-muted bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+          [class]="{
+            'border-custom-error':
+              signupForm.get('birth_date')?.touched &&
+              signupForm.get('birth_date')?.hasError('required'),
+            'border-custom-success': signupForm.get('birth_date')?.valid,
+            'bg-red-100':
+              signupForm.get('birth_date')?.touched &&
+              signupForm.get('birth_date')?.hasError('required'),
+            'hover:border-custom-error':
+              signupForm.get('birth_date')?.touched &&
+              signupForm.get('birth_date')?.hasError('required'),
+            'hover:border-custom-success': signupForm.get('birth_date')?.valid,
+            'focus:outline-custom-error':
+              signupForm.get('birth_date')?.touched &&
+              signupForm.get('birth_date')?.hasError('required'),
+            'focus:outline-custom-success': signupForm.get('birth_date')?.valid,
+            'focus:shadow-custom-error':
+              signupForm.get('birth_date')?.touched &&
+              signupForm.get('birth_date')?.hasError('required'),
+            'focus:shadow-custom-success': signupForm.get('birth_date')?.valid,
+          }"
+        />
+        @if (
+          signupForm.get('birth_date')?.touched &&
+          signupForm.get('birth_date')?.hasError('required')
+        ) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+            El campo fecha de nacimiento es obligatorio.
+          </p>
+        }
+      </fieldset>
+    </div>
+    <div class="flex flex-col gap-4 w-full lg:w-1/2">
+      <fieldset class="flex flex-col">
+        <label for="email" class="text-sm font-bold">Correo electrónico</label>
+        <div class="relative mt-2">
+          <img
+            class="w-6 h-6 absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none"
+            src="email.svg"
+            alt="Email icon"
+          />
+          <input
+            type="email"
+            formControlName="email"
+            id="email"
+            class="w-full pl-10 px-4 py-2 bg-custom-background bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+            [class]="{
+              'border-custom-error':
+                signupForm.get('email')?.touched &&
+                (signupForm.get('email')?.hasError('required') ||
+                  signupForm.get('email')?.hasError('email')),
+              'border-custom-success': signupForm.get('email')?.valid,
+              'bg-red-100':
+                signupForm.get('email')?.touched &&
+                (signupForm.get('email')?.hasError('required') ||
+                  signupForm.get('email')?.hasError('email')),
+              'hover:border-custom-error':
+                signupForm.get('email')?.touched &&
+                (signupForm.get('email')?.hasError('required') ||
+                  signupForm.get('email')?.hasError('email')),
+              'hover:border-custom-success': signupForm.get('email')?.valid,
+              'focus:outline-custom-error':
+                signupForm.get('email')?.touched &&
+                (signupForm.get('email')?.hasError('required') ||
+                  signupForm.get('email')?.hasError('email')),
+              'focus:outline-custom-success': signupForm.get('email')?.valid,
+              'focus:shadow-custom-error':
+                signupForm.get('email')?.touched &&
+                (signupForm.get('email')?.hasError('required') ||
+                  signupForm.get('email')?.hasError('email')),
+              'focus:shadow-custom-success': signupForm.get('email')?.valid,
+            }"
+          />
+        </div>
+        @if (signupForm.get('email')?.touched && signupForm.get('email')?.hasError('required')) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+            El campo correo electrónico es obligatorio.
+          </p>
+        }
+        @if (signupForm.get('email')?.touched && signupForm.get('email')?.hasError('email')) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+            El campo correo electrónico tiene formato incorrecto.
+          </p>
+        }
+      </fieldset>
+      <fieldset class="flex flex-col">
+        <label for="username" class="text-sm font-bold">Nombre de usuario</label>
+        <div class="relative mt-2">
+          <img
+            class="w-6 h-6 absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none"
+            src="username.svg"
+            alt="Username icon"
+          />
+          <input
+            type="text"
+            formControlName="username"
+            id="username"
+            class="w-full pl-10 px-4 py-2 bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+            [class]="{
+              'border-custom-error':
+                signupForm.get('username')?.touched &&
+                (signupForm.get('username')?.hasError('required') ||
+                  signupForm.get('username')?.hasError('minlength') ||
+                  signupForm.get('username')?.hasError('maxlength')),
+              'border-custom-success': signupForm.get('username')?.valid,
+              'bg-red-100':
+                signupForm.get('username')?.touched &&
+                (signupForm.get('username')?.hasError('required') ||
+                  signupForm.get('username')?.hasError('minlength') ||
+                  signupForm.get('username')?.hasError('maxlength')),
+              'hover:border-custom-error':
+                signupForm.get('username')?.touched &&
+                (signupForm.get('username')?.hasError('required') ||
+                  signupForm.get('username')?.hasError('minlength') ||
+                  signupForm.get('username')?.hasError('maxlength')),
+              'hover:border-custom-success': signupForm.get('username')?.valid,
+              'focus:outline-custom-error':
+                signupForm.get('username')?.touched &&
+                (signupForm.get('username')?.hasError('required') ||
+                  signupForm.get('username')?.hasError('minlength') ||
+                  signupForm.get('username')?.hasError('maxlength')),
+              'focus:outline-custom-success': signupForm.get('username')?.valid,
+              'focus:shadow-custom-error':
+                signupForm.get('username')?.touched &&
+                (signupForm.get('username')?.hasError('required') ||
+                  signupForm.get('username')?.hasError('minlength') ||
+                  signupForm.get('username')?.hasError('maxlength')),
+              'focus:shadow-custom-success': signupForm.get('username')?.valid,
+            }"
+          />
+        </div>
+        @if (
+          signupForm.get('username')?.touched && signupForm.get('username')?.hasError('required')
+        ) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+            El campo nombre de usuario es obligatorio.
+          </p>
+        }
+        @if (
+          signupForm.get('username')?.touched && signupForm.get('username')?.hasError('minlength')
+        ) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+            El campo nombre de usuario tiene que tener al menos dos caracteres.
+          </p>
+        }
+        @if (
+          signupForm.get('username')?.touched && signupForm.get('username')?.hasError('maxlength')
+        ) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+            El campo nombre de usuario no puede tener más de cien caracteres.
+          </p>
+        }
+      </fieldset>
+      <fieldset class="flex flex-col">
+        <label for="password" class="text-sm font-bold">Contraseña</label>
+        <div class="relative mt-2">
+          @if (isVisiblePassword) {
+            <img
+              class="w-6 h-6 absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer"
+              (click)="isVisiblePassword = !isVisiblePassword"
+              src="visible_password.svg"
+              alt="Visible password icon"
+            />
+          } @else {
+            <img
+              class="w-6 h-6 absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer"
+              (click)="isVisiblePassword = !isVisiblePassword"
+              src="invisible_password.svg"
+              alt="Invisible password icon"
+            />
+          }
+          <input
+            [type]="isVisiblePassword ? 'text' : 'password'"
+            formControlName="password"
+            id="password"
+            class="w-full pl-10 px-4 py-2 bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+            [class]="{
+              'border-custom-error':
+                signupForm.get('password')?.touched &&
+                (signupForm.get('password')?.hasError('required') ||
+                  signupForm.get('password')?.hasError('pattern') ||
+                  (signupForm.get('password')?.touched &&
+                    signupForm.get('password_confirmation')?.touched &&
+                    signupForm.errors?.['passwordMismatch'])),
+              'border-custom-success':
+                signupForm.get('password')?.valid && !signupForm.errors?.['passwordMismatch'],
+              'bg-red-100':
+                signupForm.get('password')?.touched &&
+                (signupForm.get('password')?.hasError('required') ||
+                  signupForm.get('password')?.hasError('pattern') ||
+                  (signupForm.get('password')?.touched &&
+                    signupForm.get('password_confirmation')?.touched &&
+                    signupForm.errors?.['passwordMismatch'])),
+              'hover:border-custom-error':
+                signupForm.get('password')?.touched &&
+                (signupForm.get('password')?.hasError('required') ||
+                  signupForm.get('password')?.hasError('pattern') ||
+                  (signupForm.get('password')?.touched &&
+                    signupForm.get('password_confirmation')?.touched &&
+                    signupForm.errors?.['passwordMismatch'])),
+              'hover:border-custom-success':
+                signupForm.get('password')?.valid && !signupForm.errors?.['passwordMismatch'],
+              'focus:outline-custom-error':
+                signupForm.get('password')?.touched &&
+                (signupForm.get('password')?.hasError('required') ||
+                  signupForm.get('password')?.hasError('pattern') ||
+                  (signupForm.get('password')?.touched &&
+                    signupForm.get('password_confirmation')?.touched &&
+                    signupForm.errors?.['passwordMismatch'])),
+
+              'focus:outline-custom-success':
+                signupForm.get('password')?.valid && !signupForm.errors?.['passwordMismatch'],
+
+              'focus:shadow-custom-error':
+                signupForm.get('password')?.touched &&
+                (signupForm.get('password')?.hasError('required') ||
+                  signupForm.get('password')?.hasError('pattern') ||
+                  (signupForm.get('password')?.touched &&
+                    signupForm.get('password_confirmation')?.touched &&
+                    signupForm.errors?.['passwordMismatch'])),
+              'focus:shadow-custom-success':
+                signupForm.get('password')?.valid && !signupForm.errors?.['passwordMismatch'],
+            }"
+          />
+        </div>
+        @if (
+          signupForm.get('password')?.touched && signupForm.get('password')?.hasError('required')
+        ) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+            El campo contraseña es obligatorio.
+          </p>
+        }
+        @if (
+          signupForm.get('password')?.touched && signupForm.get('password')?.hasError('pattern')
+        ) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+            El campo contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una
+            minúscula, un número y un carácter especial.
+          </p>
+        }
+      </fieldset>
+      <fieldset class="flex flex-col">
+        <label for="password_confirmation" class="text-sm font-bold">
+          Confirmación de la contraseña
+        </label>
+        <div class="relative mt-2">
+          @if (isVisiblePassword) {
+            <img
+              class="w-6 h-6 absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer"
+              (click)="isVisiblePassword = !isVisiblePassword"
+              src="visible_password.svg"
+              alt="Visible password icon"
+            />
+          } @else {
+            <img
+              class="w-6 h-6 absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer"
+              (click)="isVisiblePassword = !isVisiblePassword"
+              src="invisible_password.svg"
+              alt="Invisible password icon"
+            />
+          }
+          <input
+            [type]="isVisiblePassword ? 'text' : 'password'"
+            formControlName="password_confirmation"
+            id="password_confirmation"
+            class="w-full pl-10 px-4 py-2 bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+            [class]="{
+              'border-custom-error':
+                signupForm.get('password_confirmation')?.touched &&
+                (signupForm.get('password_confirmation')?.hasError('required') ||
+                  signupForm.get('password_confirmation')?.hasError('pattern') ||
+                  (signupForm.get('password')?.touched &&
+                    signupForm.get('password_confirmation')?.touched &&
+                    signupForm.errors?.['passwordMismatch'])),
+              'border-custom-success':
+                signupForm.get('password_confirmation')?.valid &&
+                !signupForm.errors?.['passwordMismatch'],
+              'bg-red-100':
+                signupForm.get('password_confirmation')?.touched &&
+                (signupForm.get('password_confirmation')?.hasError('required') ||
+                  signupForm.get('password_confirmation')?.hasError('pattern') ||
+                  (signupForm.get('password')?.touched &&
+                    signupForm.get('password_confirmation')?.touched &&
+                    signupForm.errors?.['passwordMismatch'])),
+              'hover:border-custom-error':
+                signupForm.get('password_confirmation')?.touched &&
+                (signupForm.get('password_confirmation')?.hasError('required') ||
+                  signupForm.get('password_confirmation')?.hasError('pattern') ||
+                  (signupForm.get('password')?.touched &&
+                    signupForm.get('password_confirmation')?.touched &&
+                    signupForm.errors?.['passwordMismatch'])),
+              'hover:border-custom-success':
+                signupForm.get('password_confirmation')?.valid &&
+                !signupForm.errors?.['passwordMismatch'],
+              'focus:outline-custom-error':
+                signupForm.get('password_confirmation')?.touched &&
+                (signupForm.get('password_confirmation')?.hasError('required') ||
+                  signupForm.get('password_confirmation')?.hasError('pattern') ||
+                  (signupForm.get('password')?.touched &&
+                    signupForm.get('password_confirmation')?.touched &&
+                    signupForm.errors?.['passwordMismatch'])),
+
+              'focus:outline-custom-success':
+                signupForm.get('password_confirmation')?.valid &&
+                !signupForm.errors?.['passwordMismatch'],
+
+              'focus:shadow-custom-error':
+                signupForm.get('password_confirmation')?.touched &&
+                (signupForm.get('password_confirmation')?.hasError('required') ||
+                  signupForm.get('password_confirmation')?.hasError('pattern') ||
+                  (signupForm.get('password')?.touched &&
+                    signupForm.get('password_confirmation')?.touched &&
+                    signupForm.errors?.['passwordMismatch'])),
+              'focus:shadow-custom-success':
+                signupForm.get('password_confirmation')?.valid &&
+                !signupForm.errors?.['passwordMismatch'],
+            }"
+          />
+        </div>
+
+        @if (
+          signupForm.get('password_confirmation')?.touched &&
+          signupForm.get('password_confirmation')?.hasError('required')
+        ) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+            El campo confirmación de la contraseña es obligatorio.
+          </p>
+        }
+        @if (
+          signupForm.get('password_confirmation')?.touched &&
+          signupForm.get('password_confirmation')?.hasError('pattern')
+        ) {
+          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+            El campo confirmación de la contraseña debe tener al menos 8 caracteres, incluyendo una
+            mayúscula, una minúscula, un número y un carácter especial.
+          </p>
+        }
+      </fieldset>
+    </div>
+  </div>
+  <div class="flex flex-col items-center">
+    @if (
+      signupForm.get('password')?.touched &&
+      signupForm.get('password_confirmation')?.touched &&
+      signupForm.errors?.['passwordMismatch']
+    ) {
+      <p class="pl-1 mt-2 italic text-xs text-custom-error">Las contraseñas no coinciden.</p>
+    }
+    @if (serverError) {
+      <p class="pl-1 mt-1 italic text-xs text-custom-error">{{ serverError }}</p>
+    }
+    <fieldset class="flex gap-2 mt-2">
+      <input
+        type="checkbox"
+        formControlName="role"
+        id="teacher"
+        class="accent-custom-accent-dark"
+      />
+      <label for="teacher" class="text-sm italic">Registrarse como profesor</label>
+    </fieldset>
+    <button
+      type="submit"
+      [disabled]="signupForm.invalid"
+      class="w-fit mt-5 px-4 py-2 rounded-lg border-2 border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+    >
+      Registrarse
+    </button>
+  </div>
+</form>

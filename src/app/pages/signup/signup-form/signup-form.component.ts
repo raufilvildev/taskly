@@ -1,9 +1,122 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { UsersService } from '../../../services/users.service';
+import type { IUser } from '../../../interfaces/iuser.interface';
+import { Router } from '@angular/router';
+import { AuthorizationService } from '../../../services/authorization.service';
+import { passwordsMatchValidator } from '../../../validators/passwords_match.validator';
+import { HttpErrorResponse } from '@angular/common/http';
+import { constants } from '../../../shared/utils/constants/constants.config';
 
 @Component({
   selector: 'app-signup-form',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './signup-form.component.html',
   styleUrl: './signup-form.component.css',
 })
-export class SignupFormComponent {}
+export class SignupFormComponent {
+  usersService = inject(UsersService);
+  authorizationService = inject(AuthorizationService);
+  router = inject(Router);
+
+  isVisiblePassword = false;
+  serverError = '';
+
+  signupForm = new FormGroup(
+    {
+      first_name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(100),
+      ]),
+      last_name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(100),
+      ]),
+      gender: new FormControl('M', [Validators.required]),
+      birth_date: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      username: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(100),
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$'),
+      ]),
+      password_confirmation: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$'),
+      ]),
+      role: new FormControl('', []),
+    },
+    passwordsMatchValidator
+  );
+
+  async signup(signupForm: FormGroup) {
+    signupForm.value.role = signupForm.value.role ? 'teacher' : '';
+
+    this.serverError = '';
+
+    signupForm.markAllAsTouched();
+
+    if (signupForm.valid) {
+      const { first_name, last_name, gender, birth_date, email, username, password, role } =
+        signupForm.value;
+      const user: IUser = {
+        first_name,
+        last_name,
+        gender,
+        birth_date,
+        email,
+        username,
+        password,
+        role,
+      };
+      let token = '';
+
+      try {
+        const createResult = await this.usersService.create(user);
+        token = createResult.token;
+        localStorage.setItem('token', token);
+        const { message } = await this.authorizationService.requestConfirmationByEmail(
+          token,
+          'signup'
+        );
+        this.router.navigate(['signup', 'signup_confirmation']);
+      } catch (errorResponse) {
+        this.usersService.remove(token);
+        localStorage.removeItem('token');
+        if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
+          this.serverError = constants.generalServerError;
+          return;
+        }
+        if (errorResponse instanceof HttpErrorResponse) {
+          this.serverError = errorResponse.error;
+          return;
+        }
+
+        this.serverError = constants.generalServerError;
+      }
+    }
+  }
+
+  async ngOnInit() {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      try {
+        const { email_confirmed } = await this.usersService.getById(token);
+        if (!email_confirmed) {
+          this.router.navigate(['signup', 'signup_confirmation']);
+          return;
+        }
+        this.router.navigate(['dashboard']);
+      } catch (error) {
+        localStorage.removeItem('token');
+      }
+    }
+  }
+}

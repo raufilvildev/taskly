@@ -5,6 +5,7 @@ import { environment } from '../environments/environment.test';
 import { IUser } from '../interfaces/iuser.interface';
 import { IToken } from '../interfaces/itoken.interface';
 import { ILogin } from '../interfaces/ilogin.interface';
+import { IMessage } from '../interfaces/imessage.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,12 @@ export class UsersService {
         { password },
         { headers: { Authorization: token } }
       )
+    );
+  }
+
+  remove(token: string) {
+    return lastValueFrom(
+      this.httpClient.delete<IMessage>(this.endpoint, { headers: { Authorization: token } })
     );
   }
 }

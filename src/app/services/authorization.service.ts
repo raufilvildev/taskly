@@ -8,7 +8,7 @@ import { IMessage } from '../interfaces/imessage.interface';
 @Injectable({
   providedIn: 'root',
 })
-export class UsersService {
+export class AuthorizationService {
   private endpoint = `${environment.host}/authorization`;
   private httpClient = inject(HttpClient);
 

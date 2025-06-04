@@ -7,4 +7,6 @@ export interface IUser {
   gender: string;
   username: string;
   password?: string;
+  email_confirmed?: number;
+  role: 'general' | 'student' | 'teacher';
 }
