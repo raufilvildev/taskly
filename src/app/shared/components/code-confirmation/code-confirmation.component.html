@@ -4,8 +4,8 @@
   class="mx-auto p-5 flex flex-col gap-5 bg-custom-panel max-w-100 rounded-lg shadow-sm shadow-custom-accent-dark"
 >
   <p class="text-xs">
-    Para completar el registro, necesitamos confirmar su correo electrónico. Hemos enviado un correo
-    electrónico a
+    {{ type === 'signup' ? 'Para completar el registro' : 'Para poder cambiar la contraseña' }},
+    necesitamos confirmar su correo electrónico. Hemos enviado un correo electrónico a
     <span class="text-custom-accent-dark font-bold">
       {{ user?.email }}
     </span>
