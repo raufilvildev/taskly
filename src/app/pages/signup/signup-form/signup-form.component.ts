@@ -74,29 +74,30 @@ export class SignupFormComponent {
     }
     let hasErrors: boolean = false;
 
-    if (control_name === 'password' || control_name === 'password_confirmation') {
-      hasErrors =
-        this.signupForm.get('password')?.touched &&
-        this.signupForm.get('password_confirmation')?.touched &&
-        this.signupForm.errors?.['passwordMismatch'];
+    if (this.signupForm.get(control_name)?.touched) {
+      hasErrors = errors.some((error) => this.signupForm.get(control_name)?.hasError(error));
     }
 
-    hasErrors =
-      hasErrors ||
-      (!!this.signupForm.get(control_name)?.touched &&
-        errors.some((error) => this.signupForm.get(control_name)?.hasError(error)));
+    if (
+      (control_name === 'password' || control_name === 'password_confirmation') &&
+      this.signupForm.get('password')?.touched &&
+      this.signupForm.get('password_confirmation')?.touched &&
+      this.signupForm.errors?.['passwordMismatch']
+    ) {
+      hasErrors = true;
+    }
 
-    const isValid = this.signupForm.get(control_name)?.valid;
+    const isValid = this.signupForm.get(control_name)?.valid && !hasErrors;
 
     return {
       'border-custom-error': hasErrors,
-      'border-custom-success': isValid,
       'bg-red-100': hasErrors,
       'hover:border-custom-error': hasErrors,
-      'hover:border-custom-success': isValid,
       'focus:outline-custom-error': hasErrors,
-      'focus:outline-custom-success': isValid,
       'focus:shadow-custom-error': hasErrors,
+      'border-custom-success': isValid,
+      'hover:border-custom-success': isValid,
+      'focus:outline-custom-success': isValid,
       'focus:shadow-custom-success': isValid,
     };
   }
