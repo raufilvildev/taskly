@@ -36,9 +36,13 @@ export class AuthorizationService {
     return lastValueFrom(this.httpClient.post<IToken>(`${this.endpoint}/check_email`, { email }));
   }
 
-  resetRandomNumber() {
+  resetRandomNumber(token: string) {
     return lastValueFrom(
-      this.httpClient.patch<IMessage>(`${this.endpoint}/reset/random_number`, {})
+      this.httpClient.patch<IMessage>(
+        `${this.endpoint}/reset/random_number`,
+        {},
+        { headers: { Authorization: token } }
+      )
     );
   }
 }

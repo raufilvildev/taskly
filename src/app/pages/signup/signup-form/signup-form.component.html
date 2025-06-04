@@ -48,13 +48,13 @@
           signupForm.get('first_name')?.touched &&
           signupForm.get('first_name')?.hasError('required')
         ) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">El campo nombre es obligatorio.</p>
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">El campo nombre es obligatorio.</p>
         }
         @if (
           signupForm.get('first_name')?.touched &&
           signupForm.get('first_name')?.hasError('minlength')
         ) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">
             El campo nombre tiene que tener al menos dos caracteres.
           </p>
         }
@@ -62,13 +62,13 @@
           signupForm.get('first_name')?.touched &&
           signupForm.get('first_name')?.hasError('maxlength')
         ) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">
             El campo nombre no puede tener más de cien caracteres.
           </p>
         }
       </fieldset>
       <fieldset class="flex flex-col">
-        <label for="lastName" class="text-xs font-bold">Apellidos</label>
+        <label for="lastName" class="text-sm font-bold">Apellidos</label>
         <input
           type="text"
           formControlName="last_name"
@@ -109,21 +109,21 @@
         @if (
           signupForm.get('last_name')?.touched && signupForm.get('last_name')?.hasError('required')
         ) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">
             El campo apellidos es obligatorio.
           </p>
         }
         @if (
           signupForm.get('last_name')?.touched && signupForm.get('last_name')?.hasError('minlength')
         ) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">
             El campo apellidos tiene que tener al menos dos caracteres.
           </p>
         }
         @if (
           signupForm.get('last_name')?.touched && signupForm.get('last_name')?.hasError('maxlength')
         ) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">
             El campo apellidos no puede tener más de cien caracteres.
           </p>
         }
@@ -188,7 +188,7 @@
           signupForm.get('birth_date')?.touched &&
           signupForm.get('birth_date')?.hasError('required')
         ) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">
             El campo fecha de nacimiento es obligatorio.
           </p>
         }
@@ -237,12 +237,12 @@
           />
         </div>
         @if (signupForm.get('email')?.touched && signupForm.get('email')?.hasError('required')) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">
             El campo correo electrónico es obligatorio.
           </p>
         }
         @if (signupForm.get('email')?.touched && signupForm.get('email')?.hasError('email')) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">
             El campo correo electrónico tiene formato incorrecto.
           </p>
         }
@@ -296,21 +296,21 @@
         @if (
           signupForm.get('username')?.touched && signupForm.get('username')?.hasError('required')
         ) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">
             El campo nombre de usuario es obligatorio.
           </p>
         }
         @if (
           signupForm.get('username')?.touched && signupForm.get('username')?.hasError('minlength')
         ) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">
             El campo nombre de usuario tiene que tener al menos dos caracteres.
           </p>
         }
         @if (
           signupForm.get('username')?.touched && signupForm.get('username')?.hasError('maxlength')
         ) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">
             El campo nombre de usuario no puede tener más de cien caracteres.
           </p>
         }
@@ -390,14 +390,14 @@
         @if (
           signupForm.get('password')?.touched && signupForm.get('password')?.hasError('required')
         ) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">
             El campo contraseña es obligatorio.
           </p>
         }
         @if (
           signupForm.get('password')?.touched && signupForm.get('password')?.hasError('pattern')
         ) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">
             El campo contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una
             minúscula, un número y un carácter especial.
           </p>
@@ -486,7 +486,7 @@
           signupForm.get('password_confirmation')?.touched &&
           signupForm.get('password_confirmation')?.hasError('required')
         ) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">
             El campo confirmación de la contraseña es obligatorio.
           </p>
         }
@@ -494,7 +494,7 @@
           signupForm.get('password_confirmation')?.touched &&
           signupForm.get('password_confirmation')?.hasError('pattern')
         ) {
-          <p class="pl-1 mt-1 italic text-xs text-custom-error">
+          <p class="pl-1 mt-1 italic text-sm text-custom-error">
             El campo confirmación de la contraseña debe tener al menos 8 caracteres, incluyendo una
             mayúscula, una minúscula, un número y un carácter especial.
           </p>
@@ -508,10 +508,10 @@
       signupForm.get('password_confirmation')?.touched &&
       signupForm.errors?.['passwordMismatch']
     ) {
-      <p class="pl-1 mt-2 italic text-xs text-custom-error">Las contraseñas no coinciden.</p>
+      <p class="pl-1 mt-2 italic text-sm text-custom-error">Las contraseñas no coinciden.</p>
     }
     @if (serverError) {
-      <p class="pl-1 mt-1 italic text-xs text-custom-error">{{ serverError }}</p>
+      <p class="pl-1 mt-1 italic text-sm text-custom-error">{{ serverError }}</p>
     }
     <fieldset class="flex gap-2 mt-2">
       <input

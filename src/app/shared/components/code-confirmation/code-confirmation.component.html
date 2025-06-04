@@ -1,0 +1,41 @@
+<form
+  [formGroup]="confirmEmailForm"
+  (ngSubmit)="confirmEmail(confirmEmailForm)"
+  class="mx-auto p-5 flex flex-col gap-5 bg-custom-panel max-w-100 rounded-lg shadow-sm shadow-custom-accent-dark"
+>
+  <p class="text-xs">
+    Para completar el registro, necesitamos confirmar su correo electrónico. Hemos enviado un correo
+    electrónico a
+    <span class="text-custom-accent-dark font-bold">
+      {{ user?.email }}
+    </span>
+    . Por favor, indique a continuación el código proporcionado:
+  </p>
+  <div class="flex flex-col">
+    <input
+      type="text"
+      formControlName="random_number_input"
+      id="random_number_input"
+      class="text-center tracking-widest text-custom-text-main font-bold w-25 px-4 py-2 mx-auto bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+    />
+    <countdown #cd [config]="config" class="mx-auto font-bold text-blue-500 mt-1" />
+    <a
+      (click)="generateRandomNumber()"
+      class="mt-2 text-xs text-center text-blue-500 cursor-pointer hover:underline"
+    >
+      ¿No te ha llegado el correo? Volver a enviar
+    </a>
+  </div>
+  @if (serverError) {
+    <p class="text-sm text-custom-error italic text-center">{{ serverError }}</p>
+  }
+  @if (confirmEmailFormError) {
+    <p class="text-sm text-custom-error italic text-center">{{ confirmEmailFormError }}</p>
+  }
+  <button
+    type="submit"
+    class="w-fit mx-auto px-4 py-2 rounded-lg border-2 border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+  >
+    Confirmar
+  </button>
+</form>
