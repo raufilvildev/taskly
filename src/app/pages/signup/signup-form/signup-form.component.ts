@@ -149,7 +149,7 @@ export class SignupFormComponent {
   }
 
   async signup(signupForm: FormGroup) {
-    signupForm.value.role = signupForm.value.role ? 'teacher' : '';
+    signupForm.value.role = signupForm.value.role ? 'teacher' : 'general';
 
     this.serverError = '';
 
@@ -173,6 +173,7 @@ export class SignupFormComponent {
       try {
         const createResult = await this.usersService.create(user);
         token = createResult.token;
+
         localStorage.setItem('token', token);
         const { message } = await this.authorizationService.requestConfirmationByEmail(
           token,
