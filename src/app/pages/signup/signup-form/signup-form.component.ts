@@ -55,6 +55,86 @@ export class SignupFormComponent {
     passwordsMatchValidator
   );
 
+  getValidationStyleClasses(control_name: string, errors: string[]) {
+    if (
+      ![
+        'first_name',
+        'last_name',
+        'birth_date',
+        'email',
+        'username',
+        'password',
+        'password_confirmation',
+      ].includes(control_name) ||
+      errors.some(
+        (error) => !['required', 'minlength', 'maxlength', 'email', 'pattern'].includes(error)
+      )
+    ) {
+      return {};
+    }
+    let hasErrors: boolean = false;
+
+    if (control_name === 'password' || control_name === 'password_confirmation') {
+      hasErrors =
+        this.signupForm.get('password')?.touched &&
+        this.signupForm.get('password_confirmation')?.touched &&
+        this.signupForm.errors?.['passwordMismatch'];
+    }
+
+    hasErrors =
+      hasErrors ||
+      (!!this.signupForm.get(control_name)?.touched &&
+        errors.some((error) => this.signupForm.get(control_name)?.hasError(error)));
+
+    const isValid = this.signupForm.get(control_name)?.valid;
+
+    return {
+      'border-custom-error': hasErrors,
+      'border-custom-success': isValid,
+      'bg-red-100': hasErrors,
+      'hover:border-custom-error': hasErrors,
+      'hover:border-custom-success': isValid,
+      'focus:outline-custom-error': hasErrors,
+      'focus:outline-custom-success': isValid,
+      'focus:shadow-custom-error': hasErrors,
+      'focus:shadow-custom-success': isValid,
+    };
+  }
+
+  getErrors(control_name: string) {
+    const errors: string[] = [];
+
+    const fields: { [key: string]: string } = {
+      first_name: 'nombre',
+      last_name: 'apellidos',
+      birth_date: 'fecha de nacimiento',
+      email: 'correo electrónico',
+      username: 'usuario',
+      password: 'contraseña',
+      password_confirmation: 'confirmación de la contraseña',
+    };
+
+    const messages: { [key: string]: string } = {
+      required: 'es obligatorio',
+      minlength: 'tiene que tener al menos 2 caracteres',
+      maxlength: 'no puede tener más de 100 caracteres',
+      email: 'no tiene un formato correcto',
+      pattern:
+        'debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un carácter especial',
+    };
+
+    for (const error in messages) {
+      if (
+        this.signupForm.get(control_name)?.touched &&
+        this.signupForm.get(control_name)?.hasError(error)
+      ) {
+        errors.push(`El campo ${fields[control_name]} ${messages[error]}.`);
+      }
+    }
+
+    return errors;
+  }
+
   async signup(signupForm: FormGroup) {
     signupForm.value.role = signupForm.value.role ? 'teacher' : '';
 
