@@ -1,5 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormGroup,
+  FormControl,
+  Validators,
+  ValidationErrors,
+} from '@angular/forms';
 import { UsersService } from '../../../services/users.service';
 import type { IUser } from '../../../interfaces/iuser.interface';
 import { Router } from '@angular/router';
@@ -67,7 +73,10 @@ export class SignupFormComponent {
         'password_confirmation',
       ].includes(control_name) ||
       errors.some(
-        (error) => !['required', 'minlength', 'maxlength', 'email', 'pattern'].includes(error)
+        (error) =>
+          !['required', 'minlength', 'maxlength', 'email', 'pattern', 'passwordMismatch'].includes(
+            error
+          )
       )
     ) {
       return {};
@@ -78,13 +87,16 @@ export class SignupFormComponent {
       hasErrors = errors.some((error) => this.signupForm.get(control_name)?.hasError(error));
     }
 
-    if (
-      (control_name === 'password' || control_name === 'password_confirmation') &&
-      this.signupForm.get('password')?.touched &&
-      this.signupForm.get('password_confirmation')?.touched &&
-      this.signupForm.errors?.['passwordMismatch']
-    ) {
-      hasErrors = true;
+    if (['password', 'password_confirmation'].includes(control_name)) {
+      const result: ValidationErrors | null = passwordsMatchValidator(this.signupForm);
+
+      if (
+        result &&
+        this.signupForm.get('password')?.touched &&
+        this.signupForm.get('password_confirmation')?.touched
+      ) {
+        hasErrors = true;
+      }
     }
 
     const isValid = this.signupForm.get(control_name)?.valid && !hasErrors;

@@ -1,0 +1,8 @@
+/* Estilo para inputs autocompletados CON error */
+
+input:-webkit-autofill.error,
+input:-webkit-autofill.border-custom-error {
+  box-shadow: 0 0 0px 1000px #fee2e2 inset !important;
+  border-color: #ef4444 !important;
+  -webkit-text-fill-color: #000 !important;
+}
