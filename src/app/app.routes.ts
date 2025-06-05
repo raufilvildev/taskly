@@ -12,6 +12,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { Error404Component } from './pages/error404/error404.component';
 import { CoursesComponent } from './pages/dashboard/courses/courses.component';
 import { DashboardHomeComponent } from './pages/dashboard/dashboard-home/dashboard-home.component';
+import { DashboardSettingsComponent } from './pages/dashboard/dashboard-settings/dashboard-settings.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -40,6 +41,7 @@ export const routes: Routes = [
   children: [
     { path: '', component: DashboardHomeComponent}, 
     { path: 'courses', component: CoursesComponent },
+    { path: 'settings', component: DashboardSettingsComponent },
   ],
 },
 
