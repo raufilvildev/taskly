@@ -1,31 +1,29 @@
-<section class="flex flex-col items-center justify-center text-center px-6 py-32 bg-[var(--color-custom-panel)]">
-  <h1 class="text-[2.5rem] md:text-6xl font-bold text-[var(--color-custom-text-main)] leading-tight mb-6 max-w-3xl">
+<section class="scroll-header flex flex-col items-center justify-center text-center px-6 py-32 relative">
+  <h1 class="scroll-header__title text-[2.5rem] md:text-6xl font-bold text-[var(--color-custom-text-main)] leading-tight mb-6 max-w-3xl">
     Haz del conocimiento una experiencia compartida
   </h1>
-  <p class="text-lg text-[var(--color-custom-text-secondary)] max-w-xl mb-10">
+  <p class="scroll-header__content text-lg text-[var(--color-custom-text-main)] max-w-xl mb-10 ">
     Descubre una plataforma educativa diseñada para estudiantes y profesores. Aprende a tu ritmo o crea cursos personalizados, gestiona tu progreso y conecta con una comunidad de aprendizaje dinámica.
   </p>
-  <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-
+  <div class="scroll-header__buttons flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
     <a
-        routerLink="/signup"
-        class="bg-custom-accent text-white px-6 py-3 rounded-md font-medium hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-custom-md"
+      routerLink="/signup"
+      class="bg-custom-accent text-white px-6 py-3 rounded-md font-medium hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-custom-md"
     >
-        Empezar ahora
+      Empezar ahora
     </a>
-    
     <a
-        routerLink="/login"
-        class="bg-white border-2 border-custom-accent text-custom-accent px-6 py-3 rounded-md font-medium hover:bg-custom-primary-light transition-all duration-300 transform hover:scale-105"
+      routerLink="/login"
+      class="bg-white border-2 border-custom-accent text-custom-accent px-6 py-3 rounded-md font-medium hover:bg-custom-primary-light transition-all duration-300 transform hover:scale-105"
     >
-        Ver cursos
-        
+      Ver cursos
     </a>
-     
   </div>
 </section>
 
-<div class=" w-full bg-[var(--color-custom-panel)] pb-[300px] mb-[100px] flex justify-center">
+
+
+<div class=" w-full pb-[300px] mb-[100px] flex justify-center">
   <div class="scroll-zoom">
     <img 
       src="dashboard.jpg" 
