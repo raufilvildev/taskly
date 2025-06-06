@@ -12,6 +12,18 @@ export class AuthorizationService {
   private endpoint = `${environment.host}/authorization`;
   private httpClient = inject(HttpClient);
 
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  setToken(token: string) {
+    localStorage.setItem('token', token);
+  }
+
+  removeToken() {
+    localStorage.removeItem('token');
+  }
+
   requestConfirmationByEmail(token: string, type: string) {
     return lastValueFrom(
       this.httpClient.post<IMessage>(

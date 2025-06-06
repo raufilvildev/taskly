@@ -40,7 +40,6 @@ export class SignupFormComponent {
         Validators.minLength(2),
         Validators.maxLength(100),
       ]),
-      gender: new FormControl('M', [Validators.required]),
       birth_date: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       username: new FormControl('', [
@@ -117,31 +116,12 @@ export class SignupFormComponent {
   getErrors(control_name: string) {
     const errors: string[] = [];
 
-    const fields: { [key: string]: string } = {
-      first_name: 'nombre',
-      last_name: 'apellidos',
-      birth_date: 'fecha de nacimiento',
-      email: 'correo electrónico',
-      username: 'usuario',
-      password: 'contraseña',
-      password_confirmation: 'confirmación de la contraseña',
-    };
-
-    const messages: { [key: string]: string } = {
-      required: 'es obligatorio',
-      minlength: 'tiene que tener al menos 2 caracteres',
-      maxlength: 'no puede tener más de 100 caracteres',
-      email: 'no tiene un formato correcto',
-      pattern:
-        'debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un carácter especial',
-    };
-
-    for (const error in messages) {
+    for (const error in constants.messages) {
       if (
         this.signupForm.get(control_name)?.touched &&
         this.signupForm.get(control_name)?.hasError(error)
       ) {
-        errors.push(`El campo ${fields[control_name]} ${messages[error]}.`);
+        errors.push(`El campo ${constants.fields[control_name]} ${constants.messages[error]}.`);
       }
     }
 
@@ -156,12 +136,11 @@ export class SignupFormComponent {
     signupForm.markAllAsTouched();
 
     if (signupForm.valid) {
-      const { first_name, last_name, gender, birth_date, email, username, password, role } =
+      const { first_name, last_name, birth_date, email, username, password, role } =
         signupForm.value;
       const user: IUser = {
         first_name,
         last_name,
-        gender,
         birth_date,
         email,
         username,
@@ -193,23 +172,6 @@ export class SignupFormComponent {
         }
 
         this.serverError = constants.generalServerError;
-      }
-    }
-  }
-
-  async ngOnInit() {
-    const token = localStorage.getItem('token');
-
-    if (token) {
-      try {
-        const { email_confirmed } = await this.usersService.getById(token);
-        if (!email_confirmed) {
-          this.router.navigate(['signup', 'signup_confirmation']);
-          return;
-        }
-        this.router.navigate(['dashboard']);
-      } catch (error) {
-        localStorage.removeItem('token');
       }
     }
   }

@@ -32,32 +32,6 @@
         }
       </fieldset>
       <fieldset class="flex flex-col">
-        <label class="text-sm font-bold">Género</label>
-        <div class="flex gap-5 mt-2">
-          <div class="flex gap-1 items-center">
-            <input
-              type="radio"
-              formControlName="gender"
-              value="M"
-              id="male"
-              class="accent-custom-accent-dark"
-              checked
-            />
-            <label for="male" class="text-sm">Hombre</label>
-          </div>
-          <div class="flex gap-1 items-center">
-            <input
-              type="radio"
-              formControlName="gender"
-              value="F"
-              id="female"
-              class="accent-custom-accent-dark"
-            />
-            <label for="female" class="text-sm">Mujer</label>
-          </div>
-        </div>
-      </fieldset>
-      <fieldset class="flex flex-col">
         <label for="birthDate" class="text-sm font-bold">Fecha de nacimiento</label>
         <input
           type="date"
@@ -71,6 +45,21 @@
         @for (error of getErrors('birth_date'); track $index) {
           <p class="pl-1 mt-1 italic text-sm text-custom-error">{{ error }}</p>
         }
+      </fieldset>
+      <fieldset class="flex flex-col">
+        <label for="role" class="text-sm font-bold">¿Deseas registrarte como profesor?</label>
+        <div class="flex items-center gap-2 mt-2">
+          <input
+            type="checkbox"
+            formControlName="role"
+            id="teacher"
+            class="px-4 py-2 accent-custom-accent-dark"
+          />
+          <label for="teacher" class="text-sm italic">Sí, soy profesor</label>
+        </div>
+        <p class="text-xs text-custom-muted italic">
+          Los estudiantes serán asignados por un profesor después del registro.
+        </p>
       </fieldset>
     </div>
     <div class="flex flex-col gap-4 w-full lg:w-1/2">
@@ -191,15 +180,6 @@
     @if (serverError) {
       <p class="pl-1 mt-1 italic text-sm text-custom-error">{{ serverError }}</p>
     }
-    <fieldset class="flex gap-2 mt-2">
-      <input
-        type="checkbox"
-        formControlName="role"
-        id="teacher"
-        class="accent-custom-accent-dark"
-      />
-      <label for="teacher" class="text-sm italic">Registrarse como profesor</label>
-    </fieldset>
     <button
       type="submit"
       class="w-fit mt-5 px-4 py-2 rounded-lg border-2 border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"

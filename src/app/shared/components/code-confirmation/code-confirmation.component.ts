@@ -73,7 +73,7 @@ export class CodeConfirmationComponent {
     }
   }
   async resetRandomNumber() {
-    const token = localStorage.getItem('token') as string;
+    const token = this.authorizationService.getToken() as string;
 
     this.countdown?.restart();
 
@@ -83,7 +83,7 @@ export class CodeConfirmationComponent {
   }
 
   async generateRandomNumber() {
-    const token = localStorage.getItem('token') as string;
+    const token = this.authorizationService.getToken() as string;
 
     try {
       const { message } = await this.authorizationService.requestConfirmationByEmail(
@@ -106,22 +106,6 @@ export class CodeConfirmationComponent {
   }
 
   async ngOnInit() {
-    const token: string | null = localStorage.getItem('token');
-
-    if (!token) {
-      this.router.navigate(['/home']);
-      return;
-    }
-
-    try {
-      this.user = await this.usersService.getById(token);
-      if (this.user.email_confirmed && this.type === 'signup') {
-        this.router.navigate(['dashboard']);
-      }
-      this.resetRandomNumber();
-    } catch (error) {
-      localStorage.removeItem('token');
-      this.router.navigate(['/home']);
-    }
+    this.resetRandomNumber();
   }
 }

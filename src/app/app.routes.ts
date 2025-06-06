@@ -13,37 +13,54 @@ import { Error404Component } from './pages/error404/error404.component';
 import { CoursesComponent } from './pages/dashboard/courses/courses.component';
 import { DashboardHomeComponent } from './pages/dashboard/dashboard-home/dashboard-home.component';
 import { DashboardSettingsComponent } from './pages/dashboard/dashboard-settings/dashboard-settings.component';
+import { authorizationGuardPrivate, authorizationGuardPublic } from './guards/authorization.guard';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
-  { path: 'home', component: HomeComponent },
+  { path: 'home', component: HomeComponent, canActivate: [authorizationGuardPublic] },
   {
     path: 'signup',
     component: SignupComponent,
+    canActivate: [authorizationGuardPublic],
     children: [
-      { path: '', component: SignupFormComponent },
-      { path: 'signup_confirmation', component: SignupConfirmationComponent },
+      { path: '', component: SignupFormComponent, canActivate: [authorizationGuardPublic] },
+      {
+        path: 'signup_confirmation',
+        component: SignupConfirmationComponent,
+        canActivate: [authorizationGuardPrivate],
+      },
     ],
   },
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [authorizationGuardPublic],
     children: [
-      { path: '', component: LoginFormComponent },
+      { path: '', component: LoginFormComponent, canActivate: [authorizationGuardPublic] },
       { path: 'change_password_email_request', component: ChangePasswordEmailRequestComponent },
-      { path: 'change_password_confirmation', component: ChangePasswordConfirmationComponent },
-      { path: 'change_password', component: ChangePasswordComponent },
+      {
+        path: 'change_password_confirmation',
+        component: ChangePasswordConfirmationComponent,
+        canActivate: [authorizationGuardPrivate],
+      },
+      {
+        path: 'change_password',
+        component: ChangePasswordComponent,
+        canActivate: [authorizationGuardPrivate],
+      },
     ],
   },
   {
-  path: 'dashboard',
-  component: DashboardComponent,
-  children: [
-    { path: '', component: DashboardHomeComponent}, 
-    { path: 'courses', component: CoursesComponent },
-    { path: 'settings', component: DashboardSettingsComponent },
-  ],
-},
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [authorizationGuardPrivate],
+    canActivateChild: [authorizationGuardPrivate],
+    children: [
+      { path: '', component: DashboardHomeComponent },
+      { path: 'courses', component: CoursesComponent },
+      { path: 'settings', component: DashboardSettingsComponent },
+    ],
+  },
 
   { path: '**', component: Error404Component },
 ];
