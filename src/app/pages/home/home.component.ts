@@ -16,6 +16,7 @@ export class HomeComponent implements AfterViewInit {
     
     gsap.registerPlugin(ScrollTrigger);
 
+    gsap.set('.scroll-zoom', { scale: 0.8, transformOrigin: 'center center' });
   
     gsap.to('.scroll-zoom', {
       scale: 1.3,        
