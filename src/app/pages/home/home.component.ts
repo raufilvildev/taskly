@@ -17,7 +17,7 @@ export class HomeComponent implements AfterViewInit {
     gsap.registerPlugin(ScrollTrigger);
 
     // Animación h1 p y button
-    gsap.set('.scroll-header__title', { scale: 1.7, transformOrigin: 'center top' });
+    gsap.set('.scroll-header__title', { scale: 1.6, transformOrigin: 'center top' });
     gsap.set('.scroll-header__content', { opacity: 0, y: 200 });
     gsap.set('.scroll-header__buttons', { opacity: 0, y: 100 });
 
@@ -50,6 +50,17 @@ export class HomeComponent implements AfterViewInit {
       ease: 'power2.out'
     }, 0.6); 
     
+    // Animación arrow
+      gsap.to('.scroll-arrow', {
+      opacity: 0,
+      scale: 0.5,
+      scrollTrigger: {
+      trigger: '.scroll-header',
+      start: 'top top+=10',
+      end: '+=10',
+      scrub: true,
+    }
+    });
 
     // Animación de imagen
     gsap.set('.scroll-zoom', { scale: 0.8, transformOrigin: 'center center' });
