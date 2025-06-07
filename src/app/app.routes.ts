@@ -14,12 +14,9 @@ import { CoursesComponent } from './pages/dashboard/courses/courses.component';
 import { DashboardHomeComponent } from './pages/dashboard/dashboard-home/dashboard-home.component';
 import { DashboardSettingsComponent } from './pages/dashboard/dashboard-settings/dashboard-settings.component';
 import { authorizationGuardPrivate, authorizationGuardPublic } from './guards/authorization.guard';
-<<<<<<< HEAD
 import { DashboardListViewComponent } from './pages/dashboard/dashboard-list-view/dashboard-list-view.component';
-=======
 import { CourseViewComponent } from './pages/dashboard/courses/course-view/course-view.component';
 import { CoursesGridComponent } from './pages/dashboard/courses/courses-grid/courses-grid.component';
->>>>>>> origin/main
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
