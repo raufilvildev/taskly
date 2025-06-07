@@ -1,1 +1,48 @@
-<p>task-detail works!</p>
+<div class="task-detail">
+  @if (selectedTask()) {
+    <form [formGroup]="taskForm">
+      <div class="task-header">
+        <input class="task-title-input"
+               [class.completed]="taskForm.get('completed')?.value"
+               formControlName="title"
+               placeholder="Task title"
+               style="font-size:2rem; font-weight:600; border:none; outline:none; background:transparent; width:100%; margin-bottom:1rem;" />
+      </div>
+      <div class="full-width">
+        <textarea class="textarea textarea-bordered w-full min-h-[80px]" formControlName="description" placeholder="Describe la tarea..."></textarea>
+      </div>
+      <div class="full-width" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+        <label style="font-size: 1rem; color: #555;">Due Date</label>
+        <input type="date"
+               class="native-date-input"
+               [value]="getDateString(taskForm.get('dueDate')?.value)"
+               (change)="onNativeDateChange($event)">
+      </div>
+      @if (selectedTaskSubtasks().length > 0) {
+        <div class="subtasks-section">
+          <h3>Subtasks</h3>
+          <ul class="subtasks-list">
+            @for (subtask of selectedTaskSubtasks(); track subtask.id) {
+              <li class="subtask-item" [class.completed-subtask]="subtask.completed">
+                <input type="checkbox"
+                  [checked]="subtask.completed"
+                  (change)="toggleSubtask(subtask)"
+                  class="subtask-checkbox">
+                <span class="subtask-name" [class.completed]="subtask.completed">
+                  {{subtask.name}}
+                </span>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+      <div class="task-actions">
+        <button type="button" class="btn btn-primary" (click)="toggleCompletion()">
+          {{ taskForm.get('completed')?.value ? 'Mark Incomplete' : 'Mark Complete' }}
+        </button>
+      </div>
+    </form>
+  } @else {
+    <p class="no-selection">Select a task to view details</p>
+  }
+</div>

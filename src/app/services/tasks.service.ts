@@ -97,4 +97,7 @@ export class ProjectService {
   setSelectedTask(task: Itask) {
     this.selectedTask.set(task);
   }
+  updateProjects() {
+    this.projects.set([...this.projects()]);
+  }
 }

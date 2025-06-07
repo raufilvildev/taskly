@@ -1,0 +1,103 @@
+/* Estilos para la tarjeta de tarea y subtareas */
+.task-item {
+  margin-bottom: 1.2rem;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  padding: 1rem;
+  transition: box-shadow 0.2s;
+}
+.task-item.selected-task {
+  background-color: #e3f2fd !important;
+}
+.task-item.completed-task {
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+.task-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.task-title {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.3s ease;
+}
+.task-title.completed {
+  text-decoration: line-through;
+  color: #999;
+}
+.task-description {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  color: #666;
+  line-height: 1.3;
+  transition: all 0.3s ease;
+}
+.task-description.completed {
+  text-decoration: line-through;
+  color: #aaa;
+}
+.toggle-subtasks-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1em;
+  padding: 0 4px;
+  color: #666;
+  transition: color 0.2s;
+}
+.toggle-subtasks-btn:hover {
+  color: #1976d2;
+}
+.subtasks-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: none;
+  border: none;
+  box-shadow: none;
+  max-height: none;
+  overflow: visible;
+  transition: none;
+}
+.subtask-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+.completed-subtask {
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+.subtask-checkbox {
+  margin-right: 0.5rem;
+  transform: scale(0.8);
+}
+.subtask-name {
+  font-size: 0.8rem;
+  color: #555;
+  transition: all 0.3s ease;
+}
+.subtask-name.completed {
+  text-decoration: line-through;
+  color: #aaa;
+}
+.task-due-date {
+  margin: 0.5rem 0 0 0;
+  font-size: 0.75rem;
+  color: #999;
+  font-style: italic;
+  transition: all 0.3s ease;
+}
+.task-due-date.completed {
+  text-decoration: line-through;
+  color: #bbb;
+}
