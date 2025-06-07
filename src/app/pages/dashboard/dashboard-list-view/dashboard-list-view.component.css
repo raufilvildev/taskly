@@ -1,0 +1,18 @@
+/* Elimino líneas incorrectas y aseguro estilos para ocupar todo el alto */
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.as-split {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.as-split-area {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
