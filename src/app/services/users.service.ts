@@ -7,6 +7,11 @@ import { IToken } from '../interfaces/itoken.interface';
 import { ILogin } from '../interfaces/ilogin.interface';
 import { IMessage } from '../interfaces/imessage.interface';
 
+type Response = {
+  success: string;
+  token: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -24,8 +29,8 @@ export class UsersService {
     return lastValueFrom(this.httpClient.post<IToken>(`${this.endpoint}/signup`, user));
   }
 
-  login(loginData: ILogin) {
-    return lastValueFrom(this.httpClient.post<IToken>(`${this.endpoint}/login`, loginData));
+  login(loginData: ILogin): Promise<Response> {
+    return lastValueFrom(this.httpClient.post<Response>(`${this.endpoint}/login`, loginData));
   }
 
   changePassword(token: string, password: string) {
