@@ -1,5 +1,3 @@
-import { Isubtask } from "./isubtask";
-
 export interface Itask {
   id: number;
   title: string;
@@ -8,4 +6,11 @@ export interface Itask {
   projectId: number;
   dueDate?: Date;
   subtasks: Isubtask[];
+}
+
+export interface Isubtask {
+  id: number;
+  name: string;
+  completed: boolean;
+  taskId: number;
 }

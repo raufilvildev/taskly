@@ -1,1 +1,25 @@
-<p>task-list works!</p>
+<div class="task-list">
+  @if (selectedProject()) {
+    <h2>
+      Tareas activas para {{selectedProject()?.name}}
+    </h2>
+    <div>
+      @for (task of tasks(); track task.id) {
+        <app-task
+          [task]="task"
+          [expanded]="expandedTasks[task.id]"
+          [isSelected]="isTaskSelected(task)"
+          [getTaskProgress]="getTaskProgress"
+          [formatDueDate]="formatDueDate"
+          (selectTask)="selectTask($event)"
+          (toggleTask)="toggleTask($event)"
+          (toggleSubtask)="toggleSubtask($event)"
+          (toggleExpand)="toggleExpand($event)">
+        </app-task>
+      }
+    </div>
+  } @else {
+    <h2>Ninguna lista seleccionada</h2>
+    <p class="no-selection">Selecciona una lista para ver las tareas</p>
+  }
+</div>
