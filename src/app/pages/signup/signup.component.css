@@ -1,0 +1,7 @@
+.custom-container {
+  background: radial-gradient(
+    circle at center,
+    var(--color-custom-accent) 0%,
+    var(--color-custom-primary-light) 80%
+  );
+}
