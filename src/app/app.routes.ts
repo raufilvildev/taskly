@@ -14,8 +14,11 @@ import { CoursesComponent } from './pages/dashboard/courses/courses.component';
 import { DashboardHomeComponent } from './pages/dashboard/dashboard-home/dashboard-home.component';
 import { DashboardSettingsComponent } from './pages/dashboard/dashboard-settings/dashboard-settings.component';
 import { authorizationGuardPrivate, authorizationGuardPublic } from './guards/authorization.guard';
-import { CourseViewComponent } from './pages/dashboard/courses/course-view/course-view.component';
+import { CourseViewComponent } from './pages/dashboard/courses/course_view/course-view.component';
 import { CoursesGridComponent } from './pages/dashboard/courses/courses-grid/courses-grid.component';
+import { TasksComponent } from './pages/dashboard/courses/course_view/tasks/tasks.component';
+import { ForumComponent } from './pages/dashboard/courses/course_view/forum/forum.component';
+import { CalendarComponent } from './pages/dashboard/courses/course_view/calendar/calendar.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -64,12 +67,19 @@ export const routes: Routes = [
         component: CoursesComponent,
         children: [
           { path: '', component: CoursesGridComponent },
-          { path: 'view/:course_uuid', component: CourseViewComponent },
+          {
+            path: 'view/:course_uuid',
+            component: CourseViewComponent,
+            children: [
+              { path: '', component: TasksComponent },
+              { path: 'forum', component: ForumComponent },
+              { path: 'calendar', component: CalendarComponent },
+            ],
+          },
         ],
       },
       { path: 'settings', component: DashboardSettingsComponent },
     ],
   },
-
   { path: '**', component: Error404Component },
 ];
