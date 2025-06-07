@@ -23,7 +23,7 @@ export class LoginFormComponent {
       }
       localStorage.setItem('token',response.token)
     } catch (msg:any) {
-      alert('Introduce bien la contraseña')
+      alert('Usuario o contraseña incorrectos')
     }
   }
 }
