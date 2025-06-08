@@ -1,0 +1,91 @@
+.task-detail {
+  padding: 1rem;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.task-header h2 {
+  margin: 0 0 0 0;
+  color: var(--color-text-main);
+  transition: all 0.3s ease;
+}
+
+.task-header h2.completed {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.textarea{
+  padding: 0;
+  width: 100%;
+  min-height: 2.5rem;
+  resize: vertical;
+  border: none;
+  outline: none;
+  color: var(--color-text-main);
+}
+.subtasks-section {
+  margin: 1.5rem 0;
+}
+
+.subtasks-section h3 {
+  margin: 0 0 1rem 0;
+  color: var(--color-text-main);
+  font-size: 1.1rem;
+}
+
+.subtasks-list {
+  list-style: none;
+  margin: 1rem 0 1rem 0;
+}
+
+.subtask-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 1.5rem;
+  padding: 0;
+}
+
+.completed-subtask {
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.subtask-checkbox {
+  margin-right: 1rem;
+}
+
+.subtask-content {
+  flex: 1;
+}
+
+.subtask-name {
+  font-size: 0.9rem;
+  color: var(--color-text-main);
+  transition: all 0.3s ease;
+}
+
+.subtask-name.completed {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.task-actions {
+  padding: 0 0 0 1rem;
+}
+.no-selection {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  margin-top: 2rem;
+}
+
+.task-title-input{
+  padding: 0;
+  outline:none;
+  background:transparent;
+  width:100%;
+  margin-bottom:1rem;
+  color: var(--color-text-main);
+}

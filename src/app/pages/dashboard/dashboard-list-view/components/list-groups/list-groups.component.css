@@ -1,0 +1,31 @@
+.project-list {
+  height: 100%;
+  overflow-y: auto;
+  background: var(--color-panel);
+}
+::ng-deep .as-split-gutter-icon {
+      background-color: var(--color-panel) !important;
+    }
+
+.project-list h3 {
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  margin-left: var(--spacing-md);
+}
+
+.selected-project {
+  background-color: var(--color-hover) !important;
+  color: inherit !important;
+}
+.selected-project:active {
+  background-color: var(--color-active) !important;
+}
+.selected-project:focus {
+  background-color: var(--color-focus) !important;
+}
+
+.project-stats {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}

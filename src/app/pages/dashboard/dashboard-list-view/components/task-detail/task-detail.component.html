@@ -1,0 +1,49 @@
+<div class="task-detail">
+  @if (selectedTask()) {
+    <form [formGroup]="taskForm">
+      <div class="task-actions flex items-center  mb-4">
+        <input type="checkbox"
+          class="task-checkbox scale-150"
+          [checked]="taskForm.get('completed')?.value"
+          (change)="toggleCompletion()" />
+        <div class="divider divider-horizontal"></div>
+        <div class="flex items-center">
+          <input type="date"
+                 class="native-date-input"
+                 [value]="getDateString(taskForm.get('dueDate')?.value)"
+                 (change)="onNativeDateChange($event)">
+        </div>
+      </div>
+      <div class="divider divider-vertical"></div>
+      <div class="task-header">
+        <input class="task-title-input font-medium text-lg"
+               [class.completed]="taskForm.get('completed')?.value"
+               formControlName="title"
+               placeholder="Task title" />
+      </div>
+      <div class="full-width">
+        <textarea class="textarea" rows="1" formControlName="description" placeholder="Describe la tarea..."></textarea>
+      </div>
+      @if (selectedTaskSubtasks().length > 0) {
+        <div class="subtasks-section">
+          <h3>Subtareas:</h3>
+          <ul class="subtasks-list">
+            @for (subtask of selectedTaskSubtasks(); track subtask.id) {
+              <li class="subtask-item" [class.completed-subtask]="subtask.completed">
+                <input type="checkbox"
+                  [checked]="subtask.completed"
+                  (change)="toggleSubtask(subtask)"
+                  class="subtask-checkbox">
+                <span class="subtask-name" [class.completed]="subtask.completed">
+                  {{subtask.name}}
+                </span>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </form>
+  } @else {
+    <p class="no-selection">Seleccione una tarea para ver los detalles</p>
+  }
+</div>

@@ -1,0 +1,24 @@
+<div class="task-list">
+  @if (selectedProject()) {
+    <h2 class="font-medium text-lg ml-2 mt-4 mb-2">
+      Tareas activas para {{selectedProject()?.name}}
+    </h2>
+    <div>
+      @for (task of tasks(); track task.id) {
+        <app-task
+          [task]="task"
+          [expanded]="expandedTasks[task.id]"
+          [isSelected]="isTaskSelected(task)"
+          [getTaskProgress]="getTaskProgress"
+          [formatDueDate]="formatDueDate"
+          (selectTask)="selectTask($event)"
+          (toggleTask)="toggleTask($event)"
+          (toggleSubtask)="toggleSubtask($event)"
+          (toggleExpand)="toggleExpand($event)">
+        </app-task>
+      }
+    </div>
+  } @else {
+    <p class="no-selection">Selecciona una lista para ver las tareas</p>
+  }
+</div>

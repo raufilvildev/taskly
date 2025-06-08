@@ -1,0 +1,51 @@
+<div class="task-item cursor-pointer select-none transition-shadow"
+     [class.selected-task]="isSelected"
+     [class.completed-task]="task.completed"
+     (click)="selectTask.emit(task)">
+  <div class="task-header flex items-center gap-2">
+    @if (task.subtasks.length > 0) {
+      <button class="toggle-subtasks-btn"
+              (click)="toggleExpand.emit(task.id); $event.stopPropagation()">
+        <svg [class.rotate-180]="expanded" class="transition-transform duration-200 w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+    }
+    <input type="checkbox"
+      [checked]="task.completed"
+      (change)="toggleTask.emit(task)"
+      (click)="$event.stopPropagation()"
+      class="task-checkbox" >
+    <div class="flex flex-1 items-center min-w-0 justify-between">
+      <h4 class="task-title truncate" [class.completed]="task.completed">
+        {{task.title}}
+      </h4>
+      @if (task.dueDate) {
+        <span class="task-due-date ml-2" [class.completed]="task.completed">
+          Fecha límite: {{formatDueDate(task.dueDate)}}
+        </span>
+      }
+    </div>
+  </div>
+  <div class="task-content">
+    <p class="task-description" [class.completed]="task.completed">
+      {{task.description}}
+    </p>
+    @if (expanded) {
+      <ul class="subtasks-list">
+        @for (subtask of task.subtasks; track subtask.id) {
+          <li class="subtask-item" [class.completed-subtask]="subtask.completed">
+            <input type="checkbox"
+              [checked]="subtask.completed"
+              (change)="toggleSubtask.emit(subtask)"
+              (click)="$event.stopPropagation()"
+              class="subtask-checkbox" />
+            <span class="subtask-name" [class.completed]="subtask.completed">
+              {{subtask.name}}
+            </span>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</div>

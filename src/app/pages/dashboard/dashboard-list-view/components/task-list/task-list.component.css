@@ -1,0 +1,15 @@
+.task-list {
+  border-right: 1px solid #eee;
+  overflow-y: auto;
+}
+
+.task-list h2 {
+  color: var(--color-text-main);
+}
+
+.no-selection {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  margin-top: 2rem;
+}
