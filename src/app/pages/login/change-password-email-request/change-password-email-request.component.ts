@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { AuthorizationService } from '../../../services/authorization.service';
 
 @Component({
   selector: 'app-change-password-email-request',
@@ -6,4 +7,8 @@ import { Component } from '@angular/core';
   templateUrl: './change-password-email-request.component.html',
   styleUrl: './change-password-email-request.component.css',
 })
-export class ChangePasswordEmailRequestComponent {}
+export class ChangePasswordEmailRequestComponent {
+  authorizationService = inject(AuthorizationService)
+
+  
+}
