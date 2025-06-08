@@ -18,6 +18,8 @@ import { DashboardListViewComponent } from './pages/dashboard/dashboard-list-vie
 import { CourseViewComponent } from './pages/dashboard/courses/course_view/course-view.component';
 import { CoursesGridComponent } from './pages/dashboard/courses/courses-grid/courses-grid.component';
 import { ForumComponent } from './pages/dashboard/courses/course_view/forum/forum.component';
+import { TasksComponent } from './pages/dashboard/courses/course_view/tasks/tasks.component';
+import { CalendarComponent } from './pages/dashboard/courses/course_view/calendar/calendar.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -70,7 +72,8 @@ export const routes: Routes = [
             path: 'view/:course_uuid',
             component: CourseViewComponent,
             children: [
-              { path: '', component: ForumComponent },
+              { path: '', component: TasksComponent },
+              { path: 'calendar', component: CalendarComponent },
               { path: 'forum', component: ForumComponent },
             ],
           },
