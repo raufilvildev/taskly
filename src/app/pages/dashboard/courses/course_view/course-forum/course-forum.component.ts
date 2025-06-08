@@ -5,12 +5,12 @@ import { UsersService } from '../../../../../services/users.service';
 import { IUser } from '../../../../../interfaces/iuser.interface';
 
 @Component({
-  selector: 'app-forum',
+  selector: 'app-course-forum',
   imports: [CommentComponent],
-  templateUrl: './forum.component.html',
-  styleUrl: './forum.component.css',
+  templateUrl: './course-forum.component.html',
+  styleUrl: './course-forum.component.css',
 })
-export class ForumComponent {
+export class CourseForumComponent {
   authorizationService = inject(AuthorizationService);
   usersService = inject(UsersService);
 

@@ -18,9 +18,9 @@ app-dashboard-home,
 app-courses,
 app-courses-grid,
 app-course-view,
-app-forum,
-app-tasks,
-app-calendar {
+app-course-forum,
+app-course-tasks,
+app-course-calendar {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;

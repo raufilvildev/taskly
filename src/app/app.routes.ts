@@ -17,9 +17,9 @@ import { authorizationGuardPrivate, authorizationGuardPublic } from './guards/au
 import { DashboardListViewComponent } from './pages/dashboard/dashboard-list-view/dashboard-list-view.component';
 import { CourseViewComponent } from './pages/dashboard/courses/course_view/course-view.component';
 import { CoursesGridComponent } from './pages/dashboard/courses/courses-grid/courses-grid.component';
-import { ForumComponent } from './pages/dashboard/courses/course_view/forum/forum.component';
-import { TasksComponent } from './pages/dashboard/courses/course_view/tasks/tasks.component';
-import { CalendarComponent } from './pages/dashboard/courses/course_view/calendar/calendar.component';
+import { CourseCalendarComponent } from './pages/dashboard/courses/course_view/course-calendar/course-calendar.component';
+import { CourseForumComponent } from './pages/dashboard/courses/course_view/course-forum/course-forum.component';
+import { CourseTasksComponent } from './pages/dashboard/courses/course_view/course-tasks/course-tasks.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -72,9 +72,9 @@ export const routes: Routes = [
             path: 'view/:course_uuid',
             component: CourseViewComponent,
             children: [
-              { path: '', component: TasksComponent },
-              { path: 'calendar', component: CalendarComponent },
-              { path: 'forum', component: ForumComponent },
+              { path: '', component: CourseTasksComponent },
+              { path: 'calendar', component: CourseCalendarComponent },
+              { path: 'forum', component: CourseForumComponent },
             ],
           },
         ],
