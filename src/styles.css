@@ -12,6 +12,19 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+app-dashboard,
+app-dashboard-home,
+app-courses,
+app-courses-grid,
+app-course-view,
+app-forum,
+app-course-view,
+app-forum {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
 :root {
   /*Primary colors */
   --color-primary: #e9dcfa;
