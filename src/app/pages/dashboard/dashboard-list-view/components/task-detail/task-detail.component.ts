@@ -58,7 +58,12 @@ export class TaskDetailComponent {
 
   toggleCompletion() {
     if (this.selectedTask()) {
-      this.selectedTask()!.completed = !this.selectedTask()!.completed;
+      const completed = !this.selectedTask()!.completed;
+      this.selectedTask()!.completed = completed;
+      // Marcar/desmarcar todas las subtareas también
+      if (this.selectedTask()!.subtasks) {
+        this.selectedTask()!.subtasks.forEach(subtask => subtask.completed = completed);
+      }
     }
   }
 

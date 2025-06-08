@@ -1,6 +1,4 @@
-/* Estilos para la tarjeta de tarea y subtareas */
 .task-item {
-  margin-bottom: 1.2rem;
   border-radius: 8px;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
@@ -8,7 +6,7 @@
   transition: box-shadow 0.2s;
 }
 .task-item.selected-task {
-  background-color: #e3f2fd !important;
+  background-color: var(--color-panel) !important;
 }
 .task-item.completed-task {
   opacity: 0.6;
@@ -20,10 +18,8 @@
   gap: 8px;
 }
 .task-title {
-  margin: 0 0 0.25rem 0;
   font-size: 1rem;
-  font-weight: 500;
-  color: #333;
+  color: var(--color-text-main);
   transition: all 0.3s ease;
 }
 .task-title.completed {
@@ -31,7 +27,7 @@
   color: #999;
 }
 .task-description {
-  margin: 0 0 0.5rem 0;
+  margin: 0.25rem 0 0.25rem 0;
   font-size: 0.875rem;
   color: #666;
   line-height: 1.3;
@@ -43,35 +39,14 @@
 }
 .toggle-subtasks-btn {
   background: none;
-  border: none;
   cursor: pointer;
-  font-size: 1.1em;
-  padding: 0 4px;
-  color: #666;
-  transition: color 0.2s;
 }
-.toggle-subtasks-btn:hover {
-  color: #1976d2;
-}
-.subtasks-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  background: none;
-  border: none;
-  box-shadow: none;
-  max-height: none;
-  overflow: visible;
-  transition: none;
+.task-content {
+  padding-left: 3rem;
 }
 .subtask-item {
   display: flex;
-  align-items: center;
   gap: 8px;
-  padding: 0;
-  background: none;
-  border: none;
-  box-shadow: none;
 }
 .completed-subtask {
   opacity: 0.6;
@@ -83,7 +58,7 @@
 }
 .subtask-name {
   font-size: 0.8rem;
-  color: #555;
+  color: var(--color-text-secondary);
   transition: all 0.3s ease;
 }
 .subtask-name.completed {
@@ -91,9 +66,8 @@
   color: #aaa;
 }
 .task-due-date {
-  margin: 0.5rem 0 0 0;
   font-size: 0.75rem;
-  color: #999;
+  color: var(--color-primary-dark);
   font-style: italic;
   transition: all 0.3s ease;
 }
