@@ -15,8 +15,9 @@ import { DashboardHomeComponent } from './pages/dashboard/dashboard-home/dashboa
 import { DashboardSettingsComponent } from './pages/dashboard/dashboard-settings/dashboard-settings.component';
 import { authorizationGuardPrivate, authorizationGuardPublic } from './guards/authorization.guard';
 import { DashboardListViewComponent } from './pages/dashboard/dashboard-list-view/dashboard-list-view.component';
-import { CourseViewComponent } from './pages/dashboard/courses/course-view/course-view.component';
+import { CourseViewComponent } from './pages/dashboard/courses/course_view/course-view.component';
 import { CoursesGridComponent } from './pages/dashboard/courses/courses-grid/courses-grid.component';
+import { ForumComponent } from './pages/dashboard/courses/course_view/forum/forum.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -65,7 +66,14 @@ export const routes: Routes = [
         component: CoursesComponent,
         children: [
           { path: '', component: CoursesGridComponent },
-          { path: 'view/:course_uuid', component: CourseViewComponent },
+          {
+            path: 'view/:course_uuid',
+            component: CourseViewComponent,
+            children: [
+              { path: '', component: ForumComponent },
+              { path: 'forum', component: ForumComponent },
+            ],
+          },
         ],
       },
       { path: 'settings', component: DashboardSettingsComponent },
