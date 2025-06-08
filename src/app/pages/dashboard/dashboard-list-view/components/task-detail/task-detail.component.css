@@ -4,13 +4,9 @@
   overflow-y: auto;
 }
 
-.task-header {
-  margin-bottom: 1.5rem;
-}
-
 .task-header h2 {
-  margin: 0 0 1rem 0;
-  color: #333;
+  margin: 0 0 0 0;
+  color: var(--color-text-main);
   transition: all 0.3s ease;
 }
 
@@ -19,50 +15,36 @@
   color: #999;
 }
 
-.progress-section {
-  margin-bottom: 1rem;
+.textarea{
+  padding: 0;
+  width: 100%;
+  min-height: 2.5rem;
+  resize: vertical;
+  border: none;
+  outline: none;
+  color: var(--color-text-main);
 }
-
-.progress-text {
-  font-size: 0.875rem;
-  color: #666;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-}
-
-.main-progress-bar {
-  height: 8px;
-  border-radius: 4px;
-}
-
 .subtasks-section {
   margin: 1.5rem 0;
 }
 
 .subtasks-section h3 {
   margin: 0 0 1rem 0;
-  color: #333;
+  color: var(--color-text-main);
   font-size: 1.1rem;
 }
 
 .subtasks-list {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 0;
-  background-color: #fafafa;
   list-style: none;
-  margin: 1.2rem 0 1.2rem 0;
+  margin: 1rem 0 1rem 0;
 }
 
 .subtask-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   margin-left: 1.5rem;
   padding: 0;
-  background: none;
-  border: none;
-  box-shadow: none;
 }
 
 .completed-subtask {
@@ -80,7 +62,7 @@
 
 .subtask-name {
   font-size: 0.9rem;
-  color: #333;
+  color: var(--color-text-main);
   transition: all 0.3s ease;
 }
 
@@ -90,16 +72,8 @@
 }
 
 .task-actions {
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px solid #e0e0e0;
+  padding: 0 0 0 1rem;
 }
-
-.full-width {
-  width: 100%;
-  margin-bottom: 1rem;
-}
-
 .no-selection {
   text-align: center;
   color: #999;
@@ -107,29 +81,11 @@
   margin-top: 2rem;
 }
 
-mat-form-field {
-  display: block;
-}
-
-/* Override Material styles for subtasks list */
-::ng-deep .subtasks-list .mat-mdc-list-item {
-  padding: 8px 16px !important;
-  min-height: auto !important;
-}
-
-::ng-deep .subtasks-list .mat-mdc-list-item-content {
-  padding: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-/* Progress bar styling */
-::ng-deep .main-progress-bar {
-  --mdc-linear-progress-active-indicator-color: #2196f3;
-  --mdc-linear-progress-track-color: #e3f2fd;
-}
-
-::ng-deep .mat-mdc-progress-bar {
-  --mdc-linear-progress-active-indicator-color: #4caf50;
-  --mdc-linear-progress-track-color: #e0e0e0;
+.task-title-input{
+  padding: 0;
+  outline:none;
+  background:transparent;
+  width:100%;
+  margin-bottom:1rem;
+  color: var(--color-text-main);
 }

@@ -1,16 +1,22 @@
 <div class="project-list">
-  <h2 class="text-xl font-bold mb-4">Lista de tareas</h2>
-  <ul class="menu bg-base-100 rounded-box w-full">
+  <h3 class="text-lg font-medium mb-4 flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
+    </svg>
+    Lista de tareas
+  </h3>
+  <ul class="menu rounded-box w-full p-0" style="background: transparent;">
     @for (project of projects(); track project.id) {
       <li class="mb-2">
-        <a class="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer transition-colors hover:bg-base-200"
+        <a class="flex flex-col items-start gap-1 py-2 rounded-lg cursor-pointer w-full"
            [class.selected-project]="isProjectSelected(project)"
            (click)="selectProject(project)">
-          <span class="material-symbols-outlined text-lg">list</span>
-          <span class="project-name font-semibold">{{project.name}}</span>
-          <span class="ml-auto text-xs text-gray-500">
+          <p class="flex items-center gap-2">
+            <span class="project-name font-medium text-base">{{project.name}}</span>
+          </p>
+          <p class="project-stats text-xs text-gray-500">
             {{getCompletedTaskCount(project)}} de {{getTaskCount(project)}} tareas completadas
-          </span>
+          </p>
         </a>
         @if (!$last) {
           <div class="divider my-0"></div>

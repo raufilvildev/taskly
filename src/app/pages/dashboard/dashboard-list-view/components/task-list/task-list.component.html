@@ -1,6 +1,6 @@
 <div class="task-list">
   @if (selectedProject()) {
-    <h2>
+    <h2 class="font-medium text-lg ml-2 mt-4 mb-2">
       Tareas activas para {{selectedProject()?.name}}
     </h2>
     <div>
@@ -19,7 +19,6 @@
       }
     </div>
   } @else {
-    <h2>Ninguna lista seleccionada</h2>
     <p class="no-selection">Selecciona una lista para ver las tareas</p>
   }
 </div>
