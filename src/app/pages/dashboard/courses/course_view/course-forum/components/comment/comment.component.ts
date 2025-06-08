@@ -37,6 +37,8 @@ export class CommentComponent {
   @Input() user?: IUser;
   @Input() isEditing = false;
   @Input() isReplying = false;
+  @Input() isCommenting = false;
+
   @Output() toggleEdit = new EventEmitter<void>();
   @Output() submitReply = new EventEmitter<string>();
   @Output() cancelReply = new EventEmitter<void>();

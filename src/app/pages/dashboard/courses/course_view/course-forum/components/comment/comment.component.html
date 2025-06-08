@@ -25,7 +25,7 @@
         #editableParagraph
         class="text text-[0.95rem] p-2 border-b-1 focus:border-b-2 focus:border-custom-accent-dark outline-none"
         [class.border-transparent]="!isReplying && !isEditing"
-        [class.border-custom-muted]="isReplying || isEditing"
+        [class.border-custom-muted]="isReplying || isEditing || isCommenting"
         [attr.contenteditable]="isEditing || isReplying"
       >
         {{ comment?.content }}
@@ -39,7 +39,7 @@
         </button>
       }
 
-      @if (isReplying) {
+      @if (isReplying || isCommenting) {
         <div class="flex gap-2 self-end mt-3">
           <button
             (click)="onSubmitReply()"
