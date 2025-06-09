@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +12,17 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 })
 export class AppComponent {
   title = 'taskly';
+  router = inject(Router);
+  showHeaderAndFooter = true;
+
+  privateRoutes = ['/dashboard'];
+
+  constructor() {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        const url = event.urlAfterRedirects;
+        this.showHeaderAndFooter = !this.privateRoutes.some((route) => url.startsWith(route));
+      });
+  }
 }

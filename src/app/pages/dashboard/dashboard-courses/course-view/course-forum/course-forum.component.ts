@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { AuthorizationService } from '../../../../../services/authorization.service';
 import { UsersService } from '../../../../../services/users.service';
 import { IUser } from '../../../../../interfaces/iuser.interface';
@@ -6,6 +6,7 @@ import { ThreadComponent } from './components/thread/thread.component';
 import { IThread } from '../../../../../interfaces/iforum.interface';
 import { ForumService } from '../../../../../services/forum.service';
 import { ThreadFormComponent } from './components/thread-form/thread-form.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-forum',
@@ -17,6 +18,7 @@ export class CourseForumComponent {
   authorizationService = inject(AuthorizationService);
   usersService = inject(UsersService);
   forumService = inject(ForumService);
+  router = inject(Router);
 
   token = '';
   user!: IUser;

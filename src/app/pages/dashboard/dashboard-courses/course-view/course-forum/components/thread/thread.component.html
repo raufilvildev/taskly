@@ -2,12 +2,12 @@
   <div class="max-w-200 flex flex-col rounded-lg shadow-xl p-5 bg-custom-primary-light">
     <div class="flex flex-col gap-5">
       <div class="p-5 flex flex-col gap-5">
-        <div class="flex">
+        <div class="flex flex-col sm:flex-row">
           <h2 class="flex-1 text text-custom-main text-pretty text-3xl font-bold">
             {{ thread.title }}
           </h2>
           @if (thread.user.uuid === user.uuid) {
-            <div class="flex gap-3">
+            <div class="mt-2 self-center flex gap-3">
               <button
                 class="px-3 py-2 text-sm rounded-lg border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 (click)="showThreadForm = true; type = 'edit'"
