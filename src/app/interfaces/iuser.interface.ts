@@ -10,4 +10,5 @@ export interface IUser {
   img_url?: string;
   email_confirmed?: number;
   role: 'general' | 'student' | 'teacher';
+  notify_by_email?: number;
 }
