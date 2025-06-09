@@ -13,12 +13,12 @@ import { UsersService } from '../../../../../../../services/users.service';
 import { IUser } from '../../../../../../../interfaces/iuser.interface';
 
 @Component({
-  selector: 'app-comment',
+  selector: 'app-response',
   imports: [],
-  templateUrl: './comment.component.html',
-  styleUrl: './comment.component.css',
+  templateUrl: './response.component.html',
+  styleUrl: './response.component.css',
 })
-export class CommentComponent {
+export class ResponseComponent {
   authorizationService = inject(AuthorizationService);
   usersService = inject(UsersService);
 
@@ -26,7 +26,7 @@ export class CommentComponent {
 
   @ViewChild('editableParagraph') editableParagraph?: ElementRef<HTMLParagraphElement>;
 
-  @Input() comment?: {
+  @Input() response?: {
     uuid: string;
     user: { uuid: string; first_name: string; last_name: string; img_url: string; role: string };
     created_at: string;
@@ -101,7 +101,7 @@ export class CommentComponent {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['isEditing']?.currentValue || changes['isReplying']?.currentValue) {
-      this.originalContent = this.comment?.content || '';
+      this.originalContent = this.response?.content || '';
       this.shouldFocus = true; // marcar que hay que hacer foco
     }
 

@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
-import { CommentComponent } from './components/comment/comment.component';
+import { ResponseComponent } from './components/response/response.component';
 import { AuthorizationService } from '../../../../../services/authorization.service';
 import { UsersService } from '../../../../../services/users.service';
 import { IUser } from '../../../../../interfaces/iuser.interface';
+import { ThreadComponent } from './components/thread/thread.component';
 
 @Component({
   selector: 'app-course-forum',
-  imports: [CommentComponent],
+  imports: [ResponseComponent, ThreadComponent],
   templateUrl: './course-forum.component.html',
   styleUrl: './course-forum.component.css',
 })
@@ -25,9 +26,10 @@ export class CourseForumComponent {
     role: 'student',
   };
 
-  comments: {
+  threads: {
     uuid: string;
     user: { uuid: string; first_name: string; last_name: string; img_url: string; role: string };
+    title: string;
     created_at: string;
     updated_at: string;
     content: string;
@@ -59,7 +61,7 @@ export class CourseForumComponent {
     }
   }
   isEditingChildComment(parentUuid: string): boolean {
-    const parent = this.comments.find((child) => child.uuid === parentUuid);
+    const parent = this.threads.find((child) => child.uuid === parentUuid);
     if (!parent) return false;
     return (
       parent.responses.some((response) => response.uuid === this.editingCommentUuid) ||
@@ -114,7 +116,7 @@ export class CourseForumComponent {
       return;
     }
 
-    this.comments = [
+    this.threads = [
       {
         uuid: '0',
         user: {
@@ -124,9 +126,11 @@ export class CourseForumComponent {
           img_url: '',
           role: 'teacher',
         },
+        title: 'Título del thread 1',
         created_at: '07/06/2025 10:54',
         updated_at: '07/06/2025 10:54',
-        content: 'Contenido del comentario',
+        content:
+          'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro tenetur consequuntur ad aspernatur, suscipit id excepturi, ducimus eum reiciendis labore explicabo officiis ab at molestiae facilis perspiciatis beatae corrupti dicta!',
         responses: [
           {
             uuid: '1',
@@ -198,15 +202,17 @@ export class CourseForumComponent {
       {
         uuid: '6',
         user: {
-          uuid: '02',
+          uuid: '01',
           first_name: 'Nombre del usuario',
           last_name: '6',
           img_url: '',
           role: 'teacher',
         },
+        title: 'Título del thread 2',
         created_at: '07/06/2025 10:54',
         updated_at: '07/06/2025 10:54',
-        content: 'Contenido del comentario 6',
+        content:
+          'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro tenetur consequuntur ad aspernatur, suscipit id excepturi, ducimus eum reiciendis labore explicabo officiis ab at molestiae facilis perspiciatis beatae corrupti dicta!',
         responses: [
           {
             uuid: '7',
@@ -276,7 +282,7 @@ export class CourseForumComponent {
         ],
       },
     ];
-    this.showResponses = this.comments.map((comment) => {
+    this.showResponses = this.threads.map((comment) => {
       return { uuid: comment.uuid, show: false };
     });
   }

@@ -1,22 +1,22 @@
 <div class="flex pt-3 p-1 gap-2">
   <img
-    [src]="comment?.user?.img_url"
-    [alt]="'Imagen de perfil de' + comment?.user?.first_name + comment?.user?.last_name"
+    [src]="response?.user?.img_url"
+    [alt]="'Imagen de perfil de' + response?.user?.first_name + response?.user?.last_name"
     class="w-7 h-7 bg-gray-900 rounded-full object-cover object-center"
   />
   <div class="flex flex-col flex-1">
     <div class="flex items-center gap-2">
       <h3
         class="text-sm font-bold truncate"
-        [class.text-custom-text-main]="comment?.user?.role === 'student'"
-        [class.text-custom-accent-dark]="comment?.user?.role === 'teacher'"
+        [class.text-custom-text-main]="response?.user?.role === 'student'"
+        [class.text-custom-accent-dark]="response?.user?.role === 'teacher'"
       >
-        {{ comment?.user?.first_name }} {{ comment?.user?.last_name }}
+        {{ response?.user?.first_name }} {{ response?.user?.last_name }}
       </h3>
       <p class="text-sm text-custom-text-secondary">
-        {{ comment?.updated_at ? '(' + comment?.updated_at + ')' : '' }}
+        {{ response?.updated_at ? '(' + response?.updated_at + ')' : '' }}
       </p>
-      @if (comment?.created_at !== comment?.updated_at) {
+      @if (response?.created_at !== response?.updated_at) {
         <p class="text-[0.5rem] text-custom-text-secondary italic">Editado</p>
       }
     </div>
@@ -28,11 +28,11 @@
         [class.border-custom-muted]="isReplying || isEditing || isCommenting"
         [attr.contenteditable]="isEditing || isReplying"
       >
-        {{ comment?.content }}
+        {{ response?.content }}
       </p>
       @if (isEditing) {
         <button
-          (click)="editComment(comment?.uuid); toggleEdit.emit()"
+          (click)="editComment(response?.uuid); toggleEdit.emit()"
           class="self-end mb-2 w-fit mt-5 px-3 py-1 rounded-lg border-2 border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
         >
           Guardar
@@ -57,7 +57,7 @@
       }
     </div>
   </div>
-  @if (checkCommentOwner(comment?.user?.uuid) && !isReplying) {
+  @if (checkCommentOwner(response?.user?.uuid) && !isReplying) {
     <div class="flex items-start gap-2">
       @if (!isEditing) {
         <div class="w-4 h-4" (click)="toggleEdit.emit()" title="Editar comentario">
@@ -77,7 +77,7 @@
           />
         </div>
       }
-      <div class="w-4 h-4" (click)="removeComment(comment?.uuid)" title="Borrar comentario">
+      <div class="w-4 h-4" (click)="removeComment(response?.uuid)" title="Borrar comentario">
         <img
           src="remove.svg"
           alt="Remove icon"

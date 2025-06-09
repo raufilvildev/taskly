@@ -20,6 +20,7 @@ import { CoursesGridComponent } from './pages/dashboard/dashboard-courses/course
 import { CourseCalendarComponent } from './pages/dashboard/dashboard-courses/course-view/course-calendar/course-calendar.component';
 import { CourseForumComponent } from './pages/dashboard/dashboard-courses/course-view/course-forum/course-forum.component';
 import { CourseTasksComponent } from './pages/dashboard/dashboard-courses/course-view/course-tasks/course-tasks.component';
+import { CourseHomeComponent } from './pages/dashboard/dashboard-courses/course-view/course-home/course-home.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -72,7 +73,8 @@ export const routes: Routes = [
             path: 'view/:course_uuid',
             component: CourseViewComponent,
             children: [
-              { path: '', component: CourseTasksComponent },
+              { path: '', component: CourseHomeComponent },
+              { path: 'tasks', component: CourseTasksComponent },
               { path: 'calendar', component: CourseCalendarComponent },
               { path: 'forum', component: CourseForumComponent },
             ],

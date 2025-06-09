@@ -1,1 +1,56 @@
-<p>thread works!</p>
+<div class="p-10 w-full flex-1 flex flex-col gap-2 bg-custom-background">
+  <div class="max-w-200 flex flex-col rounded-lg shadow-xl p-5 bg-custom-primary-light">
+    <div class="flex flex-col gap-5">
+      <div class="p-5 flex flex-col gap-5">
+        <div class="flex">
+          <h2 class="flex-1 text text-custom-main text-pretty text-3xl font-bold">
+            {{ thread.title }}
+          </h2>
+          @if (thread.user.uuid === uuid) {
+            <div class="flex gap-3">
+              <button
+                class="px-3 py-2 text-sm rounded-lg border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                Editar
+              </button>
+              <button
+                class="px-3 py-2 text-sm rounded-lg border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                Borrar
+              </button>
+            </div>
+          }
+        </div>
+
+        <hr class="border-custom-muted" />
+        <div class="text-pretty text-custom-main pl-5 border-l-5 border-l-custom-muted">
+          {{ thread.content }}
+        </div>
+        <div class="self-end mt-5 p-3 flex gap-5 rounded-lg bg-custom-primary-dark shadow-xl">
+          <img
+            [src]="thread.user.img_url"
+            [alt]="
+              'Imagen de perfil del usuario ' + thread.user.first_name + ' ' + thread.user.last_name
+            "
+            class="w-20 h-20 bg-gray-900 rounded-full"
+          />
+          <div class="flex flex-col gap-1">
+            <h3 class="text-custom-main font-bold">
+              {{ thread.user.first_name }} {{ thread.user.last_name }}
+            </h3>
+            <p class="text-custom-main text-sm">Creado: {{ thread.created_at }}</p>
+            @if (thread.created_at !== thread.updated_at) {
+              <p class="text-sm">Actualizado: {{ thread.updated_at }}</p>
+            }
+          </div>
+        </div>
+      </div>
+      <hr class="border-custom-muted" />
+      <div>
+        @for (response of thread.responses; track response.uuid) {
+          <app-response [response]="response"></app-response>
+        }
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,7 +10,7 @@ import { IMessage } from '../interfaces/imessage.interface';
 type Response = {
   success: string;
   token: string;
-}
+};
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,7 @@ export class UsersService {
   private endpoint = `${environment.host}/user`;
   private httpClient = inject(HttpClient);
 
-  getById(token: string) {
+  getByToken(token: string) {
     return lastValueFrom(
       this.httpClient.get<IUser>(this.endpoint, { headers: { Authorization: token } })
     );

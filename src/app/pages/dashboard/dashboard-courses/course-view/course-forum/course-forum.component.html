@@ -1,8 +1,12 @@
+@for (thread of threads; track thread.uuid) {
+  <app-thread [thread]="thread"></app-thread>
+}
+
 <div class="p-10 w-full flex-1 flex flex-col gap-2 bg-custom-background">
   <div class="max-w-200 flex flex-col rounded-lg shadow-xl p-5 bg-custom-background">
     <div class="flex flex-col">
-      <app-comment
-        [comment]="{
+      <app-response
+        [response]="{
           uuid: '',
           user: {
             uuid: '02',
@@ -17,14 +21,14 @@
         }"
         [user]="user"
         [isCommenting]="true"
-      ></app-comment>
+      ></app-response>
     </div>
   </div>
-  @for (comment of comments; track comment.uuid) {
+  @for (comment of threads; track comment.uuid) {
     <div class="max-w-200 flex flex-col rounded-lg shadow-xl p-5 bg-custom-background">
       <div class="flex flex-col">
-        <app-comment
-          [comment]="{
+        <app-response
+          [response]="{
             uuid: comment.uuid,
             user: comment.user,
             created_at: comment.created_at,
@@ -34,7 +38,7 @@
           [user]="user"
           [isEditing]="editingCommentUuid === comment.uuid"
           (toggleEdit)="activateEdit(comment.uuid)"
-        ></app-comment>
+        ></app-response>
       </div>
       @if (respondingToCommentUuid !== comment.uuid) {
         <a
@@ -46,8 +50,8 @@
       }
       @if (respondingToCommentUuid === comment.uuid) {
         <div class="pl-8 bg-custom-background">
-          <app-comment
-            [comment]="{
+          <app-response
+            [response]="{
               uuid: '',
               user: {
                 uuid: '02',
@@ -64,7 +68,7 @@
             [user]="user"
             (cancelReply)="cancelReply()"
             (submitReply)="submitReply($event)"
-          ></app-comment>
+          ></app-response>
         </div>
       }
 
@@ -78,8 +82,8 @@
       >
         @for (response of comment.responses; track response.uuid) {
           <div class="pl-8 border-t border-custom-muted bg-custom-background">
-            <app-comment
-              [comment]="{
+            <app-response
+              [response]="{
                 uuid: response.uuid,
                 user: response.user,
                 created_at: response.created_at,
@@ -90,7 +94,7 @@
               [user]="user"
               [isEditing]="editingCommentUuid === response.uuid"
               (toggleEdit)="activateEdit(response.uuid)"
-            ></app-comment>
+            ></app-response>
           </div>
         }
       </div>

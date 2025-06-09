@@ -22,7 +22,7 @@ export class CodeConfirmationComponent {
   @Input() type = 'signup';
 
   user?: IUser;
-
+  token = '';
   confirmEmailFormError = '';
   serverError = '';
 
@@ -44,14 +44,14 @@ export class CodeConfirmationComponent {
       return;
     }
 
-    let token = localStorage.getItem('token') as string;
+    let token = this.authorizationService.getToken() as string;
     try {
       const result = await this.authorizationService.checkRandomNumberInput(
         token,
         random_number_input
       );
       token = result.token;
-      localStorage.setItem('token', token);
+      this.authorizationService.setToken(token);
 
       if (this.type === 'signup') {
         this.router.navigate(['dashboard']);
@@ -72,9 +72,7 @@ export class CodeConfirmationComponent {
       this.serverError = constants.generalServerError;
     }
   }
-  async resetRandomNumber() {
-    const token = this.authorizationService.getToken() as string;
-
+  async resetRandomNumber(token: string) {
     this.countdown?.restart();
 
     setTimeout(async () => {
@@ -90,7 +88,7 @@ export class CodeConfirmationComponent {
         token,
         this.type
       );
-      this.resetRandomNumber();
+      this.resetRandomNumber(this.token);
     } catch (errorResponse) {
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
         this.serverError = constants.generalServerError;
@@ -106,6 +104,8 @@ export class CodeConfirmationComponent {
   }
 
   async ngOnInit() {
-    this.resetRandomNumber();
+    this.token = this.authorizationService.getToken() as string;
+    this.resetRandomNumber(this.token);
+    this.user = await this.usersService.getByToken(this.token);
   }
 }
