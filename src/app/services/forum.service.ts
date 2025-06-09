@@ -60,7 +60,7 @@ export class ForumService {
     );
   }
 
-  deleteResponse(token: string, response_uuid: IThread) {
+  deleteResponse(token: string, response_uuid: string) {
     return lastValueFrom(
       this.httpClient.delete<IMessage>(`${this.endpoint}/delete/response/${response_uuid}`, {
         headers: { Authorization: token },

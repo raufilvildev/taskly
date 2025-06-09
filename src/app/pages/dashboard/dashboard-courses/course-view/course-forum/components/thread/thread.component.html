@@ -6,7 +6,7 @@
           <h2 class="flex-1 text text-custom-main text-pretty text-3xl font-bold">
             {{ thread.title }}
           </h2>
-          @if (thread.user.uuid === uuid) {
+          @if (thread.user.uuid === user.uuid) {
             <div class="flex gap-3">
               <button
                 class="px-3 py-2 text-sm rounded-lg border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
@@ -30,7 +30,7 @@
         >
           {{ thread.content }}
         </p>
-        <div class="self-end mt-5 p-3 flex gap-5 rounded-lg bg-custom-primary-dark shadow-xl">
+        <div class="self-end mt-5 p-5 flex gap-5 rounded-lg bg-custom-primary-dark shadow-xl">
           <img
             [src]="thread.user.img_url"
             [alt]="
@@ -50,17 +50,21 @@
         </div>
       </div>
       <div class="flex flex-col gap-2">
-        <hr class="border-custom-muted" />
-        @if (!showResponseForm || true) {
+        @if (!showResponseForm) {
           <button
             class="self-end px-3 py-2 mt-2 text-sm rounded-lg border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-            (click)="showResponseForm = !showResponseForm"
+            (click)="updateShowResponseForm(true)"
           >
             Responder
           </button>
         }
         @if (showResponseForm) {
-          <app-response-form [user]="user"></app-response-form>
+          <app-response-form
+            [user]="user"
+            [token]="token"
+            (cancel)="updateShowResponseForm(false)"
+            (create)="updateForum()"
+          ></app-response-form>
           @if (!showResponses) {
             <hr class="border-custom-muted" />
           }
@@ -69,9 +73,18 @@
       <div>
         @if (showResponses) {
           <hr class="border-custom-muted" />
-          <div class="mt-2">
+          <div class="mt-2 flex flex-col gap-4">
             @for (response of thread.responses; track response.uuid) {
-              <app-response [response]="response"></app-response>
+              <app-response
+                [token]="token"
+                [user]="user"
+                [response]="response"
+                (editResponse)="setEditedResponse($event)"
+                (delete)="updateForum()"
+                [editedResponseUuid]="editedResponseUuid"
+                [threadUuid]="thread.uuid"
+                [threadUuidWhereAResponseIsBeingEdited]="threadUuidWhereAResponseIsBeingEdited"
+              ></app-response>
             }
           </div>
         }

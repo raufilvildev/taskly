@@ -1,90 +1,96 @@
 <div class="flex pt-3 p-1 gap-2">
-  <img
-    [src]="response?.user?.img_url"
-    [alt]="'Imagen de perfil de' + response?.user?.first_name + response?.user?.last_name"
-    class="w-7 h-7 bg-gray-900 rounded-full object-cover object-center"
-  />
-  <div class="flex flex-col flex-1">
+  <div class="pt-1">
+    <img
+      [src]="response.user.img_url"
+      [alt]="'Imagen de perfil de' + response.user.first_name + response.user.last_name"
+      class="w-10 h-10 bg-gray-900 rounded-full object-cover object-center"
+    />
+  </div>
+
+  <div class="flex flex-col flex-1 gap-2">
     <div class="flex items-center gap-2">
-      <h3
-        class="text-sm font-bold truncate"
-        [class.text-custom-text-main]="response?.user?.role === 'student'"
-        [class.text-custom-accent-dark]="response?.user?.role === 'teacher'"
-      >
-        {{ response?.user?.first_name }} {{ response?.user?.last_name }}
-      </h3>
-      <p class="text-sm text-custom-text-secondary">
-        {{ response?.updated_at ? '(' + response?.updated_at + ')' : '' }}
-      </p>
-      @if (response?.created_at !== response?.updated_at) {
-        <p class="text-[0.5rem] text-custom-text-secondary italic">Editado</p>
+      <div class="flex-1 flex gap-2">
+        <h3
+          class="text-sm font-bold truncate"
+          [class.text-custom-text-main]="response.user.role === 'student'"
+          [class.text-custom-accent-dark]="response.user.role === 'teacher'"
+        >
+          {{ response.user.first_name }} {{ response.user.last_name }}
+        </h3>
+        <p class="text-sm text-custom-text-secondary">
+          {{ response.updated_at ? '(' + response.updated_at + ')' : '' }}
+        </p>
+        @if (response.created_at !== response.updated_at) {
+          <p class="text-[0.5rem] text-custom-text-secondary italic">Editado</p>
+        }
+      </div>
+      @if (response.user.uuid === user.uuid) {
+        <div class="flex gap-3">
+          <div
+            class="p-2 w-8 h-8 rounded-full hover:bg-custom-background/75 transition-all duration-300 transform hover:scale-110 flex items-center justify-center cursor-pointer"
+          >
+            @if (
+              !showResponseForm ||
+              editedResponseUuid !== response.uuid ||
+              threadUuidWhereAResponseIsBeingEdited !== threadUuid
+            ) {
+              <img
+                src="edit.svg"
+                alt="Editar respuesta"
+                class="w-6 h-6"
+                (click)="updateThread(true, response.uuid)"
+              />
+            }
+            @if (
+              showResponseForm &&
+              editedResponseUuid === response.uuid &&
+              threadUuidWhereAResponseIsBeingEdited === threadUuid
+            ) {
+              <img
+                src="cancel_edit.svg"
+                alt="Cancelar edición de respuesta"
+                class="w-6 h-6"
+                (click)="updateThread(false, response.uuid)"
+              />
+            }
+          </div>
+          <div
+            class="p-2 w-8 h-8 rounded-full hover:bg-custom-background/75 transition-all duration-300 transform hover:scale-110 flex items-center justify-center cursor-pointer"
+          >
+            <img
+              src="remove.svg"
+              alt="Borrar respuesta"
+              class="w-6 h-6"
+              (click)="deleteResponse(response.uuid)"
+            />
+          </div>
+        </div>
       }
     </div>
     <div class="flex flex-col">
-      <p
-        #editableParagraph
-        class="text text-[0.95rem] p-2 border-b-1 focus:border-b-2 focus:border-custom-accent-dark outline-none"
-        [class.border-transparent]="!isReplying && !isEditing"
-        [class.border-custom-muted]="isReplying || isEditing || isCommenting"
-        [attr.contenteditable]="isEditing || isReplying"
-      >
-        {{ response?.content }}
-      </p>
-      @if (isEditing) {
-        <button
-          (click)="editComment(response?.uuid); toggleEdit.emit()"
-          class="self-end mb-2 w-fit mt-5 px-3 py-1 rounded-lg border-2 border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-        >
-          Guardar
-        </button>
+      @if (
+        !showResponseForm ||
+        editedResponseUuid !== response.uuid ||
+        threadUuidWhereAResponseIsBeingEdited !== threadUuid
+      ) {
+        <p class="text-custom-main text-sm">
+          {{ response.content }}
+        </p>
       }
 
-      @if (isReplying || isCommenting) {
-        <div class="flex gap-2 self-end mt-3">
-          <button
-            (click)="onSubmitReply()"
-            class="px-3 py-1 rounded-lg border-2 border-custom-accent text-sm text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg"
-          >
-            Enviar
-          </button>
-          <button
-            (click)="cancelReply.emit()"
-            class="px-3 py-1 text-custom-text-main text-sm rounded-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
-          >
-            Cancelar
-          </button>
-        </div>
+      @if (
+        showResponseForm &&
+        editedResponseUuid === response.uuid &&
+        threadUuidWhereAResponseIsBeingEdited === threadUuid
+      ) {
+        <app-response-form
+          [token]="token"
+          [user]="user"
+          [type]="'edit'"
+          [content]="response.content"
+          (edit)="updateThread(false, response.uuid)"
+        ></app-response-form>
       }
     </div>
   </div>
-  @if (checkCommentOwner(response?.user?.uuid) && !isReplying) {
-    <div class="flex items-start gap-2">
-      @if (!isEditing) {
-        <div class="w-4 h-4" (click)="toggleEdit.emit()" title="Editar comentario">
-          <img
-            src="edit.svg"
-            alt="Edit icon"
-            class="cursor-pointer object-cover object-center transition-all duration-300 transform hover:scale-110 shadow-xl hover:shadow-xl"
-          />
-        </div>
-      }
-      @if (isEditing) {
-        <div class="w-4 h-4" (click)="toggleEdit.emit()" title="Cancelar edición de comentario">
-          <img
-            src="cancel_edit.svg"
-            alt="Cancel edit icon"
-            class="cursor-pointer object-cover object-center transition-all duration-300 transform hover:scale-110 shadow-xl hover:shadow-xl"
-          />
-        </div>
-      }
-      <div class="w-4 h-4" (click)="removeComment(response?.uuid)" title="Borrar comentario">
-        <img
-          src="remove.svg"
-          alt="Remove icon"
-          class="cursor-pointer object-cover object-center transition-all duration-300 transform hover:scale-110 shadow-xl hover:shadow-xl"
-          title="Borrar comentario"
-        />
-      </div>
-    </div>
-  }
 </div>

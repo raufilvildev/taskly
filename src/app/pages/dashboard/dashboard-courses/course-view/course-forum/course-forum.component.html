@@ -1,4 +1,12 @@
-<div class="relative">
+<div class="relative overflow-auto">
+  <div class="fixed top-0 right-0 flex justify-end p-5 pointer-events-auto">
+    <button
+      class="px-3 py-2 text-sm text-black/65 rounded-full border border-custom-accent-dark bg-custom-primary-dark hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 hover:text-white shadow-lg hover:shadow-3xl"
+      (click)="showThreadForm = true"
+    >
+      Crear hilo
+    </button>
+  </div>
   @for (thread of forum; track thread.uuid) {
     <app-thread
       [thread]="thread"
@@ -6,114 +14,31 @@
       [user]="user"
       (update)="updateForum()"
       (delete)="updateForum()"
+      (threadUuid)="threadUuidWhereAResponseIsBeingEdited = $event"
+      [threadUuidWhereAResponseIsBeingEdited]="threadUuidWhereAResponseIsBeingEdited"
     ></app-thread>
   }
-</div>
-
-<div class="p-10 w-full flex-1 flex flex-col gap-2 bg-custom-background">
-  <div class="max-w-200 flex flex-col rounded-lg shadow-xl p-5 bg-custom-background">
-    <div class="flex flex-col">
-      <app-response
-        [response]="{
+  @if (showThreadForm) {
+    <div class="fixed inset-0 bg-black/30 z-50 flex items-center justify-center">
+      <app-thread-form
+        [thread]="{
           uuid: '',
           user: {
-            uuid: '02',
-            first_name: 'Raúl',
-            last_name: 'Filigrana Villalba',
-            img_url: '',
-            role: 'teacher',
+            uuid: user.uuid ? user.uuid : '',
+            first_name: user.first_name,
+            last_name: user.last_name,
+            img_url: user.img_url ? user.img_url : '',
+            role: user.role !== 'general' ? user.role : 'student',
           },
+          title: '',
+          content: '',
           created_at: '',
           updated_at: '',
-          content: '',
+          responses: [],
         }"
-        [user]="user"
-        [isCommenting]="true"
-      ></app-response>
-    </div>
-  </div>
-  @for (comment of forum; track comment.uuid) {
-    <div class="max-w-200 flex flex-col rounded-lg shadow-xl p-5 bg-custom-background">
-      <div class="flex flex-col">
-        <app-response
-          [response]="{
-            uuid: comment.uuid,
-            user: comment.user,
-            created_at: comment.created_at,
-            updated_at: comment.updated_at,
-            content: comment.content,
-          }"
-          [user]="user"
-          [isEditing]="editingCommentUuid === comment.uuid"
-          (toggleEdit)="activateEdit(comment.uuid)"
-        ></app-response>
-      </div>
-      @if (respondingToCommentUuid !== comment.uuid) {
-        <a
-          (click)="startReply(comment.uuid)"
-          class="w-fit mb-1 self-end text-sm text-right text-blue-500 cursor-pointer hover:underline"
-        >
-          Responder
-        </a>
-      }
-      @if (respondingToCommentUuid === comment.uuid) {
-        <div class="pl-8 bg-custom-background">
-          <app-response
-            [response]="{
-              uuid: '',
-              user: {
-                uuid: '02',
-                first_name: 'Raúl',
-                last_name: 'Filigrana Villalba',
-                img_url: '',
-                role: 'teacher',
-              },
-              created_at: '',
-              updated_at: '',
-              content: '',
-            }"
-            [isReplying]="true"
-            [user]="user"
-            (cancelReply)="cancelReply()"
-            (submitReply)="submitReply($event)"
-          ></app-response>
-        </div>
-      }
-
-      <!-- Contenedor de respuestas con transición en altura y margen -->
-      <div
-        class="transition-all duration-500 ease-in-out overflow-hidden"
-        [class.max-h-0]="!shouldShowResponses(comment.uuid)"
-        [class.max-h-screen]="shouldShowResponses(comment.uuid)"
-        [class.opacity-0]="!shouldShowResponses(comment.uuid)"
-        [class.opacity-100]="shouldShowResponses(comment.uuid)"
-      >
-        @for (response of comment.responses; track response.uuid) {
-          <div class="pl-8 border-t border-custom-muted bg-custom-background">
-            <app-response
-              [response]="{
-                uuid: response.uuid,
-                user: response.user,
-                created_at: response.created_at,
-                updated_at: response.updated_at,
-                content: response.content,
-              }"
-              [shouldShowResponses]="shouldShowResponses(comment?.uuid)"
-              [user]="user"
-              [isEditing]="editingCommentUuid === response.uuid"
-              (toggleEdit)="activateEdit(response.uuid)"
-            ></app-response>
-          </div>
-        }
-      </div>
-
-      <!-- Botones siempre visibles, justo debajo del contenedor de respuestas -->
-      <a
-        (click)="changeShowStatus(comment.uuid)"
-        class="mx-auto w-fit mb-1 mt-2 text text-xs text-center text-custom-text-secondary hover:underline cursor-pointer"
-      >
-        {{ shouldShowResponses(comment.uuid) ? 'Ocultar respuestas' : 'Mostrar respuestas' }}
-      </a>
+        [type]="'create'"
+        (cancel)="showThreadForm = false"
+      ></app-thread-form>
     </div>
   }
 </div>

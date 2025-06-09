@@ -1,119 +1,41 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  inject,
-  Input,
-  Output,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { AuthorizationService } from '../../../../../../../services/authorization.service';
 import { UsersService } from '../../../../../../../services/users.service';
 import { IUser } from '../../../../../../../interfaces/iuser.interface';
+import { IResponse } from '../../../../../../../interfaces/iforum.interface';
+import { ResponseFormComponent } from '../response-form/response-form.component';
+import { ForumService } from '../../../../../../../services/forum.service';
 
 @Component({
   selector: 'app-response',
-  imports: [],
+  imports: [ResponseFormComponent],
   templateUrl: './response.component.html',
   styleUrl: './response.component.css',
 })
 export class ResponseComponent {
   authorizationService = inject(AuthorizationService);
   usersService = inject(UsersService);
+  forumService = inject(ForumService);
 
-  private shouldFocus = false;
+  @Input() response!: IResponse;
+  @Input() user!: IUser;
+  @Input() token = '';
+  @Input() editedResponseUuid = '';
+  @Input() threadUuid = '';
+  @Input() threadUuidWhereAResponseIsBeingEdited = '';
 
-  @ViewChild('editableParagraph') editableParagraph?: ElementRef<HTMLParagraphElement>;
+  @Output() editResponse = new EventEmitter<string>();
+  @Output() delete = new EventEmitter<void>();
 
-  @Input() response?: {
-    uuid: string;
-    user: { uuid: string; first_name: string; last_name: string; img_url: string; role: string };
-    created_at: string;
-    updated_at: string;
-    content: string;
-  };
-  @Input() shouldShowResponses = false;
-  @Input() user?: IUser;
-  @Input() isEditing = false;
-  @Input() isReplying = false;
-  @Input() isCommenting = false;
+  showResponseForm = false;
 
-  @Output() toggleEdit = new EventEmitter<void>();
-  @Output() submitReply = new EventEmitter<string>();
-  @Output() cancelReply = new EventEmitter<void>();
-
-  originalContent: string = '';
-
-  checkCommentOwner(uuid: string | undefined) {
-    if (uuid !== this.user?.uuid) return false;
-    return true;
+  updateThread(state: boolean, response_uuid: string | undefined) {
+    this.showResponseForm = state;
+    this.editResponse.emit(response_uuid);
   }
 
-  activateEdit(el: ElementRef | HTMLElement) {
-    setTimeout(() => {
-      let element: HTMLElement;
-      if (el instanceof ElementRef) {
-        element = el.nativeElement;
-      } else {
-        element = el;
-      }
-
-      element.focus();
-
-      if (
-        typeof window.getSelection !== 'undefined' &&
-        typeof document.createRange !== 'undefined'
-      ) {
-        const range = document.createRange();
-        range.selectNodeContents(element);
-        range.collapse(false);
-
-        const sel = window.getSelection();
-        sel?.removeAllRanges();
-        sel?.addRange(range);
-      }
-    }, 0);
-  }
-
-  editComment(uuid: string | undefined) {}
-
-  removeComment(uuid: string | undefined) {}
-
-  restoreOriginalContentIfNeeded() {
-    if (!this.editableParagraph) return;
-
-    const el = this.editableParagraph.nativeElement as HTMLElement;
-    const currentContent = el.innerText.trim();
-
-    if (currentContent !== this.originalContent.trim()) {
-      el.innerText = this.originalContent;
-    }
-  }
-
-  onSubmitReply() {
-    const text = this.editableParagraph?.nativeElement.innerText.trim();
-    if (text) {
-      this.submitReply.emit(text);
-      this.cancelReply.emit();
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['isEditing']?.currentValue || changes['isReplying']?.currentValue) {
-      this.originalContent = this.response?.content || '';
-      this.shouldFocus = true; // marcar que hay que hacer foco
-    }
-
-    if ((!this.isEditing && changes['isEditing']) || (!this.isReplying && changes['isReplying'])) {
-      this.restoreOriginalContentIfNeeded();
-    }
-  }
-
-  ngAfterViewChecked() {
-    if (this.shouldFocus && this.editableParagraph) {
-      this.activateEdit(this.editableParagraph);
-      this.shouldFocus = false; // reset para no repetir foco
-    }
+  async deleteResponse(response_uuid: string | undefined) {
+    await this.forumService.deleteResponse(this.token, response_uuid as string);
+    this.delete.emit();
   }
 }

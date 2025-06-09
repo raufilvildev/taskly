@@ -1,24 +1,28 @@
 <form
   [formGroup]="responseForm"
-  (ngSubmit)="createResponse(responseForm)"
+  (ngSubmit)="onSubmit(type)"
   class="w-full mx-auto p-2 flex flex-col gap-1 rounded-lg"
 >
   <div class="flex gap-4 w-full">
-    <img
-      [src]="user.img_url"
-      [alt]="'Imagen de perfil de' + user.first_name + user.last_name"
-      class="w-7 h-7 bg-gray-900 rounded-full object-cover object-center"
-    />
+    @if (type === 'create') {
+      <img
+        [src]="user.img_url"
+        [alt]="'Imagen de perfil de' + user.first_name + user.last_name"
+        class="w-7 h-7 bg-gray-900 rounded-full object-cover object-center"
+      />
+    }
     <div class="flex flex-col flex-1">
-      <div class="flex items-center gap-2">
-        <h3
-          class="text-sm font-bold truncate"
-          [class.text-custom-text-main]="user.role === 'student'"
-          [class.text-custom-accent-dark]="user.role === 'teacher'"
-        >
-          {{ user.first_name }} {{ user.last_name }}
-        </h3>
-      </div>
+      @if (type === 'create') {
+        <div class="flex items-center gap-2">
+          <h3
+            class="text-sm font-bold truncate"
+            [class.text-custom-text-main]="user.role === 'student'"
+            [class.text-custom-accent-dark]="user.role === 'teacher'"
+          >
+            {{ user.first_name }} {{ user.last_name }}
+          </h3>
+        </div>
+      }
       <fieldset class="flex flex-col gap-2">
         <textarea
           type="text"
@@ -31,17 +35,18 @@
     </div>
   </div>
   <div class="flex justify-end gap-5 mt-3">
-    <button
-      type="button"
-      class="px-4 py-2 text-sm text-custom-text-main rounded-lg border border-custom-accent bg-custom-primary-light hover:bg-custom-accent-dark hover:text-white hover:scale-105 shadow-lg hover:shadow-xl transition-all duration-300 transform"
-      (click)="cancelResponseForm()"
-    >
-      Cancelar
-    </button>
+    @if (type === 'create') {
+      <button
+        type="button"
+        class="px-4 py-2 text-sm text-custom-text-main rounded-lg border border-custom-accent bg-custom-primary-light hover:bg-custom-accent-dark hover:text-white hover:scale-105 shadow-lg hover:shadow-xl transition-all duration-300 transform"
+        (click)="cancelResponseForm()"
+      >
+        Cancelar
+      </button>
+    }
     <button
       type="submit"
       class="w-fit px-4 py-2 rounded-lg border-2 border-custom-accent text-white text-sm bg-custom-accent hover:bg-custom-accent-dark hover:scale-105 shadow-lg hover:shadow-xl transition-all duration-300 transform"
-      (click)="type === 'create' ? createResponse(responseForm) : editResponse(responseForm)"
     >
       {{ type === 'create' ? 'Crear' : 'Guardar' }}
     </button>

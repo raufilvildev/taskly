@@ -1,15 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { ResponseComponent } from './components/response/response.component';
 import { AuthorizationService } from '../../../../../services/authorization.service';
 import { UsersService } from '../../../../../services/users.service';
 import { IUser } from '../../../../../interfaces/iuser.interface';
 import { ThreadComponent } from './components/thread/thread.component';
 import { IThread } from '../../../../../interfaces/iforum.interface';
 import { ForumService } from '../../../../../services/forum.service';
+import { ThreadFormComponent } from './components/thread-form/thread-form.component';
 
 @Component({
   selector: 'app-course-forum',
-  imports: [ResponseComponent, ThreadComponent],
+  imports: [ThreadComponent, ThreadFormComponent],
   templateUrl: './course-forum.component.html',
   styleUrl: './course-forum.component.css',
 })
@@ -19,19 +19,10 @@ export class CourseForumComponent {
   forumService = inject(ForumService);
 
   token = '';
-
-  user: IUser = {
-    uuid: '02',
-    first_name: 'Raúl',
-    last_name: 'Filigrana Villalba',
-    birth_date: '01/08/2000',
-    email: 'raufilvil@gmail.com',
-    img_url: '',
-    username: 'raufilvil',
-    role: 'student',
-  };
-
+  user!: IUser;
   forum: IThread[] = [];
+  showThreadForm = false;
+  threadUuidWhereAResponseIsBeingEdited = '';
 
   async updateForum() {
     this.forum = await this.forumService.getAll(this.token);
@@ -39,68 +30,6 @@ export class CourseForumComponent {
 
   showResponses?: { uuid: string; show: boolean }[];
   showResponseForm = false;
-
-  editingCommentUuid: string | null = null;
-
-  respondingToCommentUuid: string | null = null;
-
-  activateEdit(uuid: string) {
-    // Cancelar respuesta si se está respondiendo
-    this.respondingToCommentUuid = null;
-
-    // Alternar edición
-    if (this.editingCommentUuid === uuid) {
-      this.editingCommentUuid = null;
-    } else {
-      this.editingCommentUuid = uuid;
-    }
-  }
-  isEditingChildComment(parentUuid: string): boolean {
-    const parent = this.forum.find((thread) => thread.uuid === parentUuid);
-    if (!parent) return false;
-    if (!parent.responses) return false;
-    return (
-      parent.responses.some((response) => response.uuid === this.editingCommentUuid) ||
-      parent.uuid === this.editingCommentUuid
-    );
-  }
-
-  changeShowStatus(uuid: string) {
-    if (!this.showResponses) return;
-    const answer = this.showResponses.find((item) => item.uuid === uuid);
-
-    if (answer) {
-      answer.show = !answer.show;
-      if (!answer.show && this.editingCommentUuid && this.isEditingChildComment(uuid)) {
-        this.editingCommentUuid = null;
-      }
-    }
-  }
-
-  shouldShowResponses(uuid: string | undefined) {
-    if (!uuid) return false;
-    if (!this.showResponses) return false;
-    const show: boolean | undefined = this.showResponses.find((item) => item.uuid === uuid)?.show;
-    return !show ? false : true;
-  }
-
-  startReply(uuid: string) {
-    // Cancelar edición si se está editando
-    this.editingCommentUuid = null;
-
-    // Iniciar respuesta
-    this.respondingToCommentUuid = uuid;
-  }
-
-  cancelReply() {
-    this.respondingToCommentUuid = null;
-  }
-
-  submitReply(content: string) {
-    console.log('Respuesta enviada:', content);
-    // Aquí añades la lógica de guardado real
-    this.respondingToCommentUuid = null;
-  }
 
   async ngOnInit() {
     this.token = this.authorizationService.getToken() as string;
@@ -110,6 +39,7 @@ export class CourseForumComponent {
     } catch (error) {
       return;
     }
+
     try {
       await this.updateForum();
     } catch (error) {
@@ -117,11 +47,11 @@ export class CourseForumComponent {
         {
           uuid: '0',
           user: {
-            uuid: '02',
-            first_name: 'Nombre del usuario',
-            last_name: '',
-            img_url: '',
-            role: 'teacher',
+            uuid: this.user.uuid as string,
+            first_name: this.user.first_name,
+            last_name: this.user.last_name,
+            img_url: this.user.img_url as string,
+            role: this.user.role as 'student' | 'teacher',
           },
           title: 'Título del thread 1',
           created_at: '07/06/2025 10:54',
@@ -145,11 +75,11 @@ export class CourseForumComponent {
             {
               uuid: '2',
               user: {
-                uuid: '02',
-                first_name: 'Nombre del usuario',
-                last_name: '2',
-                img_url: '',
-                role: 'teacher',
+                uuid: this.user.uuid as string,
+                first_name: this.user.first_name,
+                last_name: this.user.last_name,
+                img_url: this.user.img_url as string,
+                role: this.user.role as 'student' | 'teacher',
               },
               created_at: '07/06/2025 10:55',
               updated_at: '07/06/2025 10:55',
@@ -184,11 +114,11 @@ export class CourseForumComponent {
             {
               uuid: '5',
               user: {
-                uuid: '05',
-                first_name: 'Nombre del usuario',
-                last_name: '5',
-                img_url: '',
-                role: 'teacher',
+                uuid: this.user.uuid as string,
+                first_name: this.user.first_name,
+                last_name: this.user.last_name,
+                img_url: this.user.img_url as string,
+                role: this.user.role as 'student' | 'teacher',
               },
               created_at: '07/06/2025 10:55',
               updated_at: '07/06/2025 10:55',
@@ -214,11 +144,11 @@ export class CourseForumComponent {
             {
               uuid: '7',
               user: {
-                uuid: '02',
-                first_name: 'Nombre del usuario',
-                last_name: '7',
-                img_url: '',
-                role: 'teacher',
+                uuid: this.user.uuid as string,
+                first_name: this.user.first_name,
+                last_name: this.user.last_name,
+                img_url: this.user.img_url as string,
+                role: this.user.role as 'student' | 'teacher',
               },
               created_at: '07/06/2025 10:55',
               updated_at: '07/06/2025 10:55',

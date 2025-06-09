@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IUser } from '../../../../../../../interfaces/iuser.interface';
+import { ForumService } from '../../../../../../../services/forum.service';
 
 @Component({
   selector: 'app-response-form',
@@ -9,17 +10,50 @@ import { IUser } from '../../../../../../../interfaces/iuser.interface';
   styleUrl: './response-form.component.css',
 })
 export class ResponseFormComponent {
+  forumService = inject(ForumService);
+
+  @Input() user!: IUser;
+  @Input() token: string = '';
+  @Input() type: 'create' | 'edit' = 'create';
+  @Input() content = '';
+
+  @Output() cancel = new EventEmitter<void>();
+  @Output() create = new EventEmitter<void>();
+  @Output() edit = new EventEmitter<void>();
+
   responseForm = new FormGroup({
     content: new FormControl('', Validators.required),
   });
-  @Input() user!: IUser;
 
-  type = 'create';
+  cancelResponseForm() {
+    this.cancel.emit();
+  }
 
-  cancelResponseForm() {}
-  createResponse(responseForm: FormGroup) {}
+  createResponse(responseForm: FormGroup) {
+    const response = responseForm.value;
+    response.user = this.user;
+    this.forumService.createResponse(this.token, response);
+    this.create.emit();
+  }
 
-  editResponse(responseForm: FormGroup) {}
+  editResponse(responseForm: FormGroup) {
+    const response = responseForm.value;
+    response.user = this.user;
+    this.forumService.editResponse(this.token, response);
+    this.edit.emit();
+  }
 
-  deleteResponse(responseForm: FormGroup) {}
+  onSubmit(type: string) {
+    if (this.type === 'create') {
+      this.createResponse(this.responseForm);
+    } else {
+      this.editResponse(this.responseForm);
+    }
+  }
+
+  ngOnInit() {
+    this.responseForm = new FormGroup({
+      content: new FormControl(this.content, Validators.required),
+    });
+  }
 }
