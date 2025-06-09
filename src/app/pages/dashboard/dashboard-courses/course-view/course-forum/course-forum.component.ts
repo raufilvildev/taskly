@@ -4,6 +4,8 @@ import { AuthorizationService } from '../../../../../services/authorization.serv
 import { UsersService } from '../../../../../services/users.service';
 import { IUser } from '../../../../../interfaces/iuser.interface';
 import { ThreadComponent } from './components/thread/thread.component';
+import { IThread } from '../../../../../interfaces/iforum.interface';
+import { ForumService } from '../../../../../services/forum.service';
 
 @Component({
   selector: 'app-course-forum',
@@ -14,6 +16,9 @@ import { ThreadComponent } from './components/thread/thread.component';
 export class CourseForumComponent {
   authorizationService = inject(AuthorizationService);
   usersService = inject(UsersService);
+  forumService = inject(ForumService);
+
+  token = '';
 
   user: IUser = {
     uuid: '02',
@@ -26,21 +31,11 @@ export class CourseForumComponent {
     role: 'student',
   };
 
-  threads: {
-    uuid: string;
-    user: { uuid: string; first_name: string; last_name: string; img_url: string; role: string };
-    title: string;
-    created_at: string;
-    updated_at: string;
-    content: string;
-    responses: {
-      uuid: string;
-      user: { uuid: string; first_name: string; last_name: string; img_url: string; role: string };
-      created_at: string;
-      updated_at: string;
-      content: string;
-    }[];
-  }[] = [];
+  forum: IThread[] = [];
+
+  async updateForum() {
+    this.forum = await this.forumService.getAll(this.token);
+  }
 
   showResponses?: { uuid: string; show: boolean }[];
   showResponseForm = false;
@@ -61,8 +56,9 @@ export class CourseForumComponent {
     }
   }
   isEditingChildComment(parentUuid: string): boolean {
-    const parent = this.threads.find((child) => child.uuid === parentUuid);
+    const parent = this.forum.find((thread) => thread.uuid === parentUuid);
     if (!parent) return false;
+    if (!parent.responses) return false;
     return (
       parent.responses.some((response) => response.uuid === this.editingCommentUuid) ||
       parent.uuid === this.editingCommentUuid
@@ -107,183 +103,186 @@ export class CourseForumComponent {
   }
 
   async ngOnInit() {
-    try {
-      const token = this.authorizationService.getToken();
+    this.token = this.authorizationService.getToken() as string;
 
-      if (!token) return;
-      //this.user = await this.usersService.getById(token);
+    try {
+      this.user = await this.usersService.getByToken(this.token);
     } catch (error) {
       return;
     }
+    try {
+      await this.updateForum();
+    } catch (error) {
+      this.forum = [
+        {
+          uuid: '0',
+          user: {
+            uuid: '02',
+            first_name: 'Nombre del usuario',
+            last_name: '',
+            img_url: '',
+            role: 'teacher',
+          },
+          title: 'Título del thread 1',
+          created_at: '07/06/2025 10:54',
+          updated_at: '07/06/2025 10:54',
+          content:
+            'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro tenetur consequuntur ad aspernatur, suscipit id excepturi, ducimus eum reiciendis labore explicabo officiis ab at molestiae facilis perspiciatis beatae corrupti dicta!',
+          responses: [
+            {
+              uuid: '1',
+              user: {
+                uuid: '01',
+                first_name: 'Nombre del usuario',
+                last_name: '1',
+                img_url: '',
+                role: 'student',
+              },
+              created_at: '07/06/2025 10:55',
+              updated_at: '07/06/2025 10:55',
+              content: 'Contenido de la respuesta 1',
+            },
+            {
+              uuid: '2',
+              user: {
+                uuid: '02',
+                first_name: 'Nombre del usuario',
+                last_name: '2',
+                img_url: '',
+                role: 'teacher',
+              },
+              created_at: '07/06/2025 10:55',
+              updated_at: '07/06/2025 10:55',
+              content: 'Contenido de la respuesta 2',
+            },
+            {
+              uuid: '3',
+              user: {
+                uuid: '03',
+                first_name: 'Nombre del usuario',
+                last_name: '3',
+                img_url: '',
+                role: 'student',
+              },
+              created_at: '07/06/2025 10:55',
+              updated_at: '07/06/2025 10:55',
+              content: 'Contenido de la respuesta 3',
+            },
+            {
+              uuid: '4',
+              user: {
+                uuid: '04',
+                first_name: 'Nombre del usuario',
+                last_name: '4',
+                img_url: '',
+                role: 'student',
+              },
+              created_at: '07/06/2025 10:55',
+              updated_at: '07/06/2025 10:55',
+              content: 'Contenido de la respuesta 4',
+            },
+            {
+              uuid: '5',
+              user: {
+                uuid: '05',
+                first_name: 'Nombre del usuario',
+                last_name: '5',
+                img_url: '',
+                role: 'teacher',
+              },
+              created_at: '07/06/2025 10:55',
+              updated_at: '07/06/2025 10:55',
+              content: 'Contenido de la respuesta 5',
+            },
+          ],
+        },
+        {
+          uuid: '6',
+          user: {
+            uuid: '01',
+            first_name: 'Nombre del usuario',
+            last_name: '6',
+            img_url: '',
+            role: 'teacher',
+          },
+          title: 'Título del thread 2',
+          created_at: '07/06/2025 10:54',
+          updated_at: '07/06/2025 10:54',
+          content:
+            'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro tenetur consequuntur ad aspernatur, suscipit id excepturi, ducimus eum reiciendis labore explicabo officiis ab at molestiae facilis perspiciatis beatae corrupti dicta!',
+          responses: [
+            {
+              uuid: '7',
+              user: {
+                uuid: '02',
+                first_name: 'Nombre del usuario',
+                last_name: '7',
+                img_url: '',
+                role: 'teacher',
+              },
+              created_at: '07/06/2025 10:55',
+              updated_at: '07/06/2025 10:55',
+              content: 'Contenido de la respuesta 7',
+            },
+            {
+              uuid: '8',
+              user: {
+                uuid: '68',
+                first_name: 'Nombre del usuario',
+                last_name: '8',
+                img_url: '',
+                role: 'student',
+              },
+              created_at: '07/06/2025 10:55',
+              updated_at: '07/06/2025 10:55',
+              content: 'Contenido de la respuesta 8',
+            },
+            {
+              uuid: '9',
+              user: {
+                uuid: '69',
+                first_name: 'Nombre del usuario',
+                last_name: '9',
+                img_url: '',
+                role: 'student',
+              },
+              created_at: '07/06/2025 10:55',
+              updated_at: '07/06/2025 10:55',
+              content: 'Contenido de la respuesta 9',
+            },
+            {
+              uuid: '10',
+              user: {
+                uuid: '610',
+                first_name: 'Nombre del usuario',
+                last_name: '10',
+                img_url: '',
+                role: 'student',
+              },
+              created_at: '07/06/2025 10:55',
+              updated_at: '07/06/2025 10:55',
+              content: 'Contenido de la respuesta 10',
+            },
+            {
+              uuid: '12',
+              user: {
+                uuid: '612',
+                first_name: 'Nombre del usuario',
+                last_name: '11',
+                img_url: '',
+                role: 'student',
+              },
+              created_at: '07/06/2025 10:55',
+              updated_at: '07/06/2025 10:55',
+              content: 'Contenido de la respuesta 11',
+            },
+          ],
+        },
+      ];
+    }
 
-    this.threads = [
-      {
-        uuid: '0',
-        user: {
-          uuid: '02',
-          first_name: 'Nombre del usuario',
-          last_name: '',
-          img_url: '',
-          role: 'teacher',
-        },
-        title: 'Título del thread 1',
-        created_at: '07/06/2025 10:54',
-        updated_at: '07/06/2025 10:54',
-        content:
-          'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro tenetur consequuntur ad aspernatur, suscipit id excepturi, ducimus eum reiciendis labore explicabo officiis ab at molestiae facilis perspiciatis beatae corrupti dicta!',
-        responses: [
-          {
-            uuid: '1',
-            user: {
-              uuid: '01',
-              first_name: 'Nombre del usuario',
-              last_name: '1',
-              img_url: '',
-              role: 'student',
-            },
-            created_at: '07/06/2025 10:55',
-            updated_at: '07/06/2025 10:55',
-            content: 'Contenido de la respuesta 1',
-          },
-          {
-            uuid: '2',
-            user: {
-              uuid: '02',
-              first_name: 'Nombre del usuario',
-              last_name: '2',
-              img_url: '',
-              role: 'teacher',
-            },
-            created_at: '07/06/2025 10:55',
-            updated_at: '07/06/2025 10:55',
-            content: 'Contenido de la respuesta 2',
-          },
-          {
-            uuid: '3',
-            user: {
-              uuid: '03',
-              first_name: 'Nombre del usuario',
-              last_name: '3',
-              img_url: '',
-              role: 'student',
-            },
-            created_at: '07/06/2025 10:55',
-            updated_at: '07/06/2025 10:55',
-            content: 'Contenido de la respuesta 3',
-          },
-          {
-            uuid: '4',
-            user: {
-              uuid: '04',
-              first_name: 'Nombre del usuario',
-              last_name: '4',
-              img_url: '',
-              role: 'student',
-            },
-            created_at: '07/06/2025 10:55',
-            updated_at: '07/06/2025 10:55',
-            content: 'Contenido de la respuesta 4',
-          },
-          {
-            uuid: '5',
-            user: {
-              uuid: '05',
-              first_name: 'Nombre del usuario',
-              last_name: '5',
-              img_url: '',
-              role: 'teacher',
-            },
-            created_at: '07/06/2025 10:55',
-            updated_at: '07/06/2025 10:55',
-            content: 'Contenido de la respuesta 5',
-          },
-        ],
-      },
-      {
-        uuid: '6',
-        user: {
-          uuid: '01',
-          first_name: 'Nombre del usuario',
-          last_name: '6',
-          img_url: '',
-          role: 'teacher',
-        },
-        title: 'Título del thread 2',
-        created_at: '07/06/2025 10:54',
-        updated_at: '07/06/2025 10:54',
-        content:
-          'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro tenetur consequuntur ad aspernatur, suscipit id excepturi, ducimus eum reiciendis labore explicabo officiis ab at molestiae facilis perspiciatis beatae corrupti dicta!',
-        responses: [
-          {
-            uuid: '7',
-            user: {
-              uuid: '02',
-              first_name: 'Nombre del usuario',
-              last_name: '7',
-              img_url: '',
-              role: 'teacher',
-            },
-            created_at: '07/06/2025 10:55',
-            updated_at: '07/06/2025 10:55',
-            content: 'Contenido de la respuesta 7',
-          },
-          {
-            uuid: '8',
-            user: {
-              uuid: '68',
-              first_name: 'Nombre del usuario',
-              last_name: '8',
-              img_url: '',
-              role: 'student',
-            },
-            created_at: '07/06/2025 10:55',
-            updated_at: '07/06/2025 10:55',
-            content: 'Contenido de la respuesta 8',
-          },
-          {
-            uuid: '9',
-            user: {
-              uuid: '69',
-              first_name: 'Nombre del usuario',
-              last_name: '9',
-              img_url: '',
-              role: 'student',
-            },
-            created_at: '07/06/2025 10:55',
-            updated_at: '07/06/2025 10:55',
-            content: 'Contenido de la respuesta 9',
-          },
-          {
-            uuid: '10',
-            user: {
-              uuid: '610',
-              first_name: 'Nombre del usuario',
-              last_name: '10',
-              img_url: '',
-              role: 'student',
-            },
-            created_at: '07/06/2025 10:55',
-            updated_at: '07/06/2025 10:55',
-            content: 'Contenido de la respuesta 10',
-          },
-          {
-            uuid: '12',
-            user: {
-              uuid: '612',
-              first_name: 'Nombre del usuario',
-              last_name: '11',
-              img_url: '',
-              role: 'student',
-            },
-            created_at: '07/06/2025 10:55',
-            updated_at: '07/06/2025 10:55',
-            content: 'Contenido de la respuesta 11',
-          },
-        ],
-      },
-    ];
-    this.showResponses = this.threads.map((comment) => {
-      return { uuid: comment.uuid, show: false };
+    this.showResponses = this.forum.map((thread) => {
+      return { uuid: thread.uuid, show: false };
     });
   }
 }

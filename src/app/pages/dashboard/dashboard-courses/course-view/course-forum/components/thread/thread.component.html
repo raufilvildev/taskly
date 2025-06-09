@@ -10,11 +10,13 @@
             <div class="flex gap-3">
               <button
                 class="px-3 py-2 text-sm rounded-lg border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                (click)="showThreadForm = true; type = 'edit'"
               >
                 Editar
               </button>
               <button
-                class="px-3 py-2 text-sm rounded-lg border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                class="px-3 py-2 text-sm text-custom-text-main rounded-lg border border-custom-accent bg-custom-primary-light hover:bg-custom-accent-dark hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                (click)="deleteThread(thread.uuid)"
               >
                 Borrar
               </button>
@@ -23,9 +25,11 @@
         </div>
 
         <hr class="border-custom-muted" />
-        <div class="text-pretty text-custom-main pl-5 border-l-5 border-l-custom-muted">
+        <p
+          class="whitespace-pre-line text-custom-main text-pretty text-custom-main pl-5 border-l-5 border-l-custom-muted"
+        >
           {{ thread.content }}
-        </div>
+        </p>
         <div class="self-end mt-5 p-3 flex gap-5 rounded-lg bg-custom-primary-dark shadow-xl">
           <img
             [src]="thread.user.img_url"
@@ -45,12 +49,49 @@
           </div>
         </div>
       </div>
-      <hr class="border-custom-muted" />
-      <div>
-        @for (response of thread.responses; track response.uuid) {
-          <app-response [response]="response"></app-response>
+      <div class="flex flex-col gap-2">
+        <hr class="border-custom-muted" />
+        @if (!showResponseForm || true) {
+          <button
+            class="self-end px-3 py-2 mt-2 text-sm rounded-lg border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            (click)="showResponseForm = !showResponseForm"
+          >
+            Responder
+          </button>
         }
+        @if (showResponseForm) {
+          <app-response-form [user]="user"></app-response-form>
+          @if (!showResponses) {
+            <hr class="border-custom-muted" />
+          }
+        }
+      </div>
+      <div>
+        @if (showResponses) {
+          <hr class="border-custom-muted" />
+          <div class="mt-2">
+            @for (response of thread.responses; track response.uuid) {
+              <app-response [response]="response"></app-response>
+            }
+          </div>
+        }
+        <p
+          class="text-sm text-center text-custom-accent-dark hover:underline cursor-pointer"
+          (click)="showResponses = !showResponses"
+        >
+          {{ showResponses ? 'Ocultar respuestas' : 'Mostrar respuestas' }}
+        </p>
       </div>
     </div>
   </div>
 </div>
+@if (showThreadForm) {
+  <div class="fixed inset-0 bg-black/30 z-50 flex items-center justify-center">
+    <app-thread-form
+      [thread]="thread"
+      [type]="type"
+      (cancel)="updateForum()"
+      (save)="updateForum()"
+    ></app-thread-form>
+  </div>
+}

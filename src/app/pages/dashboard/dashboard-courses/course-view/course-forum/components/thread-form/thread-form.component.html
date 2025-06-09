@@ -1,0 +1,45 @@
+<form
+  [formGroup]="threadForm"
+  (ngSubmit)="createThread(threadForm)"
+  class="w-250 mx-auto p-10 flex flex-col gap-5 bg-custom-panel max-w-125 lg:max-w-200 rounded-lg shadow-sm shadow-custom-accent-dark"
+>
+  <div class="flex flex-col gap-4 w-full">
+    <fieldset class="flex flex-col gap-2">
+      <label for="title" class="text-base font-bold">Título</label>
+      <input
+        type="text"
+        formControlName="title"
+        id="title"
+        class="px-4 py-2 mt-2 bg-custom-background border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+        [value]="thread.title"
+      />
+    </fieldset>
+    <fieldset class="flex flex-col gap-2">
+      <label for="content" class="text-base font-bold">Contenido</label>
+      <textarea
+        type="text"
+        formControlName="content"
+        id="content"
+        class="resize-none px-4 py-2 mt-2 bg-custom-background border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+        [value]="thread.content"
+        rows="15"
+      ></textarea>
+    </fieldset>
+  </div>
+  <div class="flex flex justify-center gap-5">
+    <button
+      type="button"
+      class="w-fit mt-5 px-4 py-2 rounded-lg border-2 border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+      (click)="cancelThreadForm()"
+    >
+      Cancelar
+    </button>
+    <button
+      type="submit"
+      class="w-fit mt-5 px-4 py-2 rounded-lg border-2 border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+      (click)="type === 'create' ? createThread(threadForm) : editThread(threadForm)"
+    >
+      {{ type === 'create' ? 'Crear' : 'Guardar' }}
+    </button>
+  </div>
+</form>

@@ -1,6 +1,14 @@
-@for (thread of threads; track thread.uuid) {
-  <app-thread [thread]="thread"></app-thread>
-}
+<div class="relative">
+  @for (thread of forum; track thread.uuid) {
+    <app-thread
+      [thread]="thread"
+      [token]="token"
+      [user]="user"
+      (update)="updateForum()"
+      (delete)="updateForum()"
+    ></app-thread>
+  }
+</div>
 
 <div class="p-10 w-full flex-1 flex flex-col gap-2 bg-custom-background">
   <div class="max-w-200 flex flex-col rounded-lg shadow-xl p-5 bg-custom-background">
@@ -24,7 +32,7 @@
       ></app-response>
     </div>
   </div>
-  @for (comment of threads; track comment.uuid) {
+  @for (comment of forum; track comment.uuid) {
     <div class="max-w-200 flex flex-col rounded-lg shadow-xl p-5 bg-custom-background">
       <div class="flex flex-col">
         <app-response
