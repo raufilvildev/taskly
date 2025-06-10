@@ -13,8 +13,10 @@ export class LoginFormComponent {
   
   userService = inject(UsersService)
   router = inject(Router)
+
   
   async getLogin(form:any) {
+    console.log(form.value)
     try {
       let response = await this.userService.login(form.value);
       if (response.success) {
