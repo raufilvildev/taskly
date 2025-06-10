@@ -11,11 +11,13 @@
     <app-thread
       [thread]="thread"
       [token]="token"
+      [threadUuidWhereAResponseIsBeingCreated]="threadUuidWhereAResponseIsBeingCreated"
+      [threadUuidWhereAResponseIsBeingEdited]="threadUuidWhereAResponseIsBeingEdited"
       [user]="user"
       (update)="updateForum()"
       (delete)="updateForum()"
-      (threadUuid)="threadUuidWhereAResponseIsBeingEdited = $event"
-      [threadUuidWhereAResponseIsBeingEdited]="threadUuidWhereAResponseIsBeingEdited"
+      (answeredThread)="onThreadAnswered($event)"
+      (editedThread)="onThreadEdited($event)"
     ></app-thread>
   }
   @if (showThreadForm) {

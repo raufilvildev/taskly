@@ -18,28 +18,33 @@ export class ThreadComponent {
   @Input() thread!: IThread;
   @Input() token = '';
   @Input() user!: IUser;
-  @Input() threadUuidWhereAResponseIsBeingEdited: string = '';
-
+  @Input() threadUuidWhereAResponseIsBeingEdited = '';
+  @Input() threadUuidWhereAResponseIsBeingCreated = '';
   @Output() update = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
-  @Output() threadUuid = new EventEmitter<string>();
+  @Output() editedThread = new EventEmitter<string>();
+  @Output() answeredThread = new EventEmitter<string>();
 
   showThreadForm = false;
   showResponses = false;
   showResponseForm = false;
   editedResponseUuid = '';
 
-  uuid = '02';
   type: 'create' | 'edit' = 'create';
 
   setEditedResponse(event: string) {
     this.editedResponseUuid = event;
-    this.threadUuid.emit(this.thread.uuid);
+    this.editedThread.emit(this.thread.uuid);
+  }
+
+  setAnsweredThread() {
+    this.updateShowResponseForm(true);
+    this.answeredThread.emit(this.thread.uuid);
   }
 
   updateForum() {
     this.showThreadForm = false;
-    this.update.emit(); // Actualizo el foro
+    this.update.emit();
   }
 
   updateShowResponseForm(state: boolean) {

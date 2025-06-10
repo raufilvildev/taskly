@@ -17,6 +17,11 @@ export class AppComponent {
 
   privateRoutes = ['/dashboard'];
 
+  /*
+  Esta función captura la ruta en la que nos encontramos actualmente. 
+  Si la ruta actual contiene dashboard (privateRoutes), ocultaremos 
+  tanto header como footer (showHeaderAndFooter = false)
+  */
   constructor() {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))

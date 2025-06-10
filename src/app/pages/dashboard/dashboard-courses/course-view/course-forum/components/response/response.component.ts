@@ -31,7 +31,7 @@ export class ResponseComponent {
 
   updateThread(state: boolean, response_uuid: string | undefined) {
     this.showResponseForm = state;
-    this.editResponse.emit(response_uuid);
+    this.editResponse.emit(state ? response_uuid : '');
   }
 
   async deleteResponse(response_uuid: string | undefined) {

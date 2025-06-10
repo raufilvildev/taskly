@@ -25,13 +25,21 @@ export class CourseForumComponent {
   forum: IThread[] = [];
   showThreadForm = false;
   threadUuidWhereAResponseIsBeingEdited = '';
+  threadUuidWhereAResponseIsBeingCreated = '';
 
   async updateForum() {
     this.forum = await this.forumService.getAll(this.token);
   }
 
-  showResponses?: { uuid: string; show: boolean }[];
-  showResponseForm = false;
+  onThreadAnswered(event: string) {
+    this.threadUuidWhereAResponseIsBeingCreated = event;
+    this.threadUuidWhereAResponseIsBeingEdited = '';
+  }
+
+  onThreadEdited(event: string) {
+    this.threadUuidWhereAResponseIsBeingEdited = event;
+    this.threadUuidWhereAResponseIsBeingCreated = '';
+  }
 
   async ngOnInit() {
     this.token = this.authorizationService.getToken() as string;
@@ -212,9 +220,5 @@ export class CourseForumComponent {
         },
       ];
     }
-
-    this.showResponses = this.forum.map((thread) => {
-      return { uuid: thread.uuid, show: false };
-    });
   }
 }
