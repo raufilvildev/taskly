@@ -15,19 +15,16 @@ import { HttpErrorResponse } from "@angular/common/http";
   styleUrls: ['./dashboard-settings.component.css'],
 })
 export class DashboardSettingsComponent implements OnInit, OnDestroy {
-  // Inyectamos los servicios que usaremos
   private usersService = inject(UsersService);
   private authorizationService = inject(AuthorizationService);
   private router = inject(Router);
 
-  // Mensajes para mostrar al usuario
   serverError = '';
   serverSuccess = '';
 
-  // Control independiente para las notificaciones
   receiveNotificationsControl = new FormControl<boolean>(false);
 
-  // Suscripciones para limpiar luego
+
   private subscriptions = new Subscription();
 
   userSettingsForm = new FormGroup({
