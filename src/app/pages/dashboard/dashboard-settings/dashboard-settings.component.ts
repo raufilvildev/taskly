@@ -1,41 +1,37 @@
-import { Component, inject } from '@angular/core';
-import {
-  ReactiveFormsModule,
-  FormGroup,
-  FormControl,
-  Validators,
-  ValidationErrors,
-  FormsModule,
-} from '@angular/forms';
-import { UsersService } from '../../../services/users.service';
-import type { IUser } from '../../../interfaces/iuser.interface';
-import { Router } from '@angular/router';
-import { AuthorizationService } from '../../../services/authorization.service';
-import { passwordsMatchValidator } from '../../../validators/passwords_match.validator';
-import { HttpErrorResponse } from '@angular/common/http';
-import { constants } from '../../../shared/utils/constants/constants.config';
-import { NgIf } from '@angular/common';
-import { Subscription } from 'rxjs';
+import { Component, inject, OnDestroy, OnInit } from "@angular/core";
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from "@angular/forms";
+import { Subscription } from "rxjs";
+import { UsersService } from "../../../services/users.service";
+import { AuthorizationService } from "../../../services/authorization.service";
+import { Router } from "@angular/router";
+import { IUser } from "../../../interfaces/iuser.interface";
+import { constants } from "../../../shared/utils/constants/constants.config";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: 'app-dashboard-settings',
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './dashboard-settings.component.html',
-  styleUrl: './dashboard-settings.component.css'
+  styleUrls: ['./dashboard-settings.component.css'],
 })
-export class DashboardSettingsComponent {
-  usersService = inject(UsersService);
-  authorizationService = inject(AuthorizationService);
-  router = inject(Router);
+export class DashboardSettingsComponent implements OnInit, OnDestroy {
+  // Inyectamos los servicios que usaremos
+  private usersService = inject(UsersService);
+  private authorizationService = inject(AuthorizationService);
+  private router = inject(Router);
 
-  serverError: string = '';
-  serverSuccess: string = '';
+  // Mensajes para mostrar al usuario
+  serverError = '';
+  serverSuccess = '';
+
+  // Control independiente para las notificaciones
   receiveNotificationsControl = new FormControl<boolean>(false);
 
+  // Suscripciones para limpiar luego
+  private subscriptions = new Subscription();
 
-   userSettingsForm = new FormGroup({
+  userSettingsForm = new FormGroup({
     first_name: new FormControl('', [
-
       Validators.minLength(2),
       Validators.maxLength(100),
     ]),
@@ -44,16 +40,13 @@ export class DashboardSettingsComponent {
       Validators.maxLength(100),
     ]),
     birth_date: new FormControl(''),
-
     username: new FormControl('', [
       Validators.minLength(2),
       Validators.maxLength(100),
-    ])
-
+    ]),
   });
-  private subscriptions = new Subscription();
 
-  getValidationStyleClasses(control_name: string, errors: string[]) {
+    getValidationStyleClasses(control_name: string, errors: string[]) {
     if (
       ![
         'first_name',
@@ -63,7 +56,7 @@ export class DashboardSettingsComponent {
       ].includes(control_name) ||
       errors.some(
         (error) =>
-          !['minlength', 'maxlength', 'pattern'].includes(
+          !['minlength', 'maxlength'].includes(
             error
           )
       )
@@ -91,7 +84,7 @@ export class DashboardSettingsComponent {
     };
   }
 
-   getErrors(control_name: string) {
+  getErrors(control_name: string) {
     const errors: string[] = [];
 
     for (const error in constants.messages) {
@@ -106,13 +99,10 @@ export class DashboardSettingsComponent {
     return errors;
   }
 
-  
 
- ngOnInit(): void {
+  ngOnInit(): void {
     this.loadUserSettings();
 
-    // Se suscribe a los cambios en el control de notificaciones.
-    // Cuando el usuario cambia la preferencia de notificaciones, se guarda automáticamente.
     this.subscriptions.add(
       this.receiveNotificationsControl.valueChanges.subscribe((value) => {
         this.saveNotificationPreference(value ?? false);
@@ -121,80 +111,53 @@ export class DashboardSettingsComponent {
   }
 
   ngOnDestroy(): void {
-    // Limpia la suscripción para evitar fugas de memoria.
-    if (this.subscriptions) {
-      this.subscriptions.unsubscribe();
-    }
+    this.subscriptions.unsubscribe();
   }
-
+  
 
   async loadUserSettings(): Promise<void> {
     try {
-      const user: IUser = await this.usersService.getUserSettings();
+      const user = await this.usersService.getUserSettings();
 
-      // Manejo de 'birth_date': Se convierte el valor a formato 'YYYY-MM-DD'
+      const birthDateFormatted = user.birth_date
+        ? typeof user.birth_date === 'string'
+          ? user.birth_date.split('T')[0]
+          : user.birth_date instanceof Date
+          ? user.birth_date.toISOString().split('T')[0]
+          : ''
+        : '';
+
+      
       this.userSettingsForm.patchValue({
         first_name: user.first_name,
         last_name: user.last_name,
-        birth_date: user.birth_date
-          ? typeof user.birth_date === 'string'
-            ? user.birth_date.split('T')[0] // 
-            : user.birth_date instanceof Date
-            ? user.birth_date.toISOString().split('T')[0]
-            : null
-          : null, 
+        birth_date: birthDateFormatted,
         username: user.username,
       });
 
-      // Establece el estado inicial del control de notificaciones.
       if (user.notify_by_email !== undefined && user.notify_by_email !== null) {
         this.receiveNotificationsControl.setValue(!!user.notify_by_email, {
           emitEvent: false,
         });
       }
 
-      this.serverSuccess = 'Datos del perfil cargados correctamente.';
-      
-      setTimeout(() => (this.serverSuccess = ''), constants.displayMessageTime || 3000);
+      this.showSuccess('Datos del perfil cargados correctamente.');
     } catch (error) {
-      console.error('Error al cargar los ajustes del usuario:', error);
-      if (error instanceof HttpErrorResponse) {
-        this.serverError = error.error?.message || constants.generalServerError;
-      } else {
-        this.serverError = constants.generalServerError;
-      }
-
-      // Manejo de errores
-      if (
-        error instanceof HttpErrorResponse &&
-        (error.status === 401 || error.status === 403)
-      ) {
-        this.authorizationService.removeToken();
-        this.router.navigate(['/login']);
-      }
+      this.handleError(error, 'Error al cargar los ajustes del usuario.');
     }
   }
 
- 
   async saveNotificationPreference(enabled: boolean): Promise<void> {
     try {
       await this.usersService.saveNotificationPreference(enabled);
-      this.serverSuccess = 'Preferencia de notificaciones guardada correctamente.';
-      setTimeout(() => (this.serverSuccess = ''), constants.displayMessageTime || 3000);
+      this.showSuccess('Preferencia de notificaciones guardada correctamente.');
     } catch (error) {
-      console.error('Error al guardar preferencia de notificaciones:', error);
-      if (error instanceof HttpErrorResponse) {
-        this.serverError = error.error?.message || constants.generalServerError;
-      } else {
-        this.serverError = constants.generalServerError;
-      }
+      this.handleError(error, 'Error al guardar preferencia de notificaciones.');
     }
   }
 
-
   async saveSettings(): Promise<void> {
-    this.serverError = '';
-    this.serverSuccess = '';
+    this.clearMessages();
 
     if (this.userSettingsForm.invalid) {
       this.userSettingsForm.markAllAsTouched();
@@ -205,66 +168,64 @@ export class DashboardSettingsComponent {
     const formValue = this.userSettingsForm.value;
 
     const updatedData: Partial<IUser> = {
-      first_name: formValue.first_name ?? undefined,
-      last_name: formValue.last_name ?? undefined,
-      birth_date: formValue.birth_date ?? undefined,
-      username: formValue.username ?? undefined,
-  
+      first_name: formValue.first_name || undefined,
+      last_name: formValue.last_name || undefined,
+      birth_date: formValue.birth_date || undefined,
+      username: formValue.username || undefined,
     };
 
     try {
       await this.usersService.updateUserSettings(updatedData);
-      this.serverSuccess = 'Datos del perfil actualizados correctamente.';
-      setTimeout(() => (this.serverSuccess = ''), constants.displayMessageTime || 3000);
+      this.showSuccess('Datos del perfil actualizados correctamente.');
     } catch (error) {
-      console.error('Error al actualizar datos del perfil:', error);
-      if (error instanceof HttpErrorResponse) {
-        this.serverError = error.error?.message || constants.generalServerError;
-      } else {
-        this.serverError = constants.generalServerError;
-      }
-      if (
-        error instanceof HttpErrorResponse &&
-        (error.status === 401 || error.status === 403)
-      ) {
+      this.handleError(error, 'Error al actualizar datos del perfil.');
+    }
+  }
+
+  async deleteAccount(): Promise<void> {
+    const confirmed = confirm('¿Estás seguro de que quieres borrar tu cuenta? Esta acción es irreversible.');
+
+    if (!confirmed) return;
+
+    this.clearMessages();
+
+    try {
+      const token = this.authorizationService.getToken();
+      if (!token) throw new Error('No se encontró el token de autenticación para eliminar la cuenta.');
+
+      await this.usersService.remove(token);
+      alert('¡Tu cuenta ha sido eliminada con éxito!');
+      this.authorizationService.removeToken();
+      this.router.navigate(['/login']);
+    } catch (error) {
+      this.handleError(error, 'Error al borrar la cuenta.');
+    }
+  }
+
+  private clearMessages() {
+    this.serverError = '';
+    this.serverSuccess = '';
+  }
+
+  private showSuccess(message: string) {
+    this.serverSuccess = message;
+    setTimeout(() => (this.serverSuccess = ''), constants.displayMessageTime || 3000);
+  }
+
+  private handleError(error: unknown, fallbackMessage: string) {
+    if (error instanceof HttpErrorResponse) {
+      this.serverError = error.error?.message || fallbackMessage;
+
+      if (error.status === 401 || error.status === 403) {
         this.authorizationService.removeToken();
         this.router.navigate(['/login']);
       }
+    } else {
+      this.serverError = fallbackMessage;
     }
   }
-
-
-  async deleteAccount(): Promise<void> {
-    const confirmDelete = confirm('¿Estás seguro de que quieres borrar tu cuenta? Esta acción es irreversible.');
-
-    if (confirmDelete) {
-      this.serverError = '';
-      this.serverSuccess = '';
-      try {
-        const token = this.authorizationService.getToken();
-        if (!token) {
-          throw new Error('No se encontró el token de autenticación para eliminar la cuenta.');
-        }
-        await this.usersService.remove(token);
-        alert('¡Tu cuenta ha sido eliminada con éxito!');
-        this.authorizationService.removeToken(); 
-        this.router.navigate(['/login']); 
-      } catch (error) {
-        console.error('Error al borrar la cuenta:', error);
-        if (error instanceof HttpErrorResponse) {
-          this.serverError = error.error?.message || 'Error al borrar la cuenta.';
-        } else {
-          this.serverError = 'Error al borrar la cuenta. Inténtalo de nuevo.';
-        }
-        // Manejo de errores de autorización
-        if (
-          error instanceof HttpErrorResponse &&
-          (error.status === 401 || error.status === 403)
-        ) {
-          this.authorizationService.removeToken();
-          this.router.navigate(['/login']);
-        }
-      }
-    }
-  }
+  navigateToChangePassword(): void {
+  this.router.navigate(['/login/change_password']);
 }
+}
+
