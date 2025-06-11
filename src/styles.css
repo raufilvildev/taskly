@@ -139,3 +139,19 @@ app-course-calendar {
   --shadow-custom-md: 0 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-custom-lg: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
+
+.custom-container {
+  background: radial-gradient(
+    circle at center,
+    var(--color-custom-accent) 0%,
+    var(--color-custom-primary-light) 80%
+  );
+}
+
+.dark .custom-container {
+  background: radial-gradient(
+    circle at center,
+    var(--color-custom-accent) 0%,
+    var(--color-custom-primary-dark) 80%
+  );
+}
