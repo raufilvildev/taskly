@@ -7,7 +7,7 @@ export interface IUser {
   birth_date: Date | string;
   username: string;
   password?: string;
-  img_url?: string;
+  profile_image_url?: string;
   email_confirmed?: number;
   role: 'general' | 'student' | 'teacher';
   notify_by_email?: number;

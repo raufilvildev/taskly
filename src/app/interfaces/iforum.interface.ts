@@ -2,7 +2,7 @@ export interface IForumUser {
   uuid: string;
   first_name: string;
   last_name: string;
-  img_url: string;
+  profile_image_url: string;
   role: 'teacher' | 'student';
 }
 

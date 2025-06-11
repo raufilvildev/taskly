@@ -21,6 +21,8 @@ import { CourseCalendarComponent } from './pages/dashboard/dashboard-courses/cou
 import { CourseForumComponent } from './pages/dashboard/dashboard-courses/course-view/course-forum/course-forum.component';
 import { CourseTasksComponent } from './pages/dashboard/dashboard-courses/course-view/course-tasks/course-tasks.component';
 import { CourseHomeComponent } from './pages/dashboard/dashboard-courses/course-view/course-home/course-home.component';
+import { DashboardCalendarComponent } from './pages/dashboard/dashboard-calendar/dashboard-calendar.component';
+import { DashboardEisenhowerMatrixComponent } from './pages/dashboard/dashboard-eisenhower-matrix/dashboard-eisenhower-matrix.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -81,6 +83,8 @@ export const routes: Routes = [
           },
         ],
       },
+      { path: 'eisenhower_matrix', component: DashboardEisenhowerMatrixComponent },
+      { path: 'calendar', component: DashboardCalendarComponent },
       { path: 'settings', component: DashboardSettingsComponent },
     ],
   },

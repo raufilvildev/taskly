@@ -1,3 +1,7 @@
-<div class="flex-1 flex items-stretch justify-center">
-  <router-outlet />
+<div class="flex-1 flex items-stretch min-h-dvh">
+  <app-aside [user]="user"></app-aside>
+
+  <div class="flex-1 flex items-stretch min-h-dvh pb-20 lg:pb-0">
+    <router-outlet />
+  </div>
 </div>
