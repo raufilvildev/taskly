@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { AuthorizationService } from '../../../services/authorization.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { constants } from '../../../shared/utils/constants/constants.config';
 
 @Component({
   selector: 'app-change-password-email-request',
@@ -13,18 +15,31 @@ export class ChangePasswordEmailRequestComponent {
   authorizationService = inject(AuthorizationService);
   router = inject(Router);
 
-  async checkEmail(email: any) {
-    console.log(email.value);
+  emailRequestError = '';
+
+  async checkEmail(emailRequest: any) {
+    const { email } = emailRequest.value;
+
     try {
-      let response = await this.authorizationService.checkEmail(email.value);
-      if (response.token) {
-        this.authorizationService.requestConfirmationByEmail(response.token, 'change_password');
-        this.router.navigate(['/login/change_password']);
-      } else {
-        console.log('No hemos encontrado este usuario');
+      const { token } = await this.authorizationService.checkEmail(email);
+      await this.authorizationService.requestConfirmationByEmail(token, 'change_password');
+
+      this.authorizationService.setToken(token);
+
+      this.router.navigate(['/login/change_password_confirmation']);
+    } catch (errorResponse) {
+      this.authorizationService.removeToken();
+      localStorage.removeItem('token');
+      if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
+        this.emailRequestError = constants.generalServerError;
+        return;
       }
-    } catch (msg: any) {
-      console.log(msg);
+      if (errorResponse instanceof HttpErrorResponse) {
+        this.emailRequestError = errorResponse.error;
+        return;
+      }
+
+      this.emailRequestError = constants.generalServerError;
     }
   }
 }
