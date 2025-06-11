@@ -15,14 +15,17 @@ export class ChangePasswordEmailRequestComponent {
   router = inject(Router)
 
   async checkEmail(email:any) {
+    console.log(email.value)
     try {
-      let response = await this.authorizationService.checkEmail(email);
+      let response = await this.authorizationService.checkEmail(email.value);
       if (response.token) {
         this.authorizationService.requestConfirmationByEmail(response.token, 'change_password')
         this.router.navigate(['/login/change_password'])
+      } else {
+        console.log("No hemos encontrado este usuario")
       }
     } catch (msg:any) {
-      alert('Email incorrecto')
+      console.log(msg)
     }
   }
 }
