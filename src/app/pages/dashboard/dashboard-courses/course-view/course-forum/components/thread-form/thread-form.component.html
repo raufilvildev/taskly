@@ -26,6 +26,9 @@
       ></textarea>
     </fieldset>
   </div>
+  @if (threadFormError) {
+    <p class="pl-1 mt-1 italic text-sm text-custom-error text-center">{{ threadFormError }}</p>
+  }
   <div class="flex flex justify-center gap-5">
     <button
       type="button"

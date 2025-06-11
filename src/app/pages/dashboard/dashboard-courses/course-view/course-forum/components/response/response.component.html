@@ -61,7 +61,7 @@
               src="remove.svg"
               alt="Borrar respuesta"
               class="w-6 h-6"
-              (click)="deleteResponse(response.uuid)"
+              (click)="updateShowDeleteConfirmation(true)"
             />
           </div>
         </div>
@@ -93,4 +93,32 @@
       }
     </div>
   </div>
+  @if (showDeleteConfirmation) {
+    <div class="fixed inset-0 bg-black/30 z-50 flex items-center justify-center shadow-xl">
+      <div class="p-10 bg-custom-background rounded-lg w-75 flex flex-col gap-10">
+        <p class="text-custom-main text-center">
+          ¿Estás seguro de que quieres borrar este comentario?
+        </p>
+        @if (deleteResponseError) {
+          <p class="pl-1 mt-1 italic text-sm text-custom-error text-center">
+            {{ deleteResponseError }}
+          </p>
+        }
+        <div class="flex gap-5 justify-center">
+          <button
+            class="px-3 py-2 text-sm text-custom-text-main rounded-lg border border-custom-accent bg-custom-primary-light hover:bg-custom-accent-dark hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            (click)="deleteResponse(response.uuid)"
+          >
+            Confirmar
+          </button>
+          <button
+            class="px-3 py-2 text-sm rounded-lg border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            (click)="updateShowDeleteConfirmation(false)"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
 </div>

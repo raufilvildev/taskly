@@ -49,16 +49,18 @@ export class UsersService {
     );
   }
 
+  // TO-DO: Revisar esta parte
+
   getUserSettings(): Promise<IUser> {
     const headers = this.getAuthHeaders();
     return lastValueFrom(this.httpClient.get<IUser>(this.endpoint, { headers }));
   }
-  
+
   private getAuthHeaders() {
     const token = localStorage.getItem('token');
     return { Authorization: token ? `Bearer ${token}` : '' };
   }
-  
+
   updateUserSettings(userData: Partial<IUser>): Promise<IUser> {
     const headers = this.getAuthHeaders();
     return lastValueFrom(this.httpClient.patch<IUser>(this.endpoint, userData, { headers }));
@@ -66,6 +68,12 @@ export class UsersService {
 
   saveNotificationPreference(enabled: boolean): Promise<IMessage> {
     const headers = this.getAuthHeaders();
-    return lastValueFrom(this.httpClient.patch<IMessage>(`${this.endpoint}/notifications`, { notifications_enabled: enabled }, { headers }));
+    return lastValueFrom(
+      this.httpClient.patch<IMessage>(
+        `${this.endpoint}/notifications`,
+        { notifications_enabled: enabled },
+        { headers }
+      )
+    );
   }
 }

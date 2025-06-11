@@ -5,6 +5,8 @@ import { IUser } from '../../../../../../../interfaces/iuser.interface';
 import { IResponse } from '../../../../../../../interfaces/iforum.interface';
 import { ResponseFormComponent } from '../response-form/response-form.component';
 import { ForumService } from '../../../../../../../services/forum.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { constants } from '../../../../../../../shared/utils/constants/constants.config';
 
 @Component({
   selector: 'app-response',
@@ -28,14 +30,35 @@ export class ResponseComponent {
   @Output() delete = new EventEmitter<void>();
 
   showResponseForm = false;
+  showDeleteConfirmation = false;
+  deleteResponseError = '';
 
   updateThread(state: boolean, response_uuid: string | undefined) {
     this.showResponseForm = state;
     this.editResponse.emit(state ? response_uuid : '');
   }
 
+  updateShowDeleteConfirmation(state: boolean) {
+    this.showDeleteConfirmation = state;
+  }
+
   async deleteResponse(response_uuid: string | undefined) {
-    await this.forumService.deleteResponse(this.token, response_uuid as string);
-    this.delete.emit();
+    try {
+      await this.forumService.deleteResponse(this.token, response_uuid as string);
+      this.delete.emit();
+      this.updateShowDeleteConfirmation(false);
+    } catch (errorResponse) {
+      if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
+        this.deleteResponseError = constants.generalServerError;
+        return;
+      }
+
+      if (errorResponse instanceof HttpErrorResponse) {
+        this.deleteResponseError = errorResponse.error;
+        return;
+      }
+
+      this.deleteResponseError = constants.generalServerError;
+    }
   }
 }

@@ -153,19 +153,21 @@ export class SignupFormComponent {
         const createResult = await this.usersService.create(user);
         token = createResult.token;
 
-        localStorage.setItem('token', token);
+        this.authorizationService.setToken(token);
         const { message } = await this.authorizationService.requestConfirmationByEmail(
           token,
           'signup'
         );
         this.router.navigate(['signup', 'signup_confirmation']);
       } catch (errorResponse) {
-        this.usersService.remove(token);
-        localStorage.removeItem('token');
+        await this.usersService.remove(token);
+        this.authorizationService.removeToken();
+
         if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
           this.serverError = constants.generalServerError;
           return;
         }
+
         if (errorResponse instanceof HttpErrorResponse) {
           this.serverError = errorResponse.error;
           return;

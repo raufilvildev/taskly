@@ -4,6 +4,8 @@ import { IThread } from '../../../../../../../interfaces/iforum.interface';
 import { ForumService } from '../../../../../../../services/forum.service';
 import { AuthorizationService } from '../../../../../../../services/authorization.service';
 import { IUser } from '../../../../../../../interfaces/iuser.interface';
+import { constants } from '../../../../../../../shared/utils/constants/constants.config';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-thread-form',
@@ -21,27 +23,87 @@ export class ThreadFormComponent {
 
   @Output() cancel = new EventEmitter<void>();
   @Output() save = new EventEmitter<void>();
+  @Output() create = new EventEmitter<void>();
 
   token = '';
+  threadFormError = '';
 
   threadForm = new FormGroup({
     title: new FormControl('', Validators.required),
     content: new FormControl('', Validators.required),
   });
 
-  createThread(threadForm: FormGroup) {}
-
-  editThread(threadForm: FormGroup) {
+  async createThread(threadForm: FormGroup) {
     const thread = threadForm.value;
+
+    if (!thread.title) {
+      this.threadFormError = 'El título no puede ser vacío.';
+      return;
+    }
+
+    if (!thread.content) {
+      this.threadFormError = 'El contenido no puede ser vacío.';
+      return;
+    }
+
     thread.uuid = this.thread.uuid;
     thread.user = this.thread.user;
 
-    this.forumService.editThread(this.token, thread);
-    this.save.emit(); // Al pulsar en guardar, cerraremos el formulario
+    try {
+      await this.forumService.createThread(this.token, thread);
+      this.create.emit();
+    } catch (errorResponse) {
+      if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
+        this.threadFormError = constants.generalServerError;
+        return;
+      }
+
+      if (errorResponse instanceof HttpErrorResponse) {
+        this.threadFormError = errorResponse.error;
+        console.log(this.threadFormError);
+        return;
+      }
+
+      this.threadFormError = constants.generalServerError;
+    }
+  }
+
+  async editThread(threadForm: FormGroup) {
+    const thread = threadForm.value;
+
+    if (!thread.title) {
+      this.threadFormError = 'El título no puede ser vacío.';
+      return;
+    }
+
+    if (!thread.content) {
+      this.threadFormError = 'El contenido no puede ser vacío.';
+      return;
+    }
+
+    thread.uuid = this.thread.uuid;
+    thread.user = this.thread.user;
+
+    try {
+      await this.forumService.editThread(this.token, thread);
+      this.save.emit();
+    } catch (errorResponse) {
+      if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
+        this.threadFormError = constants.generalServerError;
+        return;
+      }
+
+      if (errorResponse instanceof HttpErrorResponse) {
+        this.threadFormError = errorResponse.error;
+        return;
+      }
+
+      this.threadFormError = constants.generalServerError;
+    }
   }
 
   cancelThreadForm() {
-    this.cancel.emit(); // Al pulsar en cancelar, cerraremos el formulario
+    this.cancel.emit();
   }
 
   ngOnInit() {

@@ -16,7 +16,7 @@
               </button>
               <button
                 class="px-3 py-2 text-sm text-custom-text-main rounded-lg border border-custom-accent bg-custom-primary-light hover:bg-custom-accent-dark hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                (click)="deleteThread(thread.uuid)"
+                (click)="updateShowDeleteConfirmation(true)"
               >
                 Borrar
               </button>
@@ -30,7 +30,7 @@
         >
           {{ thread.content }}
         </p>
-        <div class="self-end mt-5 p-5 flex gap-5 rounded-lg bg-custom-primary-dark shadow-xl">
+        <div class="self-end mt-5 p-4 flex gap-5 rounded-lg bg-custom-primary-dark shadow-xl">
           <img
             [src]="thread.user.img_url"
             [alt]="
@@ -105,6 +105,33 @@
       [type]="type"
       (cancel)="updateForum()"
       (save)="updateForum()"
+      (create)="updateForum()"
     ></app-thread-form>
+  </div>
+}
+@if (showDeleteConfirmation) {
+  <div class="fixed inset-0 bg-black/30 z-50 flex items-center justify-center shadow-xl">
+    <div class="p-10 bg-custom-background rounded-lg w-75 flex flex-col gap-10">
+      <p class="text-custom-main text-center">¿Estás seguro de que quieres borrar este hilo?</p>
+      @if (deleteThreadError) {
+        <p class="pl-1 mt-1 italic text-sm text-custom-error text-center">
+          {{ deleteThreadError }}
+        </p>
+      }
+      <div class="flex gap-5 justify-center">
+        <button
+          class="px-3 py-2 text-sm text-custom-text-main rounded-lg border border-custom-accent bg-custom-primary-light hover:bg-custom-accent-dark hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+          (click)="deleteThread(thread.uuid)"
+        >
+          Confirmar
+        </button>
+        <button
+          class="px-3 py-2 text-sm rounded-lg border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+          (click)="updateShowDeleteConfirmation(false)"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
   </div>
 }
