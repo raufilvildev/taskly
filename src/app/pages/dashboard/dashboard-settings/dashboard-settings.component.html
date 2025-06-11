@@ -1,23 +1,54 @@
-<div class="mx-auto p-10 flex flex-col gap-5 bg-custom-panel max-w-125 lg:max-w-200 rounded-lg shadow-sm shadow-custom-accent-dark my-10">
-
-  <h2 class="text-3xl font-bold text-custom-accent-dark mb-6 text-center">Ajustes del Perfil</h2>
-
-  @if (serverError) {
-    <div class="bg-red-100 border border-custom-error text-custom-error px-4 py-3 rounded relative mb-4" role="alert">
-      <span class="block sm:inline">{{ serverError }}</span>
+<form [formGroup]="userSettingsForm" class="flex flex-col gap-6 p-6 bg-white rounded-xl shadow-md max-w-lg w-full mx-auto">
+  <fieldset>
+    <div class="flex items-center justify-between mb-3">
+      <label for="first_name" class="text-sm font-bold">Nombre</label>
+      @if (editUserForm) {
+        <img
+          src="cancel_edit.svg"
+          alt="Cancelar edición"
+          class="w-6 h-6 cursor-pointer"
+          (click)="editUserForm = false"
+        />
+      } @else {
+        <img
+          src="edit.svg"
+          alt="Editar respuesta"
+          class="w-6 h-6 cursor-pointer"
+          (click)="editUserForm = true"
+        />
+      }
     </div>
-  }
-
-  @if (serverSuccess) {
-    <div class="bg-green-100 border border-green-500 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-      <span class="block sm:inline">{{ serverSuccess }}</span>
+    <div>
+      @if (editUserForm) {
+        <div>
+          <input
+            type="text"
+            id="first_name"
+            name="first_name"
+            formControlName="first_name"
+            class="px-4 py-2 mt-2 bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+            [class]="getValidationStyleClasses('first_name', ['minlength', 'maxlength'])"
+          />
+        </div>
+      } @else {
+        <div class="flex items-center justify-between">
+          <p>{{ this.user.first_name }}</p>
+        </div>
+      }
     </div>
-  }
+  </fieldset>
+</form>
 
-  <form [formGroup]="userSettingsForm" (ngSubmit)="saveSettings()" class="flex flex-col gap-5">
-    <div class="flex flex-col lg:flex-row lg:gap-5">
-      <div class="flex flex-col gap-4 w-full lg:w-1/2">
-        <fieldset class="flex flex-col">
+      <!--<label for="last_name" class="text-sm font-bold">Apellidos</label>
+          <input
+            type="text"
+            formControlName="last_name"
+            id="last_name"
+            class="px-4 py-2 mt-2 bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+            [class]="getValidationStyleClasses('last_name', ['minlength', 'maxlength'])"
+          />
+
+
           <label for="first_name" class="text-sm font-bold">Nombre</label>
           <input
             type="text"
@@ -26,33 +57,9 @@
             class="px-4 py-2 mt-2 bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
             [class]="getValidationStyleClasses('first_name', ['minlength', 'maxlength'])"
           />
-          @for (error of getErrors('first_name'); track $index) {
-            <p class="pl-1 mt-1 italic text-sm text-custom-error">{{ error }}</p>
-          }
-        </fieldset>
-      </div>
+          
 
-      <div class="flex flex-col gap-4 w-full lg:w-1/2">
-        <fieldset class="flex flex-col">
-          <label for="last_name" class="text-sm font-bold">Apellidos</label>
-          <input
-            type="text"
-            formControlName="last_name"
-            id="last_name"
-            class="px-4 py-2 mt-2 bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
-            [class]="getValidationStyleClasses('last_name', ['minlength', 'maxlength'])"
-          />
-          @for (error of getErrors('last_name'); track $index) {
-            <p class="pl-1 mt-1 italic text-sm text-custom-error">{{ error }}</p>
-          }
-        </fieldset>
-      </div>
-    </div>
-
-    <div class="flex flex-col lg:flex-row lg:gap-5">
-      <div class="flex flex-col gap-4 w-full lg:w-1/2">
-        <fieldset class="flex flex-col">
-          <label for="birth_date" class="text-sm font-bold">Fecha de nacimiento</label>
+          <label for="birth_date" class="text-sm font-bold">Fecha de nacimiento </label>
           <input
             type="date"
             formControlName="birth_date"
@@ -60,21 +67,18 @@
             class="px-4 py-2 mt-2 placeholder:text-custom-muted bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
             [class]="getValidationStyleClasses('birth_date', [])"
           />
-          @for (error of getErrors('birth_date'); track $index) {
-            <p class="pl-1 mt-1 italic text-sm text-custom-error">{{ error }}</p>
-          }
-        </fieldset>
-      </div>
+          
 
-      <div class="flex flex-col gap-4 w-full lg:w-1/2">
-        <fieldset class="flex flex-col">
-          <label for="username" class="text-sm font-bold">Nombre de usuario</label>
-          <div class="relative mt-2">
+          
+          
+            <label for="username" class="text-sm font-bold">Nombre de usuario</label>
             <img
               class="w-6 h-6 absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none"
               src="username.svg"
               alt="Username icon"
             />
+
+
             <input
               type="text"
               formControlName="username"
@@ -82,54 +86,5 @@
               class="w-full pl-10 px-4 py-2 bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
               [class]="getValidationStyleClasses('username', ['minlength', 'maxlength'])"
             />
-          </div>
-          @for (error of getErrors('username'); track $index) {
-            <p class="pl-1 mt-1 italic text-sm text-custom-error">{{ error }}</p>
-          }
-        </fieldset>
-      </div>
-    </div>
 
-    <div class="flex md:flex-row items-center gap-4 py-2 justify-center">
-      <label for="notifications" class="text-custom-text-main font-bold text-sm">Recibir notificaciones por correo:</label>
-      <input
-        type="checkbox"
-        id="notifications"
-        [formControl]="receiveNotificationsControl"
-        class="toggle toggle-primary"
-      />
-    </div>
-
-    <div class="flex flex-col items-center">
-      <button
-        type="submit"
-        [disabled]="userSettingsForm.invalid"
-        class="w-fit mt-5 px-4 py-2 rounded-lg border-2 border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-      >
-        Guardar Cambios del Perfil
-      </button>
-    </div>
-  </form>
-
-  <hr class="my-6 border-custom-accent-dark">
-
-  <div class="flex flex-col gap-4 flex-wrap items-center justify-center">
-    <h3 class="text-xl font-bold text-custom-accent-dark">Seguridad y Gestión de Cuenta</h3>
-
-    <div class="flex flex-col md:flex-row gap-4 items-center justify-center">
-      <button
-        (click)="navigateToChangePassword()"
-        class="w-fit px-4 py-2 rounded-lg border-2 border-custom-primary text-custom-text-main bg-custom-primary hover:brightness-90 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-      >
-        Cambiar Contraseña
-      </button>
-
-      <button
-        (click)="deleteAccount()"
-        class="w-fit px-4 py-2 rounded-lg border-2 border-custom-error text-white bg-custom-error hover:brightness-90 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-      >
-        Borrar Cuenta
-      </button>
-    </div>
-  </div>
-</div>
+  -->

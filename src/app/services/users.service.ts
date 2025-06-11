@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '../environments/environment.test';
@@ -6,6 +6,7 @@ import { IUser } from '../interfaces/iuser.interface';
 import { IToken } from '../interfaces/itoken.interface';
 import { ILogin } from '../interfaces/ilogin.interface';
 import { IMessage } from '../interfaces/imessage.interface';
+import { AuthorizationService } from './authorization.service';
 
 type Response = {
   success: string;
@@ -16,6 +17,7 @@ type Response = {
   providedIn: 'root',
 })
 export class UsersService {
+  private authorizationService: AuthorizationService = inject(AuthorizationService);
   private endpoint = `${environment.host}/user`;
   private httpClient = inject(HttpClient);
 
@@ -49,31 +51,16 @@ export class UsersService {
     );
   }
 
-  // TO-DO: Revisar esta parte
-
-  getUserSettings(): Promise<IUser> {
-    const headers = this.getAuthHeaders();
-    return lastValueFrom(this.httpClient.get<IUser>(this.endpoint, { headers }));
-  }
-
-  private getAuthHeaders() {
-    const token = localStorage.getItem('token');
-    return { Authorization: token ? `Bearer ${token}` : '' };
-  }
-
-  updateUserSettings(userData: Partial<IUser>): Promise<IUser> {
-    const headers = this.getAuthHeaders();
-    return lastValueFrom(this.httpClient.patch<IUser>(this.endpoint, userData, { headers }));
-  }
-
-  saveNotificationPreference(enabled: boolean): Promise<IMessage> {
-    const headers = this.getAuthHeaders();
+  update (token: string, user: IUser){
     return lastValueFrom(
-      this.httpClient.patch<IMessage>(
-        `${this.endpoint}/notifications`,
-        { notifications_enabled: enabled },
-        { headers }
+      this.httpClient.put<IToken>(
+        `${this.endpoint}/update`,
+        user ,
+        { headers: { Authorization: token }}
       )
     );
   }
+
+  
+
 }
