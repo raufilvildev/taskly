@@ -14,6 +14,7 @@ import { LightDarkButtonComponent } from '../../shared/components/light-dark-but
 export class DashboardComponent {
   usersService = inject(UsersService);
   authorizationService = inject(AuthorizationService);
+  isDarkMode = false;
 
   user: any = {};
 

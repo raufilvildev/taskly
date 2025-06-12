@@ -149,9 +149,5 @@ app-course-calendar {
 }
 
 .dark .custom-container {
-  background: radial-gradient(
-    circle at center,
-    var(--color-custom-accent) 0%,
-    var(--color-custom-primary-dark) 80%
-  );
+  background: var(--color-gray-950);
 }

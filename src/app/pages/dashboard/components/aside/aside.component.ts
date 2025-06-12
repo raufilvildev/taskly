@@ -14,6 +14,7 @@ export class AsideComponent {
   router = inject(Router);
 
   @Input() user!: IUser;
+  @Input() isDarkMode = false;
 
   showList = false;
 

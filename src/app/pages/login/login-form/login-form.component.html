@@ -1,5 +1,5 @@
 <form
-  class="mx-auto p-10 flex flex-col gap-5 bg-custom-panel dark:bg-gray-600 max-w-300 lg:w-100 rounded-lg shadow-sm shadow-custom-accent-dark my-10"
+  class="mx-auto p-10 flex flex-col gap-5 bg-custom-panel dark:bg-transparent min-w-100 lg:w-125 rounded-lg shadow-xl my-10"
   [formGroup]="loginForm"
   (ngSubmit)="getLogin(loginForm)"
 >
@@ -25,7 +25,7 @@
   </fieldset>
   <a
     [routerLink]="['/login/change_password_email_request']"
-    class="mx-auto inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+    class="mx-auto inline-block align-baseline font-bold text-sm text-blue-500 hover:underline dark:text-purple-300"
   >
     ¿Te has olvidado de la contraseña?
   </a>
@@ -34,7 +34,7 @@
   }
   <div class="flex justify-center">
     <button
-      class="w-fit px-2 py-2 rounded-lg border-2 border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+      class="w-fit px-3 py-2 rounded-lg text-white bg-custom-accent hover:bg-custom-accent-dark hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
       type="submit"
     >
       Iniciar sesión

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -8,6 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './light-dark-button.component.css',
 })
 export class LightDarkButtonComponent {
+  @Output() toggleThemeEvent = new EventEmitter<boolean>();
+
   isDarkMode = false;
 
   htmlElement = document.querySelector('html');
@@ -16,6 +18,7 @@ export class LightDarkButtonComponent {
     this.isDarkMode = !this.isDarkMode;
     localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
     this.htmlElement?.classList.toggle('dark');
+    this.toggleThemeEvent.emit(this.isDarkMode);
   }
 
   ngOnInit() {
