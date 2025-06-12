@@ -1,9 +1,9 @@
-<div class="w-full lg:w-80 flex">
+<div class="w-full lg:w-85 flex">
   <aside
-    class="fixed bottom-0 left-0 w-full flex flex-row justify-around items-center lg:fixed lg:flex-col lg:w-80 lg:h-dvh lg:justify-start lg:items-start gap-3 p-5 bg-custom-background shadow-xl z-10"
+    class="fixed bottom-0 left-0 w-full flex flex-row justify-around items-center lg:fixed lg:flex-col lg:w-85 lg:h-dvh lg:justify-start lg:items-start gap-4 p-5 bg-custom-background dark:bg-gray-800 shadow-xl z-10"
   >
     <div
-      class="p-3 rounded-full hover:bg-custom-primary-dark lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105 flex gap-3"
+      class="w-full p-2 rounded-full hover:bg-custom-primary-dark lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105 flex gap-4"
       [routerLink]="['/dashboard', 'settings']"
     >
       <img
@@ -15,13 +15,15 @@
         <h3 class="text-base font-bold text-custom-main">
           {{ user.first_name }} {{ user.last_name }}
         </h3>
-        <h4 class="text-sm text-custom-accent-dark font-bold">{{ user.username }}</h4>
+        <h4 class="text-sm text-custom-accent-dark dark:text-pink-900 font-bold">
+          {{ user.username }}
+        </h4>
       </div>
     </div>
     <div class="flex-1 flex lg:flex-col justify-between">
-      <ul class="flex flex-row lg:flex-col gap-2 justify-around items-center w-full">
+      <ul class="flex flex-row lg:flex-col gap-4 justify-around items-center w-full">
         <li
-          class="block sm:hidden p-3 flex items-center gap-2 rounded-full hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
+          class="block sm:hidden p-3 flex items-center gap-4 rounded-full hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
         >
           <img
             src="taskly_icon.svg"
@@ -30,38 +32,38 @@
             (click)="showList = !showList"
           />
         </li>
-        <div class="hidden sm:flex lg:flex-col gap-3">
+        <div class="hidden sm:flex lg:flex-col gap-4">
           <li
             [routerLink]="['/dashboard']"
-            class="p-3 lg:pr-5 flex items-center gap-2 rounded-full bg-custom-background lg:shadow-none lg:bg-transparent hover:bg-custom-primary-dark shadow-none lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
+            class="p-3 lg:pr-5 flex items-center gap-4 rounded-full bg-custom-background lg:shadow-none lg:bg-transparent hover:bg-custom-primary-dark shadow-none lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
           >
             <img src="home.svg" alt="" class="w-8 h-8 object-fit object-cover" />
             <label class="hidden lg:block text-xl font-bold">Inicio</label>
           </li>
           <li
             [routerLink]="['/dashboard', 'calendar']"
-            class="p-3 lg:pr-5 flex items-center gap-2 rounded-full bg-custom-background lg:shadow-none lg:bg-transparent hover:bg-custom-primary-dark shadow-none lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
+            class="p-3 lg:pr-5 flex items-center gap-4 rounded-full bg-custom-background lg:shadow-none lg:bg-transparent hover:bg-custom-primary-dark shadow-none lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
           >
             <img src="calendar.svg" alt="" class="w-8 h-8 object-fit object-cover" />
             <label class="hidden lg:block text-xl font-bold">Calendario</label>
           </li>
           <li
             [routerLink]="['/dashboard', 'eisenhower_matrix']"
-            class="p-3 lg:pr-5 flex items-center gap-2 rounded-full bg-custom-background lg:shadow-none lg:bg-transparent hover:bg-custom-primary-dark shadow-none lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
+            class="p-3 lg:pr-5 flex items-center gap-4 rounded-full bg-custom-background lg:shadow-none lg:bg-transparent hover:bg-custom-primary-dark shadow-none lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
           >
             <img src="matrix.svg" alt="" class="w-8 h-8 object-fit object-cover" />
             <label class="hidden lg:block text-xl font-bold">Matriz de Eisenhower</label>
           </li>
           <li
             [routerLink]="['/dashboard', 'tasks']"
-            class="p-3 lg:pr-5 flex items-center gap-2 rounded-full bg-custom-background lg:shadow-none lg:bg-transparent hover:bg-custom-primary-dark shadow-none lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
+            class="p-3 lg:pr-5 flex items-center gap-4 rounded-full bg-custom-background lg:shadow-none lg:bg-transparent hover:bg-custom-primary-dark shadow-none lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
           >
             <img src="tasks.svg" alt="" class="w-8 h-8 object-fit object-cover" />
             <label class="hidden lg:block text-xl font-bold">Mis tareas</label>
           </li>
           <li
             [routerLink]="['/dashboard', 'courses']"
-            class="p-3 lg:pr-5 flex items-center gap-2 rounded-full bg-custom-background lg:shadow-none lg:bg-transparent hover:bg-custom-primary-dark shadow-none lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
+            class="p-3 lg:pr-5 flex items-center gap-4 rounded-full bg-custom-background lg:shadow-none lg:bg-transparent hover:bg-custom-primary-dark shadow-none lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
           >
             <img src="course.svg" alt="" class="w-8 h-8 object-fit object-cover" />
             <label class="hidden lg:block text-xl font-bold">Mis cursos</label>
@@ -71,13 +73,13 @@
           <div class="absolute bottom-28 left-0 w-full flex flex-wrap justify-around sm:hidden">
             <li
               [routerLink]="['/dashboard']"
-              class="p-3 lg:pr-5 flex items-center gap-2 rounded-full border-2 border-custom-accent-dark bg-custom-background shadow-none md:shadow-none lg:bg-transparent hover:bg-custom-primary-dark lg:shadow-2xl lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
+              class="p-3 lg:pr-5 flex items-center gap-4 rounded-full border-2 border-custom-accent-dark bg-custom-background shadow-none md:shadow-none lg:bg-transparent hover:bg-custom-primary-dark lg:shadow-2xl lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
             >
               <img src="home.svg" alt="Icono de Inicio" class="w-8 h-8 object-fit object-cover" />
             </li>
             <li
               [routerLink]="['/dashboard', 'calendar']"
-              class="p-3 lg:pr-5 flex items-center gap-2 rounded-full border-2 border-custom-accent-dark bg-custom-background shadow-none md:shadow-none lg:bg-transparent hover:bg-custom-primary-dark lg:shadow-2xl lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
+              class="p-3 lg:pr-5 flex items-center gap-4 rounded-full border-2 border-custom-accent-dark bg-custom-background shadow-none md:shadow-none lg:bg-transparent hover:bg-custom-primary-dark lg:shadow-2xl lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
             >
               <img
                 src="calendar.svg"
@@ -87,7 +89,7 @@
             </li>
             <li
               [routerLink]="['/dashboard', 'eisenhower_matrix']"
-              class="p-3 lg:pr-5 flex items-center gap-2 rounded-full border-2 border-custom-accent-dark bg-custom-background shadow-none md:shadow-none lg:bg-transparent hover:bg-custom-primary-dark lg:shadow-2xl lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
+              class="p-3 lg:pr-5 flex items-center gap-4 rounded-full border-2 border-custom-accent-dark bg-custom-background shadow-none md:shadow-none lg:bg-transparent hover:bg-custom-primary-dark lg:shadow-2xl lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
             >
               <img
                 src="matrix.svg"
@@ -97,7 +99,7 @@
             </li>
             <li
               [routerLink]="['/dashboard', 'tasks']"
-              class="p-3 lg:pr-5 flex items-center gap-2 rounded-full border-2 border-custom-accent-dark bg-custom-background shadow-none md:shadow-none lg:bg-transparent hover:bg-custom-primary-dark lg:shadow-2xl lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
+              class="p-3 lg:pr-5 flex items-center gap-4 rounded-full border-2 border-custom-accent-dark bg-custom-background shadow-none md:shadow-none lg:bg-transparent hover:bg-custom-primary-dark lg:shadow-2xl lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
             >
               <img
                 src="tasks.svg"
@@ -107,7 +109,7 @@
             </li>
             <li
               [routerLink]="['/dashboard', 'courses']"
-              class="p-3 lg:pr-5 flex items-center gap-2 rounded-full border-2 border-custom-accent-dark bg-custom-background shadow-none md:shadow-none lg:bg-transparent hover:bg-custom-primary-dark lg:shadow-2xl lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
+              class="p-3 lg:pr-5 flex items-center gap-4 rounded-full border-2 border-custom-accent-dark bg-custom-background shadow-none md:shadow-none lg:bg-transparent hover:bg-custom-primary-dark lg:shadow-2xl lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
             >
               <img
                 src="course.svg"
@@ -120,7 +122,7 @@
       </ul>
       <div class="self-start">
         <li
-          class="p-3 lg:pr-5 flex items-center gap-2 rounded-full bg-custom-background shadow-none lg:bg-transparent hover:bg-custom-primary-dark lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
+          class="p-3 lg:pr-5 flex items-center gap-4 rounded-full bg-custom-background shadow-none lg:bg-transparent hover:bg-custom-primary-dark lg:hover:bg-custom-accent/20 transition-all duration-300 transform hover:scale-105"
           (click)="logout()"
         >
           <img

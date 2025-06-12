@@ -2,12 +2,12 @@ import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AsideComponent } from './components/aside/aside.component';
 import { UsersService } from '../../services/users.service';
-import { IUser } from '../../interfaces/iuser.interface';
 import { AuthorizationService } from '../../services/authorization.service';
+import { LightDarkButtonComponent } from '../../shared/components/light-dark-button/light-dark-button.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterOutlet, AsideComponent],
+  imports: [RouterOutlet, AsideComponent, LightDarkButtonComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
