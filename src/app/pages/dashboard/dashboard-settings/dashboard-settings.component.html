@@ -1,7 +1,12 @@
-<form [formGroup]="userSettingsForm" class="flex flex-col gap-6 p-6 bg-white rounded-xl shadow-md max-w-lg w-full mx-auto">
-  <fieldset>
-    <div class="flex items-center justify-between mb-3">
+<form
+  [formGroup]="userSettingsForm"
+  (ngSubmit)="updateUser(userSettingsForm.value)"
+  class="flex flex-col gap-6 p-6 bg-white rounded-xl shadow-md w-full mx-auto"
+>
+  <fieldset class="w-full flex flex-col">
+    <div class="flex justify-between mb-3 gap-8">
       <label for="first_name" class="text-sm font-bold">Nombre</label>
+      
       @if (editUserForm) {
         <img
           src="cancel_edit.svg"
@@ -9,37 +14,44 @@
           class="w-6 h-6 cursor-pointer"
           (click)="editUserForm = false"
         />
-      } @else {
+      } 
+      @else {
         <img
           src="edit.svg"
-          alt="Editar respuesta"
+          alt="Editar nombre"
           class="w-6 h-6 cursor-pointer"
           (click)="editUserForm = true"
         />
       }
     </div>
-    <div>
-      @if (editUserForm) {
-        <div>
-          <input
-            type="text"
-            id="first_name"
-            name="first_name"
-            formControlName="first_name"
-            class="px-4 py-2 mt-2 bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
-            [class]="getValidationStyleClasses('first_name', ['minlength', 'maxlength'])"
-          />
+
+    @if (editUserForm) {
+      <div>
+        <input
+          type="text"
+          id="first_name"
+          formControlName="first_name"
+          class="px-4 py-2 mt-2 bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+          [class]="getValidationStyleClasses('first_name', ['minlength', 'maxlength'])"
+        />
+        <div class="flex justify-end gap-5 mt-3">
+          <button
+            type="submit"
+            class="px-4 py-2 rounded-lg border-2 border-custom-accent bg-custom-accent text-white text-sm hover:bg-custom-accent-dark hover:scale-105 shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            Guardar
+          </button>
         </div>
-      } @else {
-        <div class="flex items-center justify-between">
-          <p>{{ this.user.first_name }}</p>
-        </div>
-      }
-    </div>
+      </div>
+    } 
+    @else {
+      <p class="mt-2 text-base">{{ this.user.first_name }}</p>
+    }
   </fieldset>
 </form>
 
-      <!--<label for="last_name" class="text-sm font-bold">Apellidos</label>
+
+<!--<label for="last_name" class="text-sm font-bold">Apellidos</label>
           <input
             type="text"
             formControlName="last_name"

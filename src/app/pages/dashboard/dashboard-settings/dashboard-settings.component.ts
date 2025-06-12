@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { IUser } from '../../../interfaces/iuser.interface';
 import { constants } from '../../../shared/utils/constants/constants.config';
 import { HttpErrorResponse } from '@angular/common/http';
+import { IToken } from '../../../interfaces/itoken.interface';
 
 @Component({
   selector: 'app-dashboard-settings',
@@ -106,7 +107,20 @@ export class DashboardSettingsComponent {
 
   editUserForm = false;
 
-  updateUser(state: boolean) {
+  updateUserFormState(state: boolean) {
     this.editUserForm = state;
   }
+
+  async updateUser(userFormValue: any) {
+    try { 
+      const token = this.authorizationService.getToken();
+      const responseData = await this.usersService.update(token, userFormValue);
+      await this.ngOnInit();
+      this.editUserForm = false;
+      
+    } catch (error) {
+      console.error(`Error al actualizar el usuario:`, error);
+    }
+  }
+  
 }
