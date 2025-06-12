@@ -27,6 +27,7 @@ export class LightDarkButtonComponent {
     this.isDarkMode = theme === 'dark';
     if (this.isDarkMode) {
       this.htmlElement?.classList.add('dark');
+      this.toggleThemeEvent.emit(true);
     } else {
       this.htmlElement?.classList.remove('dark');
     }

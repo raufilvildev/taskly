@@ -1,7 +1,7 @@
 <form
   [formGroup]="threadForm"
   (ngSubmit)="createThread(threadForm)"
-  class="w-250 mx-auto p-10 flex flex-col gap-5 bg-custom-panel max-w-125 lg:max-w-200 rounded-lg shadow-sm shadow-custom-accent-dark"
+  class="w-250 mx-auto p-10 flex flex-col gap-5 bg-custom-panel dark:bg-gray-800 max-w-125 lg:max-w-200 rounded-lg shadow-sm shadow-custom-accent-dark"
 >
   <div class="flex flex-col gap-4 w-full">
     <fieldset class="flex flex-col gap-2">
@@ -10,7 +10,7 @@
         type="text"
         formControlName="title"
         id="title"
-        class="px-4 py-2 mt-2 bg-custom-background border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+        class="px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
         [value]="thread.title"
       />
     </fieldset>
@@ -20,7 +20,7 @@
         type="text"
         formControlName="content"
         id="content"
-        class="resize-none px-4 py-2 mt-2 bg-custom-background border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+        class="resize-none px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
         [value]="thread.content"
         rows="15"
       ></textarea>
@@ -32,14 +32,14 @@
   <div class="flex flex justify-center gap-5">
     <button
       type="button"
-      class="w-fit mt-5 px-4 py-2 rounded-lg border-2 border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+      class="w-fit mt-5 px-4 py-2 rounded-lg dark:hover:text-white bg-custom-accent-light hover:bg-custom-accent-dark dark:text-black dark:bg-purple-100 dark:bg-purple-100 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
       (click)="cancelThreadForm()"
     >
       Cancelar
     </button>
     <button
       type="submit"
-      class="w-fit mt-5 px-4 py-2 rounded-lg border-2 border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+      class="w-fit mt-5 px-4 py-2 rounded-lg text-white bg-custom-accent hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
       (click)="type === 'create' ? createThread(threadForm) : editThread(threadForm)"
     >
       {{ type === 'create' ? 'Crear' : 'Guardar' }}

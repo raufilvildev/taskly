@@ -58,7 +58,7 @@
       <div class="flex flex-col gap-2">
         @if (!showResponseForm || threadUuidWhereAResponseIsBeingCreated !== thread.uuid) {
           <button
-            class="self-end px-3 py-2 mt-2 text-sm rounded-lg border-custom-accent text-white bg-custom-accent dark:bg-purple-800 dark:hover:bg-purple-900 hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            class="self-end px-3 py-2 mt-2 text-sm rounded-lg text-white bg-custom-accent dark:bg-purple-800 dark:hover:bg-purple-900 hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             (click)="setAnsweredThread()"
           >
             Responder
