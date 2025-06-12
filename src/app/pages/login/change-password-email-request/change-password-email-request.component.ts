@@ -29,7 +29,7 @@ export class ChangePasswordEmailRequestComponent {
       this.router.navigate(['/login/change_password_confirmation']);
     } catch (errorResponse) {
       this.authorizationService.removeToken();
-      localStorage.removeItem('token');
+
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
         this.emailRequestError = constants.generalServerError;
         return;

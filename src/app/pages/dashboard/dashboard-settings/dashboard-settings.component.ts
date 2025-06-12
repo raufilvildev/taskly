@@ -1,12 +1,19 @@
-import { Component, EventEmitter, inject, OnDestroy, OnInit, Output } from "@angular/core";
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from "@angular/forms";
-import { Subscription } from "rxjs";
-import { UsersService } from "../../../services/users.service";
-import { AuthorizationService } from "../../../services/authorization.service";
-import { Router } from "@angular/router";
-import { IUser } from "../../../interfaces/iuser.interface";
-import { constants } from "../../../shared/utils/constants/constants.config";
-import { HttpErrorResponse } from "@angular/common/http";
+import { Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { UsersService } from '../../../services/users.service';
+import { AuthorizationService } from '../../../services/authorization.service';
+import { Router } from '@angular/router';
+import { IUser } from '../../../interfaces/iuser.interface';
+import { constants } from '../../../shared/utils/constants/constants.config';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-dashboard-settings',
@@ -23,37 +30,17 @@ export class DashboardSettingsComponent {
   serverSuccess = '';
   user!: IUser;
 
-
   userSettingsForm = new FormGroup({
-    first_name: new FormControl('', [
-      Validators.minLength(2),
-      Validators.maxLength(100),
-    ]),
-    last_name: new FormControl('', [
-      Validators.minLength(2),
-      Validators.maxLength(100),
-    ]),
+    first_name: new FormControl('', [Validators.minLength(2), Validators.maxLength(100)]),
+    last_name: new FormControl('', [Validators.minLength(2), Validators.maxLength(100)]),
     birth_date: new FormControl(''),
-    username: new FormControl('', [
-      Validators.minLength(2),
-      Validators.maxLength(100),
-    ]),
+    username: new FormControl('', [Validators.minLength(2), Validators.maxLength(100)]),
   });
 
-    getValidationStyleClasses(control_name: string, errors: string[]) {
+  getValidationStyleClasses(control_name: string, errors: string[]) {
     if (
-      ![
-        'first_name',
-        'last_name',
-        'birth_date',
-        'username',
-      ].includes(control_name) ||
-      errors.some(
-        (error) =>
-          !['minlength', 'maxlength'].includes(
-            error
-          )
-      )
+      !['first_name', 'last_name', 'birth_date', 'username'].includes(control_name) ||
+      errors.some((error) => !['minlength', 'maxlength'].includes(error))
     ) {
       return {};
     }
@@ -93,28 +80,26 @@ export class DashboardSettingsComponent {
     return errors;
   }
 
-  async ngOnInit (){
-    const token = this.authorizationService.getToken()
+  async ngOnInit() {
+    const token = this.authorizationService.getToken();
     try {
-      this.user = await this.usersService.getByToken(token as string) 
+      this.user = await this.usersService.getByToken(token);
       this.userSettingsForm = new FormGroup({
-      first_name: new FormControl(this.user.first_name, [
-        Validators.minLength(2),
-        Validators.maxLength(100),
-      ]),
-      last_name: new FormControl(this.user.last_name, [
-        Validators.minLength(2),
-        Validators.maxLength(100),
-      ]),
-      birth_date: new FormControl(this.user.birth_date as string),
-      username: new FormControl(this.user.username, [
-        Validators.minLength(2),
-        Validators.maxLength(100),
-      ]),
-
+        first_name: new FormControl(this.user.first_name, [
+          Validators.minLength(2),
+          Validators.maxLength(100),
+        ]),
+        last_name: new FormControl(this.user.last_name, [
+          Validators.minLength(2),
+          Validators.maxLength(100),
+        ]),
+        birth_date: new FormControl(this.user.birth_date as string),
+        username: new FormControl(this.user.username, [
+          Validators.minLength(2),
+          Validators.maxLength(100),
+        ]),
       });
-    
-    } catch (error){
+    } catch (error) {
       return;
     }
   }
@@ -124,6 +109,4 @@ export class DashboardSettingsComponent {
   updateUser(state: boolean) {
     this.editUserForm = state;
   }
-
 }
-

@@ -81,8 +81,11 @@ export class LoginFormComponent {
         this.loginError = 'Usuario o contraseña incorrectos';
       }
     } catch (errorResponse) {
-      this.usersService.remove(token);
-      localStorage.removeItem('token');
+      if (token) {
+        this.usersService.remove(token);
+        localStorage.removeItem('token');
+      }
+
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
         this.loginError = constants.generalServerError;
         return;

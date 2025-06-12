@@ -160,8 +160,10 @@ export class SignupFormComponent {
         );
         this.router.navigate(['signup', 'signup_confirmation']);
       } catch (errorResponse) {
-        await this.usersService.remove(token);
-        this.authorizationService.removeToken();
+        if (token) {
+          await this.usersService.remove(token);
+          this.authorizationService.removeToken();
+        }
 
         if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
           this.serverError = constants.generalServerError;

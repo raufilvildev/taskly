@@ -105,7 +105,7 @@ export class ChangePasswordComponent {
         this.passwordError = 'Las contraseñas no coinciden';
       }
     } catch (errorResponse) {
-      localStorage.removeItem('token');
+      this.authorizationService.removeToken();
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
         this.passwordError = constants.generalServerError;
         return;
