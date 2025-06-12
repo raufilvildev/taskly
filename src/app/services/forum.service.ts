@@ -12,9 +12,9 @@ export class ForumService {
   private endpoint = `${environment.host}/forum`;
   private httpClient = inject(HttpClient);
 
-  getAll(token: string) {
+  getAll(token: string, order: string = 'desc') {
     return lastValueFrom(
-      this.httpClient.get<IThread[]>(this.endpoint, {
+      this.httpClient.get<IThread[]>(`${this.endpoint}/:course_uuid?order=${order}`, {
         headers: { Authorization: token },
       })
     );
@@ -22,7 +22,7 @@ export class ForumService {
 
   createThread(token: string, thread: IThread) {
     return lastValueFrom(
-      this.httpClient.post<IMessage>(`${this.endpoint}/post/thread`, thread, {
+      this.httpClient.post<IMessage>(`${this.endpoint}/post/thread/:course_uuid`, thread, {
         headers: { Authorization: token },
       })
     );
@@ -30,7 +30,7 @@ export class ForumService {
 
   editThread(token: string, thread: IThread) {
     return lastValueFrom(
-      this.httpClient.put<IMessage>(`${this.endpoint}/update/thread`, thread, {
+      this.httpClient.put<IMessage>(`${this.endpoint}/update/thread/`, thread, {
         headers: { Authorization: token },
       })
     );
@@ -44,9 +44,9 @@ export class ForumService {
     );
   }
 
-  createResponse(token: string, response: IResponse) {
+  createResponse(token: string, thread_uuid: string, response: IResponse) {
     return lastValueFrom(
-      this.httpClient.post<IMessage>(`${this.endpoint}/post/response`, response, {
+      this.httpClient.post<IMessage>(`${this.endpoint}/post/response/${thread_uuid}`, response, {
         headers: { Authorization: token },
       })
     );

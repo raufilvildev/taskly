@@ -2,38 +2,20 @@ import { Component } from '@angular/core';
 import { constants } from '../../utils/constants/constants.config';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { LightDarkButtonComponent } from '../light-dark-button/light-dark-button.component';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, RouterLink, MatIconModule],
+  imports: [CommonModule, RouterLink, MatIconModule, LightDarkButtonComponent],
   templateUrl: './header.component.html',
 })
 export class HeaderComponent {
   appName = constants.appName;
   isMobileMenuOpen = false;
-  isDarkMode = false;
-  htmlElement = document.querySelector('html');
-
-  ngOnInit() {
-    // Inicializa el modo según localStorage
-    const theme = localStorage.getItem('theme');
-    this.isDarkMode = theme === 'dark';
-    if (this.isDarkMode) {
-      this.htmlElement?.classList.add('dark');
-    } else {
-      this.htmlElement?.classList.remove('dark');
-    }
-  }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
-  }
-
-  toggleTheme() {
-    this.isDarkMode = !this.isDarkMode;
-    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
-    this.htmlElement?.classList.toggle('dark');
   }
 
   readonly MENU_LINKS = [

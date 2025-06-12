@@ -18,6 +18,7 @@ export class ResponseFormComponent {
   @Input() token: string = '';
   @Input() type: 'create' | 'edit' = 'create';
   @Input() content = '';
+  @Input() threadUuid = '';
 
   @Output() cancel = new EventEmitter<void>();
   @Output() create = new EventEmitter<void>();
@@ -43,7 +44,7 @@ export class ResponseFormComponent {
     }
 
     try {
-      await this.forumService.createResponse(this.token, response);
+      await this.forumService.createResponse(this.token, this.threadUuid, response);
       this.create.emit();
     } catch (errorResponse) {
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
