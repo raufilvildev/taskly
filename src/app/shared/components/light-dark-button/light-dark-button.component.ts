@@ -22,12 +22,10 @@ export class LightDarkButtonComponent {
   }
 
   ngOnInit() {
-    // Inicializa el modo según localStorage
     const theme = localStorage.getItem('theme');
     this.isDarkMode = theme === 'dark';
     if (this.isDarkMode) {
       this.htmlElement?.classList.add('dark');
-      this.toggleThemeEvent.emit(true);
     } else {
       this.htmlElement?.classList.remove('dark');
     }

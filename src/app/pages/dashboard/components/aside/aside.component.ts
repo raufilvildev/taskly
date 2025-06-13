@@ -14,12 +14,21 @@ export class AsideComponent {
   router = inject(Router);
 
   @Input() user!: IUser;
-  @Input() isDarkMode = false;
 
+  @Input() isDarkMode = false;
   showList = false;
+  htmlElement = document.querySelector('html');
 
   logout() {
     this.authorizationService.removeToken();
     this.router.navigate(['/home']);
+  }
+
+  ngOnInit() {
+    if (this.isDarkMode) {
+      this.htmlElement?.classList.add('dark');
+    } else {
+      this.htmlElement?.classList.remove('dark');
+    }
   }
 }
