@@ -110,7 +110,7 @@ export class ThreadFormComponent {
     this.token = this.authorizationService.getToken() as string;
     this.threadForm = new FormGroup({
       title: new FormControl(this.thread.title, Validators.required),
-      content: new FormControl(this.thread.content, Validators.required),
+      content: new FormControl(this.thread.content.replaceAll('\\n', '\n'), Validators.required),
     });
   }
 }

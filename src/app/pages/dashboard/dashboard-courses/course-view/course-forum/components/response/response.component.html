@@ -3,7 +3,7 @@
     <img
       [src]="response.user.profile_image_url"
       [alt]="'Imagen de perfil de' + response.user.first_name + ' ' + response.user.last_name"
-      class="w-10 h-10 bg-gray-900 rounded-full object-cover object-center"
+      class="w-10 h-10 rounded-full object-cover object-center"
     />
   </div>
 
@@ -74,7 +74,7 @@
         editedResponseUuid !== response.uuid ||
         threadUuidWhereAResponseIsBeingEdited !== threadUuid
       ) {
-        <p class="text-custom-main text-sm">
+        <p class="whitespace-pre-line text-pretty text-custom-main text-sm">
           {{ response.content | formatText }}
         </p>
       }
