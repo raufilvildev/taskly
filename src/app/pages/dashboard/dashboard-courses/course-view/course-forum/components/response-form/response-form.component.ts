@@ -99,7 +99,7 @@ export class ResponseFormComponent {
 
   ngOnInit() {
     this.responseForm = new FormGroup({
-      content: new FormControl(this.content, Validators.required),
+      content: new FormControl(this.content.replaceAll('\\n', '\n'), Validators.required),
     });
   }
 }
