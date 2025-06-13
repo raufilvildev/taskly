@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { Ilist } from '../../../../../interfaces/ilist';
+import { Component, inject, Output, EventEmitter } from '@angular/core';
+import { ITask } from '../../../../../interfaces/itask';
 import { ProjectService } from '../../../../../services/tasks.service';
 
 @Component({
@@ -12,21 +12,37 @@ import { ProjectService } from '../../../../../services/tasks.service';
 export class ListGroupsComponent {
   private projectService = inject(ProjectService);
   projects = this.projectService.projects;
-  selectedProject = this.projectService.selectedProject;
 
-  selectProject(project: Ilist) {
-    this.projectService.setSelectedProject(project);
+  @Output() filteredTasks = new EventEmitter<ITask[]>();
+
+  selectedFilter: string | null = null;
+
+  selectFilter(filter: string) {
+    this.selectedFilter = filter;
+    this.filteredTasks.emit(this.getFilteredTasks());
   }
 
-  isProjectSelected(project: Ilist): boolean {
-    return this.selectedProject()?.id === project.id;
-  }
-
-  getTaskCount(project: Ilist): number {
-    return project.tasks.length;
-  }
-
-  getCompletedTaskCount(project: Ilist): number {
-    return project.tasks.filter(task => task.completed).length;
+  getFilteredTasks(): ITask[] {
+    const tasks = this.projects();
+    const today = new Date().toISOString().slice(0, 10);
+    if (this.selectedFilter === 'hoy') {
+      return tasks.filter(t => t.due_date === today);
+    }
+    if (this.selectedFilter === '7dias') {
+      const now = new Date();
+      const in7 = new Date();
+      in7.setDate(now.getDate() + 7);
+      return tasks.filter(t => t.due_date && t.due_date >= today && t.due_date <= in7.toISOString().slice(0, 10));
+    }
+    if (this.selectedFilter === 'personales') {
+      return tasks.filter(t => t.category === 'custom');
+    }
+    if (this.selectedFilter === 'cursos') {
+      return tasks.filter(t => t.category !== 'custom');
+    }
+    if (this.selectedFilter === 'completadas') {
+      return tasks.filter(t => t.is_completed);
+    }
+    return tasks;
   }
 }

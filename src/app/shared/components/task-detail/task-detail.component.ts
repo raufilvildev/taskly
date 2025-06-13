@@ -1,7 +1,7 @@
 import { Component, inject, computed, effect } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
-import { ProjectService } from '../../../../../services/tasks.service';
-import { Isubtask, Itask } from '../../../../../interfaces/itask';
+import { ProjectService } from '../../../services/tasks.service';
+import { ISubtask, ITask } from '../../../interfaces/itask';
 
 @Component({
   selector: 'app-task-detail',
@@ -14,7 +14,7 @@ import { Isubtask, Itask } from '../../../../../interfaces/itask';
 })
 export class TaskDetailComponent {
   private projectService = inject(ProjectService);
-  selectedTask = this.projectService.selectedTask;
+  selectedTask = computed(() => this.projectService.selectedTask());
   taskForm: FormGroup;
   private fb = inject(FormBuilder);
 
@@ -22,8 +22,8 @@ export class TaskDetailComponent {
     this.taskForm = this.fb.group({
       title: [''],
       description: [''],
-      dueDate: [null],
-      completed: [false]
+      due_date: [null],
+      is_completed: [false]
     });
 
     // Sincroniza el formulario con la tarea seleccionada
@@ -33,8 +33,8 @@ export class TaskDetailComponent {
         this.taskForm.patchValue({
           title: task.title,
           description: task.description,
-          dueDate: task.dueDate,
-          completed: task.completed
+          due_date: task.due_date,
+          is_completed: task.is_completed
         }, { emitEvent: false });
       }
     });
@@ -45,30 +45,31 @@ export class TaskDetailComponent {
       if (task) {
         task.title = val.title;
         task.description = val.description;
-        task.dueDate = val.dueDate;
-        task.completed = val.completed;
+        task.due_date = val.due_date;
+        task.is_completed = val.is_completed;
       }
     });
   }
 
   // Computed para subtareas de la tarea seleccionada
   selectedTaskSubtasks = computed(() => {
-    return (this.selectedTask() as Itask)?.subtasks ?? [];
+    return (this.selectedTask() as ITask)?.subtasks ?? [];
   });
 
   toggleCompletion() {
     if (this.selectedTask()) {
-      const completed = !this.selectedTask()!.completed;
-      this.selectedTask()!.completed = completed;
+      const completed = !this.selectedTask()!.is_completed;
+      this.selectedTask()!.is_completed = completed;
       // Marcar/desmarcar todas las subtareas también
       if (this.selectedTask()!.subtasks) {
-        this.selectedTask()!.subtasks.forEach(subtask => subtask.completed = completed);
+        this.selectedTask()!.subtasks.forEach(subtask => subtask.is_completed = completed);
       }
+      this.taskForm.patchValue({ is_completed: completed }, { emitEvent: false });
     }
   }
 
-  toggleSubtask(subtask: Isubtask) {
-    subtask.completed = !subtask.completed;
+  toggleSubtask(subtask: ISubtask) {
+    subtask.is_completed = !subtask.is_completed;
   }
 
   // Convierte un valor a string 'yyyy-MM-dd' para el input type="date"
@@ -85,6 +86,6 @@ export class TaskDetailComponent {
   // Maneja el cambio del input nativo de fecha
   onNativeDateChange(event: any) {
     const value = event.target.value;
-    this.taskForm.get('dueDate')?.setValue(value ? value : null);
+    this.taskForm.get('due_date')?.setValue(value ? value : null);
   }
 }
