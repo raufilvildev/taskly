@@ -5,6 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FormatTextPipe implements PipeTransform {
   transform(value: string): string {
-    return value.replace(/\\n/g, '\n\n');
+    return value.replace(/\\n/g, '\n');
   }
 }
