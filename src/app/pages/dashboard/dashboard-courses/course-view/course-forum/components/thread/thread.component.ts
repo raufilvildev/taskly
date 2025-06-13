@@ -7,10 +7,18 @@ import { ResponseFormComponent } from '../response-form/response-form.component'
 import { IUser } from '../../../../../../../interfaces/iuser.interface';
 import { constants } from '../../../../../../../shared/utils/constants/constants.config';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FormatDatePipe } from '../../../../../../../pipes/format-date.pipe';
+import { FormatTextPipe } from '../../../../../../../pipes/format-text.pipe';
 
 @Component({
   selector: 'app-thread',
-  imports: [ResponseComponent, ThreadFormComponent, ResponseFormComponent],
+  imports: [
+    ResponseComponent,
+    ThreadFormComponent,
+    ResponseFormComponent,
+    FormatDatePipe,
+    FormatTextPipe,
+  ],
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.css',
 })

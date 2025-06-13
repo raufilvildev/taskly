@@ -12,17 +12,17 @@ export class ForumService {
   private endpoint = `${environment.host}/forum`;
   private httpClient = inject(HttpClient);
 
-  getAll(token: string, order: string = 'desc') {
+  getAll(token: string, course_uuid: string, order: string = 'desc') {
     return lastValueFrom(
-      this.httpClient.get<IThread[]>(`${this.endpoint}/:course_uuid?order=${order}`, {
+      this.httpClient.get<IThread[]>(`${this.endpoint}/${course_uuid}?order=${order}`, {
         headers: { Authorization: token },
       })
     );
   }
 
-  createThread(token: string, thread: IThread) {
+  createThread(token: string, course_uuid: string, thread: IThread) {
     return lastValueFrom(
-      this.httpClient.post<IMessage>(`${this.endpoint}/post/thread/:course_uuid`, thread, {
+      this.httpClient.post<IMessage>(`${this.endpoint}/post/thread/${course_uuid}`, thread, {
         headers: { Authorization: token },
       })
     );

@@ -36,6 +36,7 @@ export class ResponseFormComponent {
 
   async createResponse(responseForm: FormGroup) {
     const response = responseForm.value;
+    console.log(response);
     response.user = this.user;
 
     if (!response.content) {

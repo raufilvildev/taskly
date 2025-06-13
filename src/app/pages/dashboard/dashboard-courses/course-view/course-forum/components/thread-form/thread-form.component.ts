@@ -20,6 +20,7 @@ export class ThreadFormComponent {
   @Input() thread!: IThread;
   @Input() type: 'create' | 'edit' = 'create';
   @Input() user!: IUser;
+  @Input() course_uuid: string = '';
 
   @Output() cancel = new EventEmitter<void>();
   @Output() save = new EventEmitter<void>();
@@ -50,7 +51,7 @@ export class ThreadFormComponent {
     thread.user = this.thread.user;
 
     try {
-      await this.forumService.createThread(this.token, thread);
+      await this.forumService.createThread(this.token, this.course_uuid, thread);
       this.create.emit();
     } catch (errorResponse) {
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
@@ -60,7 +61,6 @@ export class ThreadFormComponent {
 
       if (errorResponse instanceof HttpErrorResponse) {
         this.threadFormError = errorResponse.error;
-        console.log(this.threadFormError);
         return;
       }
 

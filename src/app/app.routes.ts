@@ -72,13 +72,13 @@ export const routes: Routes = [
         children: [
           { path: '', component: CoursesGridComponent },
           {
-            path: 'view/:course_uuid',
+            path: 'view',
             component: CourseViewComponent,
             children: [
-              { path: '', component: CourseHomeComponent },
-              { path: 'tasks', component: CourseTasksComponent },
-              { path: 'calendar', component: CourseCalendarComponent },
-              { path: 'forum', component: CourseForumComponent },
+              { path: ':course_uuid', component: CourseHomeComponent },
+              { path: 'tasks/:course_uuid', component: CourseTasksComponent },
+              { path: 'calendar/:course_uuid', component: CourseCalendarComponent },
+              { path: 'forum/:course_uuid', component: CourseForumComponent },
             ],
           },
         ],

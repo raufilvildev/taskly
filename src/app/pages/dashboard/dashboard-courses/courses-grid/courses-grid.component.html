@@ -1,23 +1,42 @@
-<div class="w-full p-10 flex-1 flex justify-center items-center flex-wrap gap-8">
-  @for (course of courses; track course.uuid) {
-    <div
-      [routerLink]="['/dashboard', 'courses', 'view', course.uuid]"
-      class="flex flex-col justify-between gap-1 w-60 h-fit rounded-lg bg-custom-background dark:bg-gray-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+<div class="relative flex-1 flex flex-col items-center">
+  @if (user.role === 'teacher') {
+    <button
+      class="mt-5 px-6 py-3 text-xl text-black rounded-full border border-custom-accent-dark bg-custom-primary-dark hover:bg-custom-accent-dark dark:bg-purple-100 dark:hover:bg-purple-900 dark:border-purple-900 transition-all duration-300 transform hover:scale-105 hover:text-white shadow-lg hover:shadow-3xl"
+      (click)="showCourseForm = true"
     >
-      <img
-        [src]="course.course_image_url"
-        [alt]="'Imagen del curso ' + course.title"
-        class="h-35 rounded-lg bg-gray-900 dark:bg-gray-500 object-cover object-center"
-      />
-      <div class="p-4 flex flex-col gap-2">
-        <div class="flex flex-col">
-          <h3 class="text-sm font-bold truncate">{{ course.title }}</h3>
-          <p class="text-xs text-custom-text-secondary truncate">{{ course.teacher }}</p>
-        </div>
-        <div>
-          <p class="course-description text-xs">{{ course.description }}</p>
+      Crear curso
+    </button>
+  }
+  <div class="w-full p-10 flex-1 flex justify-center items-center flex-wrap gap-8">
+    @for (course of courses; track course.uuid) {
+      <div
+        [routerLink]="['/dashboard', 'courses', 'view', course.uuid]"
+        class="flex flex-col justify-between gap-1 w-60 h-fit rounded-lg bg-custom-background dark:bg-gray-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+      >
+        <img
+          [src]="course.course_image_url"
+          [alt]="'Imagen del curso ' + course.title"
+          class="h-35 rounded-lg bg-gray-900 dark:bg-gray-500 object-cover object-center"
+        />
+        <div class="p-4 flex flex-col gap-2">
+          <div class="flex flex-col">
+            <h3 class="text-sm font-bold truncate">{{ course.title }}</h3>
+            <p class="text-xs text-custom-text-secondary truncate">{{ course.teacher }}</p>
+          </div>
+          <div>
+            <p class="course-description text-xs">{{ course.description }}</p>
+          </div>
         </div>
       </div>
+    }
+  </div>
+  @if (showCourseForm) {
+    <div class="absolute inset-0 p-5 md:p-20 bg-black/30 z-50 flex justify-center">
+      <app-course-form
+        [user]="user"
+        [type]="'create'"
+        (cancel)="showCourseForm = false"
+      ></app-course-form>
     </div>
   }
 </div>

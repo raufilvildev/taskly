@@ -21,5 +21,5 @@ export interface IThread {
   created_at: string;
   updated_at: string;
   content: string;
-  responses?: IResponse[];
+  responses: IResponse[];
 }
