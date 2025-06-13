@@ -8,7 +8,7 @@
           <h2 class="flex-1 text text-custom-main text-pretty text-3xl font-bold">
             {{ thread.title }}
           </h2>
-          @if (thread.user.uuid === user.uuid) {
+          @if (thread.user?.uuid === user.uuid) {
             <div class="mt-2 self-center flex gap-3">
               <button
                 class="px-3 py-2 text-sm rounded-lg border-custom-accent text-white bg-custom-accent dark:bg-purple-800 dark:hover:bg-purple-900 hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
@@ -36,15 +36,18 @@
           class="self-end mt-5 p-4 flex gap-5 rounded-lg bg-custom-primary-dark dark:bg-gray-900 dark:shadow-sm dark:shadow-white shadow-xl"
         >
           <img
-            [src]="thread.user.profile_image_url"
+            [src]="thread.user?.profile_image_url"
             [alt]="
-              'Imagen de perfil del usuario ' + thread.user.first_name + ' ' + thread.user.last_name
+              'Imagen de perfil del usuario ' +
+              thread.user?.first_name +
+              ' ' +
+              thread.user?.last_name
             "
             class="w-20 h-20 rounded-full"
           />
           <div class="flex flex-col gap-1">
             <h3 class="text-custom-main font-bold">
-              {{ thread.user.first_name }} {{ thread.user.last_name }}
+              {{ thread.user?.first_name }} {{ thread.user?.last_name }}
             </h3>
             <p class="text-custom-main text-sm">
               Creado: {{ thread.created_at | formatDate: 'DD/MM/YYYY HH:mm' }}
@@ -90,7 +93,7 @@
                 (editResponse)="setEditedResponse($event)"
                 (delete)="updateForum()"
                 [editedResponseUuid]="editedResponseUuid"
-                [threadUuid]="thread.uuid"
+                [threadUuid]="thread.uuid ? thread.uuid : ''"
                 [threadUuidWhereAResponseIsBeingEdited]="threadUuidWhereAResponseIsBeingEdited"
               ></app-response>
             }
@@ -113,6 +116,7 @@
     <app-thread-form
       [thread]="thread"
       [type]="type"
+      [course_uuid]="course_uuid"
       (cancel)="updateForum()"
       (save)="updateForum()"
       (create)="updateForum()"
@@ -131,7 +135,7 @@
       <div class="flex gap-5 justify-center">
         <button
           class="px-3 py-2 text-sm text-custom-text-main rounded-lg border border-custom-accent bg-custom-primary-light hover:bg-custom-accent-dark hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-          (click)="deleteThread(thread.uuid)"
+          (click)="deleteThread(thread.uuid ? thread.uuid : '')"
         >
           Confirmar
         </button>

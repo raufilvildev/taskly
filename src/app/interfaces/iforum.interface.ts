@@ -15,11 +15,11 @@ export interface IResponse {
 }
 
 export interface IThread {
-  uuid: string;
-  user: IForumUser;
+  uuid?: string;
+  user?: IForumUser;
   title: string;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
   content: string;
   responses: IResponse[];
 }

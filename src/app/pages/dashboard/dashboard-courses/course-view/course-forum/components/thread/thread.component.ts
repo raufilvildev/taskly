@@ -28,8 +28,10 @@ export class ThreadComponent {
   @Input() thread!: IThread;
   @Input() token = '';
   @Input() user!: IUser;
+  @Input() course_uuid = '';
   @Input() threadUuidWhereAResponseIsBeingEdited = '';
   @Input() threadUuidWhereAResponseIsBeingCreated = '';
+
   @Output() update = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Output() editedThread = new EventEmitter<string>();
