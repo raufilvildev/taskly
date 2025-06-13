@@ -9,7 +9,7 @@
 
   <div class="flex flex-col flex-1 gap-2">
     <div class="flex items-center gap-2">
-      <div class="flex-1 flex flex-col sm:flex-row gap-1 sm:gap-2">
+      <div class="flex-1 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
         <h3
           class="text-sm font-bold truncate"
           [class.text-custom-accent-dark]="response.user.role === 'teacher'"
@@ -19,10 +19,10 @@
           {{ response.user.first_name }} {{ response.user.last_name }}
         </h3>
         <p class="text-sm text-custom-text-secondary">
-          {{ response.updated_at ? '(' + response.updated_at + ')' : '' }}
+          {{ response.updated_at ? '(' + (response.updated_at | formatDate) + ')' : '' }}
         </p>
         @if (response.created_at !== response.updated_at) {
-          <p class="text-[0.5rem] text-custom-text-secondary italic">Editado</p>
+          <p class="text-[0.75rem] text-custom-text-secondary italic">Editado</p>
         }
       </div>
       @if (response.user.uuid === user.uuid) {
@@ -75,7 +75,7 @@
         threadUuidWhereAResponseIsBeingEdited !== threadUuid
       ) {
         <p class="text-custom-main text-sm">
-          {{ response.content }}
+          {{ response.content | formatText }}
         </p>
       }
 

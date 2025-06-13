@@ -7,10 +7,12 @@ import { ResponseFormComponent } from '../response-form/response-form.component'
 import { ForumService } from '../../../../../../../services/forum.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { constants } from '../../../../../../../shared/utils/constants/constants.config';
+import { FormatDatePipe } from '../../../../../../../pipes/format-date.pipe';
+import { FormatTextPipe } from '../../../../../../../pipes/format-text.pipe';
 
 @Component({
   selector: 'app-response',
-  imports: [ResponseFormComponent],
+  imports: [ResponseFormComponent, FormatDatePipe, FormatTextPipe],
   templateUrl: './response.component.html',
   styleUrl: './response.component.css',
 })
@@ -61,5 +63,4 @@ export class ResponseComponent {
       this.deleteResponseError = constants.generalServerError;
     }
   }
-  
 }
