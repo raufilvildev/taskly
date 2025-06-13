@@ -1,6 +1,6 @@
 <div class="task-item cursor-pointer select-none transition-shadow"
      [class.selected-task]="isSelected"
-     [class.completed-task]="task.completed"
+     [class.completed-task]="task.is_completed"
      (click)="selectTask.emit(task)">
   <div class="task-header flex items-center gap-2">
     @if (task.subtasks.length > 0) {
@@ -12,36 +12,36 @@
       </button>
     }
     <input type="checkbox"
-      [checked]="task.completed"
+      [checked]="task.is_completed"
       (change)="toggleTask.emit(task)"
       (click)="$event.stopPropagation()"
       class="task-checkbox" >
     <div class="flex flex-1 items-center min-w-0 justify-between">
-      <h4 class="task-title truncate" [class.completed]="task.completed">
+      <h4 class="task-title truncate" [class.completed]="task.is_completed">
         {{task.title}}
       </h4>
-      @if (task.dueDate) {
-        <span class="task-due-date ml-2" [class.completed]="task.completed">
-          Fecha límite: {{formatDueDate(task.dueDate)}}
+      @if (task.due_date) {
+        <span class="task-due-date ml-2" [class.completed]="task.is_completed">
+          Fecha límite: {{formatDueDate(task.due_date)}}
         </span>
       }
     </div>
   </div>
   <div class="task-content">
-    <p class="task-description" [class.completed]="task.completed">
+    <p class="task-description" [class.completed]="task.is_completed">
       {{task.description}}
     </p>
     @if (expanded) {
       <ul class="subtasks-list">
         @for (subtask of task.subtasks; track subtask.id) {
-          <li class="subtask-item" [class.completed-subtask]="subtask.completed">
+          <li class="subtask-item" [class.completed-subtask]="subtask.is_completed">
             <input type="checkbox"
-              [checked]="subtask.completed"
+              [checked]="subtask.is_completed"
               (change)="toggleSubtask.emit(subtask)"
               (click)="$event.stopPropagation()"
               class="subtask-checkbox" />
-            <span class="subtask-name" [class.completed]="subtask.completed">
-              {{subtask.name}}
+            <span class="subtask-name" [class.completed]="subtask.is_completed">
+              {{subtask.title}}
             </span>
           </li>
         }

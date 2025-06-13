@@ -1,11 +1,9 @@
 .project-list {
   height: 100%;
-  overflow-y: auto;
   background: var(--color-panel);
+  display: flex;
+  flex-direction: column;
 }
-::ng-deep .as-split-gutter-icon {
-      background-color: var(--color-panel) !important;
-    }
 
 .project-list h3 {
   margin-top: var(--spacing-md);
@@ -28,4 +26,13 @@
   margin: 0;
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
+}
+.menu {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.menu > li.mt-auto {
+  margin-top: auto !important;
 }
