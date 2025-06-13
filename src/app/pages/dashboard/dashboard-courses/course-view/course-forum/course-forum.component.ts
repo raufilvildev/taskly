@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { AuthorizationService } from '../../../../../services/authorization.service';
 import { UsersService } from '../../../../../services/users.service';
 import { IUser } from '../../../../../interfaces/iuser.interface';
@@ -6,7 +6,7 @@ import { ThreadComponent } from './components/thread/thread.component';
 import { IThread } from '../../../../../interfaces/iforum.interface';
 import { ForumService } from '../../../../../services/forum.service';
 import { ThreadFormComponent } from './components/thread-form/thread-form.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, ROUTER_OUTLET_DATA } from '@angular/router';
 
 @Component({
   selector: 'app-course-forum',
@@ -21,15 +21,26 @@ export class CourseForumComponent {
   router = inject(Router);
 
   @Input() course_uuid: string = '';
+
   token = '';
   user!: IUser;
   forum: IThread[] = [];
   showThreadForm = false;
   threadUuidWhereAResponseIsBeingEdited = '';
   threadUuidWhereAResponseIsBeingCreated = '';
+  order = 'desc';
+  isDarkMode = inject<boolean>(ROUTER_OUTLET_DATA);
 
   async updateForum() {
-    this.forum = await this.forumService.getAll(this.token, this.course_uuid);
+    this.forum = await this.forumService.getAll(this.token, this.course_uuid, this.order);
+  }
+
+  toggleOrder() {
+    if (this.order === 'desc') {
+      this.order = 'asc';
+    } else {
+      this.order = 'desc';
+    }
   }
 
   onThreadAnswered(event: string) {

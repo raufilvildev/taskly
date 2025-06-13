@@ -20,7 +20,7 @@ export class ThreadFormComponent {
   @Input() thread!: IThread;
   @Input() type: 'create' | 'edit' = 'create';
   @Input() user!: IUser;
-  @Input() course_uuid: string = '';
+  @Input() course_uuid = '';
 
   @Output() cancel = new EventEmitter<void>();
   @Output() save = new EventEmitter<void>();
