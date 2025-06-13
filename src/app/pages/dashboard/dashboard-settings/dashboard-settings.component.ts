@@ -105,18 +105,26 @@ export class DashboardSettingsComponent {
     }
   }
 
-  editUserForm = false;
+  editUserForm: { [key: string]: boolean } = {
+    first_name: false,
+    last_name: false,
+    username: false,
+    birth_date: false,
+  };
 
-  updateUserFormState(state: boolean) {
-    this.editUserForm = state;
-  }
+
+  updateUserFormState(field: string, state: boolean) {
+  this.editUserForm[field] = state;
+}
 
   async updateUser(userFormValue: any) {
     try { 
       const token = this.authorizationService.getToken();
       const responseData = await this.usersService.update(token, userFormValue);
       await this.ngOnInit();
-      this.editUserForm = false;
+      for (const key in this.editUserForm) {
+        this.editUserForm[key] = false;
+      }
       
     } catch (error) {
       console.error(`Error al actualizar el usuario:`, error);
