@@ -1,9 +1,11 @@
 export const constants: {
+  displayMessageTime: number;
   appName: string;
   generalServerError: string;
   fields: { [key: string]: string };
   messages: { [key: string]: string };
 } = {
+  displayMessageTime: 3000,
   appName: 'Taskly',
   generalServerError: 'Ha ocurrido un error inesperado. Vuelve a intentarlo más tarde.',
   fields: {

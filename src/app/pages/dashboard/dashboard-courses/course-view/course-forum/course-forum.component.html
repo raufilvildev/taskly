@@ -1,0 +1,46 @@
+<div class="relative overflow-auto">
+  <div class="fixed top-0 right-0 flex justify-end p-5 pointer-events-auto">
+    <button
+      class="px-6 py-3 text-xl text-black rounded-full border border-custom-accent-dark bg-custom-primary-dark hover:bg-custom-accent-dark dark:bg-purple-100 dark:hover:bg-purple-900 dark:border-purple-900 transition-all duration-300 transform hover:scale-105 hover:text-white shadow-lg hover:shadow-3xl"
+      (click)="showThreadForm = true"
+    >
+      Crear hilo
+    </button>
+  </div>
+  @for (thread of forum; track thread.uuid) {
+    <app-thread
+      [thread]="thread"
+      [token]="token"
+      [threadUuidWhereAResponseIsBeingCreated]="threadUuidWhereAResponseIsBeingCreated"
+      [threadUuidWhereAResponseIsBeingEdited]="threadUuidWhereAResponseIsBeingEdited"
+      [user]="user"
+      (update)="updateForum()"
+      (delete)="updateForum()"
+      (answeredThread)="onThreadAnswered($event)"
+      (editedThread)="onThreadEdited($event)"
+    ></app-thread>
+  }
+  @if (showThreadForm) {
+    <div class="fixed inset-0 bg-black/30 z-50 flex items-center justify-center">
+      <app-thread-form
+        [thread]="{
+          uuid: '',
+          user: {
+            uuid: user.uuid ? user.uuid : '',
+            first_name: user.first_name,
+            last_name: user.last_name,
+            profile_image_url: user.profile_image_url ? user.profile_image_url : '',
+            role: user.role !== 'general' ? user.role : 'student',
+          },
+          title: '',
+          content: '',
+          created_at: '',
+          updated_at: '',
+          responses: [],
+        }"
+        [type]="'create'"
+        (cancel)="showThreadForm = false"
+      ></app-thread-form>
+    </div>
+  }
+</div>

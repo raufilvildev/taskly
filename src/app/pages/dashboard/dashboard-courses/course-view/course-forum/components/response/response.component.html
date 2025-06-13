@@ -1,0 +1,126 @@
+<div class="flex pt-3 p-1 gap-2">
+  <div class="pt-1">
+    <img
+      [src]="response.user.profile_image_url"
+      [alt]="'Imagen de perfil de' + response.user.first_name + ' ' + response.user.last_name"
+      class="w-10 h-10 bg-gray-900 rounded-full object-cover object-center"
+    />
+  </div>
+
+  <div class="flex flex-col flex-1 gap-2">
+    <div class="flex items-center gap-2">
+      <div class="flex-1 flex flex-col sm:flex-row gap-1 sm:gap-2">
+        <h3
+          class="text-sm font-bold truncate"
+          [class.text-custom-accent-dark]="response.user.role === 'teacher'"
+          [class.text-custom-accent-dark]="response.user.role === 'teacher'"
+          [class]="{ 'dark:text-purple-500': response.user.role === 'teacher' }"
+        >
+          {{ response.user.first_name }} {{ response.user.last_name }}
+        </h3>
+        <p class="text-sm text-custom-text-secondary">
+          {{ response.updated_at ? '(' + response.updated_at + ')' : '' }}
+        </p>
+        @if (response.created_at !== response.updated_at) {
+          <p class="text-[0.5rem] text-custom-text-secondary italic">Editado</p>
+        }
+      </div>
+      @if (response.user.uuid === user.uuid) {
+        <div class="flex gap-3">
+          <div
+            class="p-2 w-8 h-8 rounded-full hover:bg-custom-background/75 transition-all duration-300 transform hover:scale-110 flex items-center justify-center cursor-pointer"
+          >
+            @if (
+              !showResponseForm ||
+              editedResponseUuid !== response.uuid ||
+              threadUuidWhereAResponseIsBeingEdited !== threadUuid
+            ) {
+              <img
+                src="edit.svg"
+                alt="Editar respuesta"
+                class="w-6 h-6"
+                (click)="updateThread(true, response.uuid)"
+              />
+            }
+            @if (
+              showResponseForm &&
+              editedResponseUuid === response.uuid &&
+              threadUuidWhereAResponseIsBeingEdited === threadUuid
+            ) {
+              <img
+                src="cancel_edit.svg"
+                alt="Cancelar edición de respuesta"
+                class="w-6 h-6"
+                (click)="updateThread(false, response.uuid)"
+              />
+            }
+          </div>
+          <div
+            class="p-2 w-8 h-8 rounded-full hover:bg-custom-background/75 transition-all duration-300 transform hover:scale-110 flex items-center justify-center cursor-pointer"
+          >
+            <img
+              src="remove.svg"
+              alt="Borrar respuesta"
+              class="w-6 h-6"
+              (click)="updateShowDeleteConfirmation(true)"
+            />
+          </div>
+        </div>
+      }
+    </div>
+    <div class="flex flex-col">
+      @if (
+        !showResponseForm ||
+        editedResponseUuid !== response.uuid ||
+        threadUuidWhereAResponseIsBeingEdited !== threadUuid
+      ) {
+        <p class="text-custom-main text-sm">
+          {{ response.content }}
+        </p>
+      }
+
+      @if (
+        showResponseForm &&
+        editedResponseUuid === response.uuid &&
+        threadUuidWhereAResponseIsBeingEdited === threadUuid
+      ) {
+        <app-response-form
+          [token]="token"
+          [user]="user"
+          [type]="'edit'"
+          [content]="response.content"
+          [threadUuid]="threadUuid"
+          (edit)="updateThread(false, response.uuid)"
+        ></app-response-form>
+      }
+    </div>
+  </div>
+  @if (showDeleteConfirmation) {
+    <div class="fixed inset-0 bg-black/30 z-50 flex items-center justify-center shadow-xl">
+      <div class="p-10 bg-custom-background rounded-lg w-75 flex flex-col gap-10">
+        <p class="text-custom-main text-center">
+          ¿Estás seguro de que quieres borrar este comentario?
+        </p>
+        @if (deleteResponseError) {
+          <p class="pl-1 mt-1 italic text-sm text-custom-error text-center">
+            {{ deleteResponseError }}
+          </p>
+        }
+        <div class="flex gap-5 justify-center">
+          <button
+            class="px-3 py-2 text-sm text-custom-text-main rounded-lg border border-custom-accent bg-custom-primary-light hover:bg-custom-accent-dark hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            (click)="deleteResponse(response.uuid)"
+          >
+            Confirmar
+          </button>
+          <button
+            class="px-3 py-2 text-sm rounded-lg border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            (click)="updateShowDeleteConfirmation(false)"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

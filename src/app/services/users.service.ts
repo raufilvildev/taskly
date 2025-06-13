@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '../environments/environment.test';
@@ -6,20 +6,22 @@ import { IUser } from '../interfaces/iuser.interface';
 import { IToken } from '../interfaces/itoken.interface';
 import { ILogin } from '../interfaces/ilogin.interface';
 import { IMessage } from '../interfaces/imessage.interface';
+import { AuthorizationService } from './authorization.service';
 
 type Response = {
   success: string;
   token: string;
-}
+};
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
+  private authorizationService: AuthorizationService = inject(AuthorizationService);
   private endpoint = `${environment.host}/user`;
   private httpClient = inject(HttpClient);
 
-  getById(token: string) {
+  getByToken(token: string) {
     return lastValueFrom(
       this.httpClient.get<IUser>(this.endpoint, { headers: { Authorization: token } })
     );
@@ -48,4 +50,17 @@ export class UsersService {
       this.httpClient.delete<IMessage>(this.endpoint, { headers: { Authorization: token } })
     );
   }
+
+  update (token: string, user: IUser){
+    return lastValueFrom(
+      this.httpClient.put<IToken>(
+        `${this.endpoint}/update`,
+        user ,
+        { headers: { Authorization: token }}
+      )
+    );
+  }
+
+  
+
 }

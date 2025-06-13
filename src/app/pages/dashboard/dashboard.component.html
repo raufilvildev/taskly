@@ -1,4 +1,10 @@
-<div class="flex-grow flex justify-center items-center w-full">
-    <router-outlet />
-</div>
+<div class="flex-1 flex items-stretch min-h-dvh">
+  <app-aside [user]="user" [isDarkMode]="isDarkMode"></app-aside>
 
+  <div class="flex-1 flex items-stretch min-h-dvh pb-20 lg:pb-0">
+    <router-outlet />
+  </div>
+  <div class="fixed p-5 sm:p-10 sm:bottom-25 sm:right-0 lg:bottom-0 z-100">
+    <app-light-dark-button (toggleThemeEvent)="isDarkMode = $event"></app-light-dark-button>
+  </div>
+</div>

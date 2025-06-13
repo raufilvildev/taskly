@@ -1,0 +1,59 @@
+<form
+  [formGroup]="responseForm"
+  (ngSubmit)="onSubmit()"
+  class="w-full mx-auto p-2 flex flex-col gap-1 rounded-lg"
+>
+  <div class="flex gap-4 w-full">
+    @if (type === 'create') {
+      <img
+        [src]="user.profile_image_url"
+        [alt]="'Imagen de perfil de' + user.first_name + user.last_name"
+        class="w-7 h-7 bg-gray-900 rounded-full object-cover object-center"
+      />
+    }
+    <div class="flex flex-col flex-1">
+      @if (type === 'create') {
+        <div class="flex items-center gap-2">
+          <h3
+            class="text-sm font-bold truncate"
+            [class.text-custom-text-main]="user.role === 'student'"
+            [class.text-custom-accent-dark]="user.role === 'teacher'"
+          >
+            {{ user.first_name }} {{ user.last_name }}
+          </h3>
+        </div>
+      }
+      <fieldset class="flex flex-col gap-2">
+        <textarea
+          type="text"
+          formControlName="content"
+          id="content"
+          class="resize-none px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+          rows="3"
+        ></textarea>
+      </fieldset>
+    </div>
+  </div>
+  @if (responseFormError) {
+    <div class="mt-2">
+      <p class="pl-1 mt-1 italic text-sm text-custom-error text-center">{{ responseFormError }}</p>
+    </div>
+  }
+  <div class="flex justify-end gap-5 mt-3">
+    @if (type === 'create') {
+      <button
+        type="button"
+        class="px-4 py-2 text-sm text-custom-text-main rounded-lg bg-custom-primary-light hover:bg-custom-accent-dark dark:bg-purple-100 dark:bg-purple-100 dark:hover:bg-purple-900 hover:text-white hover:scale-105 shadow-lg hover:shadow-xl transition-all duration-300 transform"
+        (click)="cancelResponseForm()"
+      >
+        Cancelar
+      </button>
+    }
+    <button
+      type="submit"
+      class="w-fit px-4 py-2 rounded-lg text-white text-sm bg-custom-accent hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 hover:scale-105 shadow-lg hover:shadow-xl transition-all duration-300 transform"
+    >
+      {{ type === 'create' ? 'Crear' : 'Guardar' }}
+    </button>
+  </div>
+</form>

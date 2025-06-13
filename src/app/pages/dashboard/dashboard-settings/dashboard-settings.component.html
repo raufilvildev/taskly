@@ -1,1 +1,151 @@
-<p>dashboard-settings works!</p>
+<div class="w-[700px] mx-auto p-10 flex-1 flex justify-center items-center flex-wrap gap-8">
+  <form
+    [formGroup]="userSettingsForm"
+    (ngSubmit)="updateUser(userSettingsForm.value)"
+    class="mx-auto p-6 bg-white rounded-xl shadow-md w-[700px] max-w-full"
+  >
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Nombre -->
+      <fieldset class="flex flex-col">
+        <div class="flex justify-between items-center mb-3">
+          <label for="first_name" class="text-sm font-bold">Nombre</label>
+          @if (editUserForm['first_name']) {
+            <img
+              src="cancel_edit.svg"
+              alt="Cancelar edición"
+              class="w-6 h-6 cursor-pointer"
+              (click)="updateUserFormState('first_name', false)"
+            />
+          } @else {
+            <img
+              src="edit.svg"
+              alt="Editar nombre"
+              class="w-4 h-4 cursor-pointer"
+              (click)="updateUserFormState('first_name', true)"
+            />
+          }
+        </div>
+        @if (editUserForm['first_name']) {
+          <input
+            type="text"
+            id="first_name"
+            formControlName="first_name"
+            class="w-full px-4 py-2 bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300"
+            [class]="getValidationStyleClasses('first_name', ['minlength', 'maxlength'])"
+          />
+        } @else {
+          <p class="w-full mt-2 text-base">{{ this.user.first_name }}</p>
+        }
+      </fieldset>
+
+      <!-- Apellido -->
+      <fieldset class="flex flex-col">
+        <div class="flex justify-between items-center mb-3">
+          <label for="last_name" class="text-sm font-bold">Apellidos</label>
+          @if (editUserForm['last_name']) {
+            <img
+              src="cancel_edit.svg"
+              alt="Cancelar edición"
+              class="w-6 h-6 cursor-pointer"
+              (click)="updateUserFormState('last_name', false)"
+            />
+          } @else {
+            <img
+              src="edit.svg"
+              alt="Editar apellidos"
+              class="w-4 h-4 cursor-pointer"
+              (click)="updateUserFormState('last_name', true)"
+            />
+          }
+        </div>
+        @if (editUserForm['last_name']) {
+          <input
+            type="text"
+            id="last_name"
+            formControlName="last_name"
+            class="w-full px-4 py-2 bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300"
+            [class]="getValidationStyleClasses('last_name', ['minlength', 'maxlength'])"
+          />
+        } @else {
+          <p class="w-full mt-2 text-base">{{ this.user.last_name }}</p>
+        }
+      </fieldset>
+
+      <!-- Nombre de usuario -->
+      <fieldset class="flex flex-col">
+        <div class="flex justify-between items-center mb-3">
+          <label for="username" class="text-sm font-bold">Nombre de usuario</label>
+          @if (editUserForm['username']) {
+            <img
+              src="cancel_edit.svg"
+              alt="Cancelar edición"
+              class="w-6 h-6 cursor-pointer"
+              (click)="updateUserFormState('username', false)"
+            />
+          } @else {
+            <img
+              src="edit.svg"
+              alt="Editar usuario"
+              class="w-4 h-4 cursor-pointer"
+              (click)="updateUserFormState('username', true)"
+            />
+          }
+        </div>
+        @if (editUserForm['username']) {
+          <input
+            type="text"
+            id="username"
+            formControlName="username"
+            class="w-full px-4 py-2 bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300"
+            [class]="getValidationStyleClasses('username', ['minlength', 'maxlength'])"
+          />
+        } @else {
+          <p class="w-full mt-2 text-base">{{ this.user.username }}</p>
+        }
+      </fieldset>
+
+      <!-- Fecha de nacimiento -->
+      <fieldset class="flex flex-col">
+        <div class="flex justify-between items-center mb-3">
+          <label for="birth_date" class="text-sm font-bold">Fecha de nacimiento</label>
+          @if (editUserForm['birth_date']) {
+            <img
+              src="cancel_edit.svg"
+              alt="Cancelar edición"
+              class="w-6 h-6 cursor-pointer"
+              (click)="updateUserFormState('birth_date', false)"
+            />
+          } @else {
+            <img
+              src="edit.svg"
+              alt="Editar fecha de nacimiento"
+              class="w-4 h-4 cursor-pointer"
+              (click)="updateUserFormState('birth_date', true)"
+            />
+          }
+        </div>
+        @if (editUserForm['birth_date']) {
+          <input
+            type="date"
+            id="birth_date"
+            formControlName="birth_date"
+            class="w-full px-4 py-2 placeholder:text-custom-muted bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300"
+            [class]="getValidationStyleClasses('birth_date', [])"
+          />
+        } @else {
+          <p class="w-full mt-2 text-base">{{ this.user.birth_date }}</p>
+        }
+      </fieldset>
+    </div>
+
+    <!-- Botón Guardar -->
+    <div class="flex justify-end mt-8">
+      <button
+        type="submit"
+        class="px-4 py-2 rounded-lg border-2 border-custom-accent bg-custom-accent text-white text-sm hover:bg-custom-accent-dark hover:scale-105 shadow-lg hover:shadow-xl transition-all duration-300"
+      >
+        Guardar cambios
+      </button>
+    </div>
+  </form>
+</div>

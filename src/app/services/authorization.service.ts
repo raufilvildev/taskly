@@ -12,8 +12,10 @@ export class AuthorizationService {
   private endpoint = `${environment.host}/authorization`;
   private httpClient = inject(HttpClient);
 
-  getToken(): string | null {
-    return localStorage.getItem('token');
+  getToken(): string {
+    let token = localStorage.getItem('token');
+    if (!token) return '';
+    return token;
   }
 
   setToken(token: string) {
