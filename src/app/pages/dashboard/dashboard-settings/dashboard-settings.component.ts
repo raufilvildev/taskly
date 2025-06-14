@@ -1,20 +1,16 @@
-import { Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { UsersService } from '../../../services/users.service';
 import { AuthorizationService } from '../../../services/authorization.service';
-import { Router } from '@angular/router';
-import { IUser } from '../../../interfaces/iuser.interface';
+import { IGetByTokenUser } from '../../../interfaces/iuser.interface';
 import { constants } from '../../../shared/utils/constants/constants.config';
-import { HttpErrorResponse } from '@angular/common/http';
-import { IToken } from '../../../interfaces/itoken.interface';
+import { initUser } from '../../../shared/utils/initializers';
 
 @Component({
   selector: 'app-dashboard-settings',
@@ -25,11 +21,10 @@ import { IToken } from '../../../interfaces/itoken.interface';
 export class DashboardSettingsComponent {
   private usersService = inject(UsersService);
   private authorizationService = inject(AuthorizationService);
-  private router = inject(Router);
 
   serverError = '';
   serverSuccess = '';
-  user!: IUser;
+  user: IGetByTokenUser = initUser();
 
   userSettingsForm = new FormGroup({
     first_name: new FormControl('', [Validators.minLength(2), Validators.maxLength(100)]),
@@ -112,23 +107,20 @@ export class DashboardSettingsComponent {
     birth_date: false,
   };
 
-
   updateUserFormState(field: string, state: boolean) {
-  this.editUserForm[field] = state;
-}
+    this.editUserForm[field] = state;
+  }
 
   async updateUser(userFormValue: any) {
-    try { 
+    try {
       const token = this.authorizationService.getToken();
       const responseData = await this.usersService.update(token, userFormValue);
       await this.ngOnInit();
       for (const key in this.editUserForm) {
         this.editUserForm[key] = false;
       }
-      
     } catch (error) {
       console.error(`Error al actualizar el usuario:`, error);
     }
   }
-  
 }

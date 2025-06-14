@@ -1,0 +1,20 @@
+import { IUser } from '../../interfaces/iuser.interface';
+
+export const initUser = (): IUser => {
+  return {
+    id: 0,
+    uuid: '',
+    first_name: '',
+    last_name: '',
+    birth_date: '',
+    email: '',
+    username: '',
+    password: '',
+    profile_image_url: 'default_user_profile.svg',
+    notify_by_email: 1,
+    email_confirmed: 0,
+    role: 'general',
+    created_at: '',
+    updated_at: '',
+  };
+};

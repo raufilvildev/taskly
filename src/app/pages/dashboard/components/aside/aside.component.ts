@@ -1,7 +1,10 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthorizationService } from '../../../../services/authorization.service';
-import { IUser } from '../../../../interfaces/iuser.interface';
+import { IGetByTokenUser } from '../../../../interfaces/iuser.interface';
+import { ThemeService } from '../../../../services/theme.service';
+import { Subscription } from 'rxjs';
+import { initUser } from '../../../../shared/utils/initializers';
 
 @Component({
   selector: 'app-aside',
@@ -11,13 +14,19 @@ import { IUser } from '../../../../interfaces/iuser.interface';
 })
 export class AsideComponent {
   authorizationService = inject(AuthorizationService);
+  themeService = inject(ThemeService);
   router = inject(Router);
 
-  @Input() user!: IUser;
+  @Input() user: IGetByTokenUser = initUser();
 
-  @Input() isDarkMode = false;
+  isDarkMode = signal(false);
   showList = false;
-  htmlElement = document.querySelector('html');
+
+  private themeSub?: Subscription;
+
+  getIcon(name: string): string {
+    return `${name}${this.isDarkMode() ? '_light' : ''}.svg`;
+  }
 
   logout() {
     this.authorizationService.removeToken();
@@ -25,10 +34,17 @@ export class AsideComponent {
   }
 
   ngOnInit() {
-    if (this.isDarkMode) {
-      this.htmlElement?.classList.add('dark');
-    } else {
-      this.htmlElement?.classList.remove('dark');
-    }
+    // Inicializa el valor del tema actual
+    this.isDarkMode.set(this.themeService.currentValue);
+
+    // Suscríbete al observable para actualizar el signal cuando el tema cambie
+    this.themeSub = this.themeService.isDarkMode$.subscribe((isDark) => {
+      this.isDarkMode.set(isDark);
+    });
+  }
+
+  ngOnDestroy() {
+    // Cancelar suscripción para evitar memory leaks
+    this.themeSub?.unsubscribe();
   }
 }

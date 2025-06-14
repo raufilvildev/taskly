@@ -1,12 +1,13 @@
 import { Component, inject, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsersService } from '../../../services/users.service';
-import { IUser } from '../../../interfaces/iuser.interface';
+import { IGetByTokenUser, IUser } from '../../../interfaces/iuser.interface';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AuthorizationService } from '../../../services/authorization.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { constants } from '../../../shared/utils/constants/constants.config';
 import { CountdownComponent, CountdownModule } from 'ngx-countdown';
+import { initUser } from '../../utils/initializers';
 
 @Component({
   selector: 'app-code-confirmation',
@@ -21,7 +22,7 @@ export class CodeConfirmationComponent {
 
   @Input() type = 'signup';
 
-  user?: IUser;
+  user: IGetByTokenUser = initUser();
   token = '';
   confirmEmailFormError = '';
   serverError = '';

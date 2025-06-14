@@ -4,11 +4,12 @@ import { ThreadFormComponent } from '../thread-form/thread-form.component';
 import { IThread } from '../../../../../../../interfaces/iforum.interface';
 import { ForumService } from '../../../../../../../services/forum.service';
 import { ResponseFormComponent } from '../response-form/response-form.component';
-import { IUser } from '../../../../../../../interfaces/iuser.interface';
+import { IGetByTokenUser, IUser } from '../../../../../../../interfaces/iuser.interface';
 import { constants } from '../../../../../../../shared/utils/constants/constants.config';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormatDatePipe } from '../../../../../../../pipes/format-date.pipe';
 import { FormatTextPipe } from '../../../../../../../pipes/format-text.pipe';
+import { initUser } from '../../../../../../../shared/utils/initializers';
 
 @Component({
   selector: 'app-thread',
@@ -27,7 +28,7 @@ export class ThreadComponent {
 
   @Input() thread!: IThread;
   @Input() token = '';
-  @Input() user!: IUser;
+  @Input() user: IGetByTokenUser = initUser();
   @Input() course_uuid = '';
   @Input() threadUuidWhereAResponseIsBeingEdited = '';
   @Input() threadUuidWhereAResponseIsBeingCreated = '';

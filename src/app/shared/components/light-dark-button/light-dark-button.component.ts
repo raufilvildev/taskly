@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { ThemeService } from '../../../services/theme.service';
 
 @Component({
   selector: 'app-light-dark-button',
@@ -8,26 +9,24 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './light-dark-button.component.css',
 })
 export class LightDarkButtonComponent {
-  @Output() toggleThemeEvent = new EventEmitter<boolean>();
-
-  isDarkMode = false;
-
-  htmlElement = document.querySelector('html');
+  themeService = inject(ThemeService);
+  icon = 'dark_mode';
 
   toggleTheme() {
-    this.isDarkMode = !this.isDarkMode;
-    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
-    this.htmlElement?.classList.toggle('dark');
-    this.toggleThemeEvent.emit(this.isDarkMode);
+    const newValue = !this.themeService.currentValue;
+    this.themeService.setDarkMode(newValue);
+  }
+
+  private updateIcon(isDark: boolean) {
+    this.icon = isDark ? 'light_mode' : 'dark_mode';
   }
 
   ngOnInit() {
-    const theme = localStorage.getItem('theme');
-    this.isDarkMode = theme === 'dark';
-    if (this.isDarkMode) {
-      this.htmlElement?.classList.add('dark');
-    } else {
-      this.htmlElement?.classList.remove('dark');
-    }
+    this.updateIcon(this.themeService.currentValue);
+
+    // Suscripción para actualizar icono al cambiar tema desde cualquier lado
+    this.themeService.isDarkMode$.subscribe((isDark) => {
+      this.updateIcon(isDark);
+    });
   }
 }

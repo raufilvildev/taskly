@@ -7,7 +7,7 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { UsersService } from '../../../services/users.service';
-import type { IUser } from '../../../interfaces/iuser.interface';
+import type { ISignupUser, IUser } from '../../../interfaces/iuser.interface';
 import { Router } from '@angular/router';
 import { AuthorizationService } from '../../../services/authorization.service';
 import { passwordsMatchValidator } from '../../../validators/passwords_match.validator';
@@ -138,7 +138,7 @@ export class SignupFormComponent {
     if (signupForm.valid) {
       const { first_name, last_name, birth_date, email, username, password, role } =
         signupForm.value;
-      const user: IUser = {
+      const user: ISignupUser = {
         first_name,
         last_name,
         birth_date,

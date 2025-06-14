@@ -1,12 +1,15 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, signal } from '@angular/core';
 import { AuthorizationService } from '../../../../../services/authorization.service';
 import { UsersService } from '../../../../../services/users.service';
-import { IUser } from '../../../../../interfaces/iuser.interface';
+import { IGetByTokenUser } from '../../../../../interfaces/iuser.interface';
 import { ThreadComponent } from './components/thread/thread.component';
 import { IThread } from '../../../../../interfaces/iforum.interface';
 import { ForumService } from '../../../../../services/forum.service';
 import { ThreadFormComponent } from './components/thread-form/thread-form.component';
-import { ActivatedRoute, Router, ROUTER_OUTLET_DATA } from '@angular/router';
+import { Router } from '@angular/router';
+import { initUser } from '../../../../../shared/utils/initializers';
+import { Subscription } from 'rxjs';
+import { ThemeService } from '../../../../../services/theme.service';
 
 @Component({
   selector: 'app-course-forum',
@@ -18,18 +21,22 @@ export class CourseForumComponent {
   authorizationService = inject(AuthorizationService);
   usersService = inject(UsersService);
   forumService = inject(ForumService);
+  themeService = inject(ThemeService);
+
   router = inject(Router);
 
   @Input() course_uuid: string = '';
 
+  private themeSub?: Subscription;
+
   token = '';
-  user!: IUser;
+  user: IGetByTokenUser = initUser();
   forum: IThread[] = [];
   showThreadForm = false;
   threadUuidWhereAResponseIsBeingEdited = '';
   threadUuidWhereAResponseIsBeingCreated = '';
   order = 'desc';
-  isDarkMode = inject<boolean>(ROUTER_OUTLET_DATA);
+  isDarkMode = signal(false);
 
   async updateForum() {
     this.forum = await this.forumService.getAll(this.token, this.course_uuid, this.order);
@@ -53,9 +60,15 @@ export class CourseForumComponent {
     this.threadUuidWhereAResponseIsBeingCreated = '';
   }
 
-  constructor(private route: ActivatedRoute) {}
-
   async ngOnInit() {
+    // Inicializa el valor del tema actual
+    this.isDarkMode.set(this.themeService.currentValue);
+
+    // Suscríbete al observable para actualizar el signal cuando el tema cambie
+    this.themeSub = this.themeService.isDarkMode$.subscribe((isDark) => {
+      this.isDarkMode.set(isDark);
+    });
+
     this.token = this.authorizationService.getToken() as string;
 
     try {
@@ -64,5 +77,10 @@ export class CourseForumComponent {
     } catch (error) {
       return;
     }
+  }
+
+  ngOnDestroy() {
+    // Cancelar suscripción para evitar memory leaks
+    this.themeSub?.unsubscribe();
   }
 }

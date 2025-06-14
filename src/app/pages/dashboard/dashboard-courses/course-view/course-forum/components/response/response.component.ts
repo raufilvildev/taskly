@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { AuthorizationService } from '../../../../../../../services/authorization.service';
 import { UsersService } from '../../../../../../../services/users.service';
-import { IUser } from '../../../../../../../interfaces/iuser.interface';
+import { IGetByTokenUser } from '../../../../../../../interfaces/iuser.interface';
 import { IResponse } from '../../../../../../../interfaces/iforum.interface';
 import { ResponseFormComponent } from '../response-form/response-form.component';
 import { ForumService } from '../../../../../../../services/forum.service';
@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { constants } from '../../../../../../../shared/utils/constants/constants.config';
 import { FormatDatePipe } from '../../../../../../../pipes/format-date.pipe';
 import { FormatTextPipe } from '../../../../../../../pipes/format-text.pipe';
+import { initUser } from '../../../../../../../shared/utils/initializers';
 
 @Component({
   selector: 'app-response',
@@ -22,7 +23,7 @@ export class ResponseComponent {
   forumService = inject(ForumService);
 
   @Input() response!: IResponse;
-  @Input() user!: IUser;
+  @Input() user: IGetByTokenUser = initUser();
   @Input() token = '';
   @Input() editedResponseUuid = '';
   @Input() threadUuid = '';

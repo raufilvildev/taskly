@@ -1,9 +1,10 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IUser } from '../../../../../../../interfaces/iuser.interface';
+import { IGetByTokenUser } from '../../../../../../../interfaces/iuser.interface';
 import { ForumService } from '../../../../../../../services/forum.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { constants } from '../../../../../../../shared/utils/constants/constants.config';
+import { initUser } from '../../../../../../../shared/utils/initializers';
 
 @Component({
   selector: 'app-response-form',
@@ -14,7 +15,7 @@ import { constants } from '../../../../../../../shared/utils/constants/constants
 export class ResponseFormComponent {
   forumService = inject(ForumService);
 
-  @Input() user!: IUser;
+  @Input() user: IGetByTokenUser = initUser();
   @Input() token: string = '';
   @Input() type: 'create' | 'edit' = 'create';
   @Input() content = '';

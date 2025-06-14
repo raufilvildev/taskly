@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ROUTER_OUTLET_DATA, RouterLink } from '@angular/router';
 import { ICourse } from '../../../../interfaces/icourse.interface';
 import { CoursesService } from '../../../../services/courses.service';
 import { AuthorizationService } from '../../../../services/authorization.service';
@@ -18,14 +18,13 @@ export class CoursesGridComponent {
   authorizationService = inject(AuthorizationService);
   coursesService = inject(CoursesService);
 
-  user: IUser = { role: 'student' } as IUser;
+  user = inject<IUser>(ROUTER_OUTLET_DATA);
   courses: ICourse[] = [];
   showCourseForm = false;
 
   async ngOnInit() {
     try {
       const token: string = this.authorizationService.getToken();
-      this.user = await this.usersService.getByToken(token);
       this.courses = await this.coursesService.getAll(token);
     } catch (error) {
       return;

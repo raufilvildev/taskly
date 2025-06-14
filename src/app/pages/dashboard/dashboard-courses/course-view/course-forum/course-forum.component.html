@@ -1,4 +1,4 @@
-<div class="relative min-h-screen bg-custom-background dark:bg-transparent">
+<div class="min-h-screen bg-custom-background dark:bg-transparent">
   <div class="fixed top-0 right-0 flex justify-end p-5 pointer-events-auto">
     <button
       class="px-6 py-3 text-xl text-black rounded-full border border-custom-accent-dark bg-custom-primary-dark hover:bg-custom-accent-dark dark:bg-purple-100 dark:hover:bg-purple-900 dark:border-purple-900 transition-all duration-300 transform hover:scale-105 hover:text-white shadow-lg hover:shadow-3xl"
@@ -13,7 +13,7 @@
       (click)="toggleOrder(); updateForum()"
     >
       <img
-        [src]="order === 'desc' ? `down_arrow${isDarkMode ? '_light' : ''}.svg` : `up_arrow${isDarkMode ? '_light' : ''}.svg`"
+        [src]="order === 'desc' ? `down_arrow${isDarkMode() ? '_light' : ''}.svg` : `up_arrow${isDarkMode() ? '_light' : ''}.svg`"
         [alt]="order === 'desc' ? 'Icono de orden decreciente' : 'Icono de orden creciente'"
         class=""
       />
@@ -39,11 +39,11 @@
         [thread]="{
           uuid: '',
           user: {
-            uuid: user.uuid ? user.uuid : '',
+            uuid: user.uuid,
             first_name: user.first_name,
             last_name: user.last_name,
             profile_image_url: user.profile_image_url ? user.profile_image_url : '',
-            role: user.role !== 'general' ? user.role : 'student',
+            role: user.role === 'general' ? 'student' : 'teacher',
           },
           title: '',
           content: '',
