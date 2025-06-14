@@ -34,7 +34,7 @@
     ></app-thread>
   }
   @if (showThreadForm) {
-    <div class="absolute inset-0 p-5 md:p-20 bg-black/30 z-50 flex justify-center">
+    <div class="fixed inset-0 bg-black/30 z-50 flex items-center justify-center">
       <app-thread-form
         [thread]="{
           uuid: '',
@@ -42,8 +42,8 @@
             uuid: user.uuid,
             first_name: user.first_name,
             last_name: user.last_name,
-            profile_image_url: user.profile_image_url ? user.profile_image_url : '',
-            role: user.role === 'general' ? 'student' : 'teacher',
+            profile_image_url: user.profile_image_url,
+            role: user.role === 'general' ? 'student' : user.role,
           },
           title: '',
           content: '',

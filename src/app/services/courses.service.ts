@@ -26,4 +26,12 @@ export class CoursesService {
       })
     );
   }
+
+  create(token: string, course: ICourse) {
+    return lastValueFrom(
+      this.httpClient.post<ICourse>(this.endpoint, course, {
+        headers: { Authorization: token },
+      })
+    );
+  }
 }

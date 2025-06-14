@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { constants } from '../../utils/constants/constants.config';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { LightDarkButtonComponent } from '../light-dark-button/light-dark-button.component';
 import { MatIconModule } from '@angular/material/icon';
+import { LightDarkButtonComponent } from '../buttons/light-dark-button/light-dark-button.component';
 
 @Component({
   selector: 'app-header',

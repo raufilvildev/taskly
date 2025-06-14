@@ -1,48 +1,118 @@
-<form
-  [formGroup]="courseForm"
-  (ngSubmit)="type === 'create' ? createCourse(courseForm) : editCourse(courseForm)"
-  class="mx-auto p-5 lg:p-10 flex flex-col gap-5 bg-custom-panel dark:bg-gray-800 min-w-100 md:min-w-125 lg:min-w-200 rounded-lg shadow-sm shadow-custom-accent-dark"
+<div
+  class="w-[calc(100vw-2.5rem)] py-10 mx-5 max-w-4xl max-h-[calc(100vh-2.5rem)] overflow-auto rounded-lg"
 >
-  <div class="flex flex-col gap-4 w-full">
-    <fieldset class="flex flex-col gap-2">
-      <label for="title" class="text-base font-bold">Título</label>
-      <input
-        type="text"
-        formControlName="title"
-        id="title"
-        class="px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
-      />
-    </fieldset>
+  <form
+    [formGroup]="courseForm"
+    (ngSubmit)="type === 'create' ? createCourse(courseForm) : editCourse(courseForm)"
+    class="h-full overflow-auto p-5 lg:p-10 flex flex-col gap-5 bg-custom-primary-light dark:bg-gray-800 md:min-w-125 lg:min-w-200 rounded-lg shadow-sm shadow-custom-accent-dark"
+  >
+    <div class="flex flex-col gap-4 w-full">
+      <fieldset class="flex flex-col gap-2">
+        <label for="title" class="text-base font-bold">Título</label>
+        <input
+          type="text"
+          formControlName="title"
+          id="title"
+          class="px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+        />
+      </fieldset>
 
-    <fieldset class="flex flex-col gap-2">
-      <label for="content" class="text-base font-bold">Descripción del curso</label>
-      <textarea
-        type="text"
-        formControlName="description"
-        id="content"
-        class="resize-none px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
-        [value]="course?.description"
-        rows="15"
-      ></textarea>
-    </fieldset>
-  </div>
-  @if (courseFormError) {
-    v
-    <p class="pl-1 mt-1 italic text-sm text-custom-error text-center">{{ courseFormError }}</p>
-  }
-  <div class="flex flex justify-center gap-5">
-    <button
-      type="button"
-      class="w-fit mt-5 px-4 py-2 rounded-lg dark:hover:text-white bg-custom-accent-light hover:bg-custom-accent-dark dark:text-black dark:bg-purple-100 dark:bg-purple-100 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-      (click)="cancelCourseForm()"
-    >
-      Cancelar
-    </button>
-    <button
-      type="submit"
-      class="w-fit mt-5 px-4 py-2 rounded-lg text-white bg-custom-accent hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-    >
-      {{ type === 'create' ? 'Crear' : 'Guardar' }}
-    </button>
-  </div>
-</form>
+      <fieldset class="flex flex-col gap-2">
+        <label for="content" class="text-base font-bold">Descripción del curso</label>
+        <textarea
+          type="text"
+          formControlName="description"
+          id="content"
+          class="resize-none px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+          [value]="course.description"
+          rows="15"
+        ></textarea>
+      </fieldset>
+    </div>
+    <div formArrayName="planning">
+      <h3 class="text-xl font-bold">Planificación</h3>
+      <div class="flex justify-center gap-5">
+        <a
+          class="w-fit my-5 px-4 py-2 rounded-lg text-white bg-custom-accent hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+          (click)="createUnit()"
+        >
+          Crear unidad
+        </a>
+      </div>
+      <div class="flex flex-col gap-2">
+        @for (unit of planning.controls; track $index; let unit_index = $index) {
+          <div [formGroupName]="unit_index" class="flex flex-col gap-2">
+            <div class="flex items-center gap-3">
+              <label class="text-base font-bold" [for]="'unit_' + unit_index">
+                {{ unit_index + 1 }}
+              </label>
+              <input
+                type="text"
+                class="flex-1 px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+                formControlName="title"
+                [id]="'unit_' + unit_index"
+              />
+              <div class="flex gap-1">
+                <div (click)="createSection(unit_index)">
+                  <app-create-edit-cancel-remove-button
+                    [type]="'create'"
+                  ></app-create-edit-cancel-remove-button>
+                </div>
+                <div (click)="removeUnit(unit_index)">
+                  <app-create-edit-cancel-remove-button
+                    [type]="'remove'"
+                  ></app-create-edit-cancel-remove-button>
+                </div>
+              </div>
+            </div>
+            <div formArrayName="sections" class="flex flex-col">
+              @for (
+                section of unit.controls.sections.controls;
+                track $index;
+                let section_index = $index
+              ) {
+                <div class="flex items-center gap-3">
+                  <label
+                    class="ml-5 text-base font-bold italic"
+                    [for]="'unit_' + unit_index + '_' + section_index"
+                  >
+                    {{ unit_index + 1 }}.{{ section_index + 1 }}
+                  </label>
+                  <input
+                    type="text"
+                    [id]="'unit_' + unit_index + '_' + section_index"
+                    class="flex-1 px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+                    [formControlName]="section_index"
+                  />
+                  <div (click)="removeSection(unit_index, section_index)">
+                    <app-create-edit-cancel-remove-button
+                      [type]="'remove'"
+                    ></app-create-edit-cancel-remove-button>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+    @if (courseFormError) {
+      <p class="pl-1 mt-1 italic text-sm text-custom-error text-center">{{ courseFormError }}</p>
+    }
+    <div class="flex flex justify-center gap-5">
+      <button
+        type="button"
+        class="w-fit mt-5 px-4 py-2 rounded-lg dark:hover:text-white bg-custom-background hover:bg-custom-accent-dark dark:text-black dark:bg-purple-100 dark:bg-purple-100 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+        (click)="cancelCourseForm()"
+      >
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        class="w-fit mt-5 px-4 py-2 rounded-lg text-white bg-custom-accent hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+      >
+        {{ type === 'create' ? 'Crear' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</div>

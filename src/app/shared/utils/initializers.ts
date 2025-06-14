@@ -1,3 +1,4 @@
+import { ICourse } from '../../interfaces/icourse.interface';
 import { IUser } from '../../interfaces/iuser.interface';
 
 export const initUser = (): IUser => {
@@ -16,5 +17,16 @@ export const initUser = (): IUser => {
     role: 'general',
     created_at: '',
     updated_at: '',
+  };
+};
+
+export const initCourse = (): ICourse => {
+  return {
+    uuid: '',
+    title: '',
+    description: '',
+    course_image_url: '',
+    teacher: '',
+    planning: [],
   };
 };

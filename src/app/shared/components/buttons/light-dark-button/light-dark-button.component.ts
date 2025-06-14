@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { ThemeService } from '../../../services/theme.service';
+import { ThemeService } from '../../../../services/theme.service';
 
 @Component({
   selector: 'app-light-dark-button',

@@ -27,43 +27,32 @@
       </div>
       @if (response.user.uuid === user.uuid) {
         <div class="flex gap-3">
-          <div
-            class="p-2 w-8 h-8 rounded-full hover:bg-custom-background/75 transition-all duration-300 transform hover:scale-110 flex items-center justify-center cursor-pointer"
-          >
-            @if (
-              !showResponseForm ||
-              editedResponseUuid !== response.uuid ||
-              threadUuidWhereAResponseIsBeingEdited !== threadUuid
-            ) {
-              <img
-                src="edit.svg"
-                alt="Editar respuesta"
-                class="w-6 h-6"
-                (click)="updateThread(true, response.uuid)"
-              />
-            }
-            @if (
-              showResponseForm &&
-              editedResponseUuid === response.uuid &&
-              threadUuidWhereAResponseIsBeingEdited === threadUuid
-            ) {
-              <img
-                src="cancel_edit.svg"
-                alt="Cancelar edición de respuesta"
-                class="w-6 h-6"
-                (click)="updateThread(false, response.uuid)"
-              />
-            }
-          </div>
-          <div
-            class="p-2 w-8 h-8 rounded-full hover:bg-custom-background/75 transition-all duration-300 transform hover:scale-110 flex items-center justify-center cursor-pointer"
-          >
-            <img
-              src="remove.svg"
-              alt="Borrar respuesta"
-              class="w-6 h-6"
-              (click)="updateShowDeleteConfirmation(true)"
-            />
+          @if (
+            !showResponseForm ||
+            editedResponseUuid !== response.uuid ||
+            threadUuidWhereAResponseIsBeingEdited !== threadUuid
+          ) {
+            <div (click)="updateThread(true, response.uuid)">
+              <app-create-edit-cancel-remove-button
+                [type]="'edit'"
+              ></app-create-edit-cancel-remove-button>
+            </div>
+          }
+          @if (
+            showResponseForm &&
+            editedResponseUuid === response.uuid &&
+            threadUuidWhereAResponseIsBeingEdited === threadUuid
+          ) {
+            <div (click)="updateThread(false, response.uuid)">
+              <app-create-edit-cancel-remove-button
+                [type]="'cancel'"
+              ></app-create-edit-cancel-remove-button>
+            </div>
+          }
+          <div (click)="updateShowDeleteConfirmation(true)">
+            <app-create-edit-cancel-remove-button
+              [type]="'remove'"
+            ></app-create-edit-cancel-remove-button>
           </div>
         </div>
       }

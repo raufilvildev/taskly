@@ -2,9 +2,9 @@ export interface ICourse {
   uuid: string;
   title: string;
   description: string;
-  planning?: IUnitCourse[];
   course_image_url: string;
   teacher: string;
+  planning: IUnitCourse[];
 }
 
 export interface IUnitCourse {

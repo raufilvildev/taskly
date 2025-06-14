@@ -3,9 +3,9 @@ import { RouterOutlet } from '@angular/router';
 import { AsideComponent } from './components/aside/aside.component';
 import { UsersService } from '../../services/users.service';
 import { AuthorizationService } from '../../services/authorization.service';
-import { LightDarkButtonComponent } from '../../shared/components/light-dark-button/light-dark-button.component';
 import { IGetByTokenUser } from '../../interfaces/iuser.interface';
 import { initUser } from '../../shared/utils/initializers';
+import { LightDarkButtonComponent } from '../../shared/components/buttons/light-dark-button/light-dark-button.component';
 
 @Component({
   selector: 'app-dashboard',

@@ -1,0 +1,25 @@
+<div
+  class="p-2 w-8 h-8 rounded-full hover:bg-custom-background/75 transition-all duration-300 transform hover:scale-110 flex items-center justify-center cursor-pointer"
+>
+  <img
+    [src]="
+      type === 'edit'
+        ? 'edit.svg'
+        : type === 'remove'
+          ? 'remove.svg'
+          : type === 'cancel'
+            ? 'cancel.svg'
+            : 'create.svg'
+    "
+    [alt]="
+      type === 'edit'
+        ? 'Icono de edición'
+        : type === 'remove'
+          ? 'Icono de borrado'
+          : type === 'cancel'
+            ? 'Icono de cancelación'
+            : 'Icono de creación'
+    "
+    class="w-6 h-6"
+  />
+</div>
