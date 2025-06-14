@@ -7,7 +7,7 @@ import { CoursesService } from '../../../../../../services/courses.service';
 import { AuthorizationService } from '../../../../../../services/authorization.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { constants } from '../../../../../../shared/utils/constants/constants.config';
-import { CreateEditCancelRemoveButtonComponent } from '../../../../../../shared/components/buttons/create-edit-remove-button/create-edit-cancel-remove-button.component';
+import { CreateEditCancelRemoveButtonComponent } from '../../../../../../shared/components/buttons/create-edit-cancel-remove-button/create-edit-cancel-remove-button.component';
 
 type UnitFormGroup = FormGroup<{
   title: FormControl<string | null>;

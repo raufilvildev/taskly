@@ -10,7 +10,7 @@ import { constants } from '../../../../../../../shared/utils/constants/constants
 import { FormatDatePipe } from '../../../../../../../pipes/format-date.pipe';
 import { FormatTextPipe } from '../../../../../../../pipes/format-text.pipe';
 import { initUser } from '../../../../../../../shared/utils/initializers';
-import { CreateEditCancelRemoveButtonComponent } from '../../../../../../../shared/components/buttons/create-edit-remove-button/create-edit-cancel-remove-button.component';
+import { CreateEditCancelRemoveButtonComponent } from '../../../../../../../shared/components/buttons/create-edit-cancel-remove-button/create-edit-cancel-remove-button.component';
 
 @Component({
   selector: 'app-response',
