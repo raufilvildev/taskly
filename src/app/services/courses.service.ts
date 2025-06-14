@@ -18,4 +18,12 @@ export class CoursesService {
       })
     );
   }
+
+  getByUuid(token: string, course_uuid: string) {
+    return lastValueFrom(
+      this.httpClient.get<ICourse>(`${this.endpoint}/${course_uuid}`, {
+        headers: { Authorization: token },
+      })
+    );
+  }
 }

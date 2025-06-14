@@ -23,6 +23,8 @@ import { CourseTasksComponent } from './pages/dashboard/dashboard-courses/course
 import { CourseHomeComponent } from './pages/dashboard/dashboard-courses/course-view/course-home/course-home.component';
 import { DashboardCalendarComponent } from './pages/dashboard/dashboard-calendar/dashboard-calendar.component';
 import { DashboardEisenhowerMatrixComponent } from './pages/dashboard/dashboard-eisenhower-matrix/dashboard-eisenhower-matrix.component';
+import { courseGuard } from './guards/course.guard';
+import { DashboardTasksComponent } from './pages/dashboard/dashboard-tasks/dashboard-tasks.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
@@ -74,6 +76,7 @@ export const routes: Routes = [
           {
             path: 'view',
             component: CourseViewComponent,
+            canActivateChild: [courseGuard],
             children: [
               { path: ':course_uuid', component: CourseHomeComponent },
               { path: 'tasks/:course_uuid', component: CourseTasksComponent },
@@ -85,6 +88,7 @@ export const routes: Routes = [
       },
       { path: 'eisenhower_matrix', component: DashboardEisenhowerMatrixComponent },
       { path: 'calendar', component: DashboardCalendarComponent },
+      { path: 'tasks', component: DashboardTasksComponent },
       { path: 'settings', component: DashboardSettingsComponent },
     ],
   },
