@@ -12,59 +12,43 @@ export class ForumService {
   private endpoint = `${environment.host}/forum`;
   private httpClient = inject(HttpClient);
 
-  getAll(token: string, course_uuid: string, order: string = 'desc') {
+  getAll(course_uuid: string, order: string = 'desc') {
     return lastValueFrom(
-      this.httpClient.get<IThread[]>(`${this.endpoint}/${course_uuid}?order=${order}`, {
-        headers: { Authorization: token },
-      })
+      this.httpClient.get<IThread[]>(`${this.endpoint}/${course_uuid}?order=${order}`)
     );
   }
 
-  createThread(token: string, course_uuid: string, thread: IThread) {
+  createThread(course_uuid: string, thread: IThread) {
     return lastValueFrom(
-      this.httpClient.post<IMessage>(`${this.endpoint}/post/thread/${course_uuid}`, thread, {
-        headers: { Authorization: token },
-      })
+      this.httpClient.post<IMessage>(`${this.endpoint}/post/thread/${course_uuid}`, thread)
     );
   }
 
-  editThread(token: string, thread: IThread) {
+  editThread(thread: IThread) {
+    return lastValueFrom(this.httpClient.put<IMessage>(`${this.endpoint}/update/thread/`, thread));
+  }
+
+  deleteThread(thread_uuid: string) {
     return lastValueFrom(
-      this.httpClient.put<IMessage>(`${this.endpoint}/update/thread/`, thread, {
-        headers: { Authorization: token },
-      })
+      this.httpClient.delete<IMessage>(`${this.endpoint}/delete/thread/${thread_uuid}`)
     );
   }
 
-  deleteThread(token: string, thread_uuid: string) {
+  createResponse(thread_uuid: string, response: IResponse) {
     return lastValueFrom(
-      this.httpClient.delete<IMessage>(`${this.endpoint}/delete/thread/${thread_uuid}`, {
-        headers: { Authorization: token },
-      })
+      this.httpClient.post<IMessage>(`${this.endpoint}/post/response/${thread_uuid}`, response)
     );
   }
 
-  createResponse(token: string, thread_uuid: string, response: IResponse) {
+  editResponse(response: IResponse) {
     return lastValueFrom(
-      this.httpClient.post<IMessage>(`${this.endpoint}/post/response/${thread_uuid}`, response, {
-        headers: { Authorization: token },
-      })
+      this.httpClient.put<IMessage>(`${this.endpoint}/update/response`, response)
     );
   }
 
-  editResponse(token: string, response: IResponse) {
+  deleteResponse(response_uuid: string) {
     return lastValueFrom(
-      this.httpClient.put<IMessage>(`${this.endpoint}/update/response`, response, {
-        headers: { Authorization: token },
-      })
-    );
-  }
-
-  deleteResponse(token: string, response_uuid: string) {
-    return lastValueFrom(
-      this.httpClient.delete<IMessage>(`${this.endpoint}/delete/response/${response_uuid}`, {
-        headers: { Authorization: token },
-      })
+      this.httpClient.delete<IMessage>(`${this.endpoint}/delete/response/${response_uuid}`)
     );
   }
 }

@@ -1,5 +1,4 @@
 import { Component, inject, Input, signal } from '@angular/core';
-import { AuthorizationService } from '../../../../../services/authorization.service';
 import { UsersService } from '../../../../../services/users.service';
 import { IGetByTokenUser } from '../../../../../interfaces/iuser.interface';
 import { ThreadComponent } from './components/thread/thread.component';
@@ -18,7 +17,6 @@ import { ThemeService } from '../../../../../services/theme.service';
   styleUrl: './course-forum.component.css',
 })
 export class CourseForumComponent {
-  authorizationService = inject(AuthorizationService);
   usersService = inject(UsersService);
   forumService = inject(ForumService);
   themeService = inject(ThemeService);
@@ -29,7 +27,6 @@ export class CourseForumComponent {
 
   private themeSub?: Subscription;
 
-  token = '';
   user: IGetByTokenUser = initUser();
   forum: IThread[] = [];
   showThreadForm = false;
@@ -39,7 +36,7 @@ export class CourseForumComponent {
   isDarkMode = signal(false);
 
   async updateForum() {
-    this.forum = await this.forumService.getAll(this.token, this.course_uuid, this.order);
+    this.forum = await this.forumService.getAll(this.course_uuid, this.order);
   }
 
   toggleOrder() {
@@ -69,10 +66,8 @@ export class CourseForumComponent {
       this.isDarkMode.set(isDark);
     });
 
-    this.token = this.authorizationService.getToken() as string;
-
     try {
-      this.user = await this.usersService.getByToken(this.token);
+      this.user = await this.usersService.getByToken();
       await this.updateForum();
     } catch (error) {
       return;

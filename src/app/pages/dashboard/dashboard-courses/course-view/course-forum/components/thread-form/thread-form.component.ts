@@ -2,7 +2,6 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IThread } from '../../../../../../../interfaces/iforum.interface';
 import { ForumService } from '../../../../../../../services/forum.service';
-import { AuthorizationService } from '../../../../../../../services/authorization.service';
 import { IUser } from '../../../../../../../interfaces/iuser.interface';
 import { constants } from '../../../../../../../shared/utils/constants/constants.config';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -14,7 +13,6 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './thread-form.component.css',
 })
 export class ThreadFormComponent {
-  authorizationService = inject(AuthorizationService);
   forumService = inject(ForumService);
 
   @Input() thread!: IThread;
@@ -26,7 +24,6 @@ export class ThreadFormComponent {
   @Output() save = new EventEmitter<void>();
   @Output() create = new EventEmitter<void>();
 
-  token = '';
   threadFormError = '';
 
   threadForm = new FormGroup({
@@ -51,7 +48,7 @@ export class ThreadFormComponent {
     thread.user = this.thread.user;
 
     try {
-      await this.forumService.createThread(this.token, this.course_uuid, thread);
+      await this.forumService.createThread(this.course_uuid, thread);
       this.create.emit();
     } catch (errorResponse) {
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
@@ -85,7 +82,7 @@ export class ThreadFormComponent {
     thread.user = this.thread.user;
 
     try {
-      await this.forumService.editThread(this.token, thread);
+      await this.forumService.editThread(thread);
       this.save.emit();
     } catch (errorResponse) {
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
@@ -107,7 +104,6 @@ export class ThreadFormComponent {
   }
 
   ngOnInit() {
-    this.token = this.authorizationService.getToken() as string;
     this.threadForm = new FormGroup({
       title: new FormControl(this.thread.title, Validators.required),
       content: new FormControl(this.thread.content.replaceAll('\\n', '\n'), Validators.required),

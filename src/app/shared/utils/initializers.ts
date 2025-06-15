@@ -1,4 +1,5 @@
 import { ICourse } from '../../interfaces/icourse.interface';
+import { IResponse } from '../../interfaces/iforum.interface';
 import { IUser } from '../../interfaces/iuser.interface';
 
 export const initUser = (): IUser => {
@@ -28,5 +29,19 @@ export const initCourse = (): ICourse => {
     course_image_url: '',
     teacher: '',
     planning: [],
+  };
+};
+
+export const initResponse = (): IResponse => {
+  return {
+    uuid: '',
+    user: {
+      uuid: '',
+      first_name: '',
+      last_name: '',
+      profile_image_url: 'default_user_profile.svg',
+      role: 'student',
+    },
+    content: '',
   };
 };

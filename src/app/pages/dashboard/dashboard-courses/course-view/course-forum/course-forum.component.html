@@ -22,7 +22,6 @@
   @for (thread of forum; track thread.uuid) {
     <app-thread
       [thread]="thread"
-      [token]="token"
       [threadUuidWhereAResponseIsBeingCreated]="threadUuidWhereAResponseIsBeingCreated"
       [threadUuidWhereAResponseIsBeingEdited]="threadUuidWhereAResponseIsBeingEdited"
       [user]="user"

@@ -4,7 +4,6 @@ import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } fr
 import { ICourse, IUnitCourse } from '../../../../../../interfaces/icourse.interface';
 import { initCourse, initUser } from '../../../../../../shared/utils/initializers';
 import { CoursesService } from '../../../../../../services/courses.service';
-import { AuthorizationService } from '../../../../../../services/authorization.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { constants } from '../../../../../../shared/utils/constants/constants.config';
 import { CreateEditCancelRemoveButtonComponent } from '../../../../../../shared/components/buttons/create-edit-cancel-remove-button/create-edit-cancel-remove-button.component';
@@ -21,7 +20,6 @@ type UnitFormGroup = FormGroup<{
   styleUrl: './course-form.component.css',
 })
 export class CourseFormComponent {
-  authorizationService = inject(AuthorizationService);
   coursesService = inject(CoursesService);
 
   @Input() user: IGetByTokenUser = initUser();
@@ -32,7 +30,6 @@ export class CourseFormComponent {
 
   courseFormError = '';
   units: IUnitCourse[] = [];
-  token = '';
 
   courseForm = new FormGroup({
     uuid: new FormControl(''),
@@ -52,7 +49,7 @@ export class CourseFormComponent {
     }
 
     try {
-      await this.coursesService.create(this.token, courseForm.value);
+      await this.coursesService.create(courseForm.value);
     } catch (errorResponse) {
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
         this.courseFormError = constants.generalServerError;
@@ -101,7 +98,6 @@ export class CourseFormComponent {
   }
 
   ngOnInit() {
-    this.token = this.authorizationService.getToken();
     if (this.type === 'edit') {
       this.courseForm = new FormGroup({
         uuid: new FormControl(this.course.uuid, Validators.required),

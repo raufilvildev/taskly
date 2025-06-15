@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { IGetByTokenUser } from '../../../interfaces/iuser.interface';
 import { initUser } from '../../../shared/utils/initializers';
-import { AuthorizationService } from '../../../services/authorization.service';
 import { UsersService } from '../../../services/users.service';
 
 @Component({
@@ -13,15 +12,12 @@ import { UsersService } from '../../../services/users.service';
 })
 export class DashboardCoursesComponent {
   usersService = inject(UsersService);
-  authorizationService = inject(AuthorizationService);
 
   user: IGetByTokenUser = initUser();
 
   async ngOnInit() {
-    const token = this.authorizationService.getToken();
-
     try {
-      this.user = await this.usersService.getByToken(token);
+      this.user = await this.usersService.getByToken();
     } catch (error) {
       return;
     }

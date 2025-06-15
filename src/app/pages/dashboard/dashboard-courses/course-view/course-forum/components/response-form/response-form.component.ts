@@ -16,7 +16,6 @@ export class ResponseFormComponent {
   forumService = inject(ForumService);
 
   @Input() user: IGetByTokenUser = initUser();
-  @Input() token: string = '';
   @Input() type: 'create' | 'edit' = 'create';
   @Input() content = '';
   @Input() threadUuid = '';
@@ -46,7 +45,7 @@ export class ResponseFormComponent {
     }
 
     try {
-      await this.forumService.createResponse(this.token, this.threadUuid, response);
+      await this.forumService.createResponse(this.threadUuid, response);
       this.create.emit();
     } catch (errorResponse) {
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
@@ -73,7 +72,7 @@ export class ResponseFormComponent {
     }
 
     try {
-      await this.forumService.editResponse(this.token, response);
+      await this.forumService.editResponse(response);
       this.edit.emit();
     } catch (errorResponse) {
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {

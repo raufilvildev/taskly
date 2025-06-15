@@ -19,10 +19,8 @@ export class UsersService {
   private endpoint = `${environment.host}/user`;
   private httpClient = inject(HttpClient);
 
-  getByToken(token: string) {
-    return lastValueFrom(
-      this.httpClient.get<IGetByTokenUser>(this.endpoint, { headers: { Authorization: token } })
-    );
+  getByToken() {
+    return lastValueFrom(this.httpClient.get<IGetByTokenUser>(this.endpoint));
   }
 
   create(user: ISignupUser) {
@@ -33,27 +31,17 @@ export class UsersService {
     return lastValueFrom(this.httpClient.post<Response>(`${this.endpoint}/login`, loginData));
   }
 
-  changePassword(token: string, password: string) {
+  changePassword(password: string) {
     return lastValueFrom(
-      this.httpClient.patch<IToken>(
-        `${this.endpoint}/login/change_password`,
-        { password },
-        { headers: { Authorization: token } }
-      )
+      this.httpClient.patch<IToken>(`${this.endpoint}/login/change_password`, { password })
     );
   }
 
-  remove(token: string) {
-    return lastValueFrom(
-      this.httpClient.delete<IMessage>(this.endpoint, { headers: { Authorization: token } })
-    );
+  remove() {
+    return lastValueFrom(this.httpClient.delete<IMessage>(this.endpoint));
   }
 
-  update(token: string, user: IUser) {
-    return lastValueFrom(
-      this.httpClient.put<IToken>(`${this.endpoint}/update`, user, {
-        headers: { Authorization: token },
-      })
-    );
+  update(user: IUser) {
+    return lastValueFrom(this.httpClient.put<IToken>(`${this.endpoint}/update`, user));
   }
 }

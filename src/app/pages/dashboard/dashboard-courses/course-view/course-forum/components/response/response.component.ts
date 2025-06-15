@@ -1,5 +1,4 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { AuthorizationService } from '../../../../../../../services/authorization.service';
 import { UsersService } from '../../../../../../../services/users.service';
 import { IGetByTokenUser } from '../../../../../../../interfaces/iuser.interface';
 import { IResponse } from '../../../../../../../interfaces/iforum.interface';
@@ -9,7 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { constants } from '../../../../../../../shared/utils/constants/constants.config';
 import { FormatDatePipe } from '../../../../../../../pipes/format-date.pipe';
 import { FormatTextPipe } from '../../../../../../../pipes/format-text.pipe';
-import { initUser } from '../../../../../../../shared/utils/initializers';
+import { initResponse, initUser } from '../../../../../../../shared/utils/initializers';
 import { CreateEditCancelRemoveButtonComponent } from '../../../../../../../shared/components/buttons/create-edit-cancel-remove-button/create-edit-cancel-remove-button.component';
 
 @Component({
@@ -24,13 +23,11 @@ import { CreateEditCancelRemoveButtonComponent } from '../../../../../../../shar
   styleUrl: './response.component.css',
 })
 export class ResponseComponent {
-  authorizationService = inject(AuthorizationService);
   usersService = inject(UsersService);
   forumService = inject(ForumService);
 
-  @Input() response!: IResponse;
+  @Input() response: IResponse = initResponse();
   @Input() user: IGetByTokenUser = initUser();
-  @Input() token = '';
   @Input() editedResponseUuid = '';
   @Input() threadUuid = '';
   @Input() threadUuidWhereAResponseIsBeingEdited = '';
@@ -51,9 +48,9 @@ export class ResponseComponent {
     this.showDeleteConfirmation = state;
   }
 
-  async deleteResponse(response_uuid: string | undefined) {
+  async deleteResponse(response_uuid: string) {
     try {
-      await this.forumService.deleteResponse(this.token, response_uuid as string);
+      await this.forumService.deleteResponse(response_uuid);
       this.delete.emit();
       this.updateShowDeleteConfirmation(false);
     } catch (errorResponse) {

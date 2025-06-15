@@ -88,16 +88,11 @@ export class ChangePasswordComponent {
     return errors;
   }
 
-  async changePassword(changePasswordForm: FormGroup) {
-    let token = this.authorizationService.getToken();
-    if (!token) {
-      this.passwordError = 'No hay sesión activa. Por favor, inicia sesión de nuevo.';
-      return;
-    }
+  async changePassword() {
     try {
       if (passwordsMatchValidator(this.changePasswordForm) === null) {
         const password = this.changePasswordForm.value.password as string;
-        let response = await this.usersService.changePassword(token, password);
+        await this.usersService.changePassword(password);
         setTimeout(() => {
           this.router.navigate(['/dashboard']);
         }, 2000);

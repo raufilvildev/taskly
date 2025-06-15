@@ -1,7 +1,7 @@
 import { Component, inject, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsersService } from '../../../services/users.service';
-import { IGetByTokenUser, IUser } from '../../../interfaces/iuser.interface';
+import { IGetByTokenUser } from '../../../interfaces/iuser.interface';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AuthorizationService } from '../../../services/authorization.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -23,7 +23,6 @@ export class CodeConfirmationComponent {
   @Input() type = 'signup';
 
   user: IGetByTokenUser = initUser();
-  token = '';
   confirmEmailFormError = '';
   serverError = '';
 
@@ -45,13 +44,9 @@ export class CodeConfirmationComponent {
       return;
     }
 
-    let token = this.authorizationService.getToken() as string;
     try {
-      const result = await this.authorizationService.checkRandomNumberInput(
-        token,
-        random_number_input
-      );
-      token = result.token;
+      const result = await this.authorizationService.checkRandomNumberInput(random_number_input);
+      const token = result.token;
       this.authorizationService.setToken(token);
 
       if (this.type === 'signup') {
@@ -73,11 +68,11 @@ export class CodeConfirmationComponent {
       this.serverError = constants.generalServerError;
     }
   }
-  async resetRandomNumber(token: string) {
+  async resetRandomNumber() {
     this.countdown?.restart();
 
     setTimeout(async () => {
-      const { message } = await this.authorizationService.resetRandomNumber(token);
+      await this.authorizationService.resetRandomNumber();
     }, 300000);
   }
 
@@ -85,11 +80,8 @@ export class CodeConfirmationComponent {
     const token = this.authorizationService.getToken() as string;
 
     try {
-      const { message } = await this.authorizationService.requestConfirmationByEmail(
-        token,
-        this.type
-      );
-      this.resetRandomNumber(this.token);
+      await this.authorizationService.requestConfirmationByEmail(this.type);
+      this.resetRandomNumber();
     } catch (errorResponse) {
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
         this.serverError = constants.generalServerError;
@@ -105,8 +97,7 @@ export class CodeConfirmationComponent {
   }
 
   async ngOnInit() {
-    this.token = this.authorizationService.getToken() as string;
-    this.resetRandomNumber(this.token);
-    this.user = await this.usersService.getByToken(this.token);
+    this.resetRandomNumber();
+    this.user = await this.usersService.getByToken();
   }
 }

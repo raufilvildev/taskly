@@ -26,23 +26,15 @@ export class AuthorizationService {
     localStorage.removeItem('token');
   }
 
-  requestConfirmationByEmail(token: string, type: string) {
+  requestConfirmationByEmail(type: string) {
     return lastValueFrom(
-      this.httpClient.post<IMessage>(
-        `${this.endpoint}/email_confirmation/request/${type}`,
-        {},
-        { headers: { Authorization: token } }
-      )
+      this.httpClient.post<IMessage>(`${this.endpoint}/email_confirmation/request/${type}`, {})
     );
   }
 
-  checkRandomNumberInput(token: string, random_number_input: string) {
+  checkRandomNumberInput(random_number_input: string) {
     return lastValueFrom(
-      this.httpClient.post<IToken>(
-        `${this.endpoint}/email_confirmation`,
-        { random_number_input },
-        { headers: { Authorization: token } }
-      )
+      this.httpClient.post<IToken>(`${this.endpoint}/email_confirmation`, { random_number_input })
     );
   }
 
@@ -50,13 +42,9 @@ export class AuthorizationService {
     return lastValueFrom(this.httpClient.post<IToken>(`${this.endpoint}/check_email`, { email }));
   }
 
-  resetRandomNumber(token: string) {
+  resetRandomNumber() {
     return lastValueFrom(
-      this.httpClient.patch<IMessage>(
-        `${this.endpoint}/reset/random_number`,
-        {},
-        { headers: { Authorization: token } }
-      )
+      this.httpClient.patch<IMessage>(`${this.endpoint}/reset/random_number`, {})
     );
   }
 }

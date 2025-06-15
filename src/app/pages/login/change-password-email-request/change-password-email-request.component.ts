@@ -22,7 +22,7 @@ export class ChangePasswordEmailRequestComponent {
 
     try {
       const { token } = await this.authorizationService.checkEmail(email);
-      await this.authorizationService.requestConfirmationByEmail(token, 'change_password');
+      await this.authorizationService.requestConfirmationByEmail('change_password');
 
       this.authorizationService.setToken(token);
 

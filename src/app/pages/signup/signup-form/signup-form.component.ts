@@ -147,6 +147,7 @@ export class SignupFormComponent {
         password,
         role,
       };
+
       let token = '';
 
       try {
@@ -154,14 +155,11 @@ export class SignupFormComponent {
         token = createResult.token;
 
         this.authorizationService.setToken(token);
-        const { message } = await this.authorizationService.requestConfirmationByEmail(
-          token,
-          'signup'
-        );
+        const { message } = await this.authorizationService.requestConfirmationByEmail('signup');
         this.router.navigate(['signup', 'signup_confirmation']);
       } catch (errorResponse) {
         if (token) {
-          await this.usersService.remove(token);
+          await this.usersService.remove();
           this.authorizationService.removeToken();
         }
 

@@ -4,7 +4,7 @@ import { ThreadFormComponent } from '../thread-form/thread-form.component';
 import { IThread } from '../../../../../../../interfaces/iforum.interface';
 import { ForumService } from '../../../../../../../services/forum.service';
 import { ResponseFormComponent } from '../response-form/response-form.component';
-import { IGetByTokenUser, IUser } from '../../../../../../../interfaces/iuser.interface';
+import { IGetByTokenUser } from '../../../../../../../interfaces/iuser.interface';
 import { constants } from '../../../../../../../shared/utils/constants/constants.config';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormatDatePipe } from '../../../../../../../pipes/format-date.pipe';
@@ -27,7 +27,6 @@ export class ThreadComponent {
   forumService = inject(ForumService);
 
   @Input() thread!: IThread;
-  @Input() token = '';
   @Input() user: IGetByTokenUser = initUser();
   @Input() course_uuid = '';
   @Input() threadUuidWhereAResponseIsBeingEdited = '';
@@ -72,7 +71,7 @@ export class ThreadComponent {
 
   async deleteThread(thread_uuid: string) {
     try {
-      await this.forumService.deleteThread(this.token, thread_uuid);
+      await this.forumService.deleteThread(thread_uuid);
       this.delete.emit();
       this.updateShowDeleteConfirmation(false);
     } catch (errorResponse) {

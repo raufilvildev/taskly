@@ -74,7 +74,6 @@
         threadUuidWhereAResponseIsBeingEdited === threadUuid
       ) {
         <app-response-form
-          [token]="token"
           [user]="user"
           [type]="'edit'"
           [content]="response.content"

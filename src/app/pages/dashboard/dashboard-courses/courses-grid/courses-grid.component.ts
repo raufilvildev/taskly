@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ICourse } from '../../../../interfaces/icourse.interface';
 import { CoursesService } from '../../../../services/courses.service';
-import { AuthorizationService } from '../../../../services/authorization.service';
 import { IGetByTokenUser } from '../../../../interfaces/iuser.interface';
 import { UsersService } from '../../../../services/users.service';
 import { CourseFormComponent } from './components/course-form/course-form.component';
@@ -16,7 +15,6 @@ import { initUser } from '../../../../shared/utils/initializers';
 })
 export class CoursesGridComponent {
   usersService = inject(UsersService);
-  authorizationService = inject(AuthorizationService);
   coursesService = inject(CoursesService);
 
   user: IGetByTokenUser = initUser();
@@ -25,9 +23,8 @@ export class CoursesGridComponent {
 
   async ngOnInit() {
     try {
-      const token: string = this.authorizationService.getToken();
-      this.user = await this.usersService.getByToken(token);
-      this.courses = await this.coursesService.getAll(token);
+      this.user = await this.usersService.getByToken();
+      this.courses = await this.coursesService.getAll();
     } catch (error) {
       return;
     }

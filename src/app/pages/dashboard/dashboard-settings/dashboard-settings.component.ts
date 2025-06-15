@@ -77,9 +77,8 @@ export class DashboardSettingsComponent {
   }
 
   async ngOnInit() {
-    const token = this.authorizationService.getToken();
     try {
-      this.user = await this.usersService.getByToken(token);
+      this.user = await this.usersService.getByToken();
       this.userSettingsForm = new FormGroup({
         first_name: new FormControl(this.user.first_name, [
           Validators.minLength(2),
@@ -113,8 +112,7 @@ export class DashboardSettingsComponent {
 
   async updateUser(userFormValue: any) {
     try {
-      const token = this.authorizationService.getToken();
-      const responseData = await this.usersService.update(token, userFormValue);
+      const responseData = await this.usersService.update(userFormValue);
       await this.ngOnInit();
       for (const key in this.editUserForm) {
         this.editUserForm[key] = false;

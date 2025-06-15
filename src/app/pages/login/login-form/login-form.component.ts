@@ -82,8 +82,8 @@ export class LoginFormComponent {
       }
     } catch (errorResponse) {
       if (token) {
-        this.usersService.remove(token);
-        localStorage.removeItem('token');
+        this.usersService.remove();
+        this.authorizationService.removeToken();
       }
 
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {

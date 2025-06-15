@@ -72,7 +72,6 @@
         @if (showResponseForm && threadUuidWhereAResponseIsBeingCreated === thread.uuid && !false) {
           <app-response-form
             [user]="user"
-            [token]="token"
             (cancel)="updateShowResponseForm(false)"
             (create)="updateForum()"
           ></app-response-form>
@@ -87,7 +86,6 @@
           <div class="mt-2 flex flex-col gap-4">
             @for (response of thread.responses; track response.uuid) {
               <app-response
-                [token]="token"
                 [user]="user"
                 [response]="response"
                 (editResponse)="setEditedResponse($event)"

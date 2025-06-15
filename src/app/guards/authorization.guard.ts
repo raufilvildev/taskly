@@ -23,7 +23,7 @@ const authorizationGuard = (param: string): CanActivateFn => {
     }
 
     try {
-      const { email_confirmed } = await usersService.getByToken(token);
+      const { email_confirmed } = await usersService.getByToken();
       if (!email_confirmed) {
         if (state.url === '/signup/signup_confirmation') return true;
         await router.navigate(['signup', 'signup_confirmation']);

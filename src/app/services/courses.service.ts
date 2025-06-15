@@ -11,27 +11,15 @@ export class CoursesService {
   private endpoint = `${environment.host}/courses`;
   private httpClient = inject(HttpClient);
 
-  getAll(token: string) {
-    return lastValueFrom(
-      this.httpClient.get<ICourse[]>(this.endpoint, {
-        headers: { Authorization: token },
-      })
-    );
+  getAll() {
+    return lastValueFrom(this.httpClient.get<ICourse[]>(this.endpoint));
   }
 
-  getByUuid(token: string, course_uuid: string) {
-    return lastValueFrom(
-      this.httpClient.get<ICourse>(`${this.endpoint}/${course_uuid}`, {
-        headers: { Authorization: token },
-      })
-    );
+  getByUuid(course_uuid: string) {
+    return lastValueFrom(this.httpClient.get<ICourse>(`${this.endpoint}/${course_uuid}`));
   }
 
-  create(token: string, course: ICourse) {
-    return lastValueFrom(
-      this.httpClient.post<ICourse>(this.endpoint, course, {
-        headers: { Authorization: token },
-      })
-    );
+  create(course: ICourse) {
+    return lastValueFrom(this.httpClient.post<ICourse>(this.endpoint, course));
   }
 }
