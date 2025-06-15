@@ -2,12 +2,24 @@
   padding: 1rem;
   height: 100%;
   overflow-y: auto;
+  background: var(--color-panel);
+}
+
+:host-context(.dark) .task-detail,
+:host-context(.dark_bg) .task-detail {
+  background: transparent;
+  color: #e0e0e0;
 }
 
 .task-header h2 {
   margin: 0 0 0 0;
   color: var(--color-text-main);
   transition: all 0.3s ease;
+}
+
+:host-context(.dark) .task-header h2,
+:host-context(.dark_bg) .task-header h2 {
+  color: #e0e0e0;
 }
 
 .task-header h2.completed {
@@ -23,7 +35,14 @@
   border: none;
   outline: none;
   color: var(--color-text-main);
+  background: var(--color-panel);
 }
+:host-context(.dark) .textarea,
+:host-context(.dark_bg) .textarea {
+  color: #e0e0e0;
+  background: transparent;
+}
+
 .subtasks-section {
   margin: 1.5rem 0;
 }
@@ -32,6 +51,11 @@
   margin: 0 0 1rem 0;
   color: var(--color-text-main);
   font-size: 1.1rem;
+}
+:host-context(.dark) .subtasks-section h3,
+:host-context(.dark_bg) .subtasks-section h3 {
+  color: #e0e0e0;
+  background: transparent;
 }
 
 .subtasks-list {
@@ -45,6 +69,15 @@
   gap: 4px;
   margin-left: 1.5rem;
   padding: 0;
+  background: transparent;
+  transition: background 0.2s;
+}
+.subtask-item:hover {
+  background: var(--color-hover, #f3f4f6);
+}
+:host-context(.dark) .subtask-item:hover,
+:host-context(.dark_bg) .subtask-item:hover {
+  background: #23272b;
 }
 
 .completed-subtask {
@@ -65,6 +98,10 @@
   color: var(--color-text-main);
   transition: all 0.3s ease;
 }
+:host-context(.dark) .subtask-name,
+:host-context(.dark_bg) .subtask-name {
+  color: #e0e0e0;
+}
 
 .subtask-name.completed {
   text-decoration: line-through;
@@ -80,6 +117,10 @@
   font-style: italic;
   margin-top: 2rem;
 }
+:host-context(.dark) .no-selection,
+:host-context(.dark_bg) .no-selection {
+  color: #666;
+}
 
 .task-title-input{
   padding: 0;
@@ -88,4 +129,20 @@
   width:100%;
   margin-bottom:1rem;
   color: var(--color-text-main);
+}
+:host-context(.dark) .task-title-input,
+:host-context(.dark_bg) .task-title-input {
+  color: #e0e0e0;
+  background: transparent;
+}
+
+:host-context(.dark) .divider {
+  --divider-color: #e0e0e0;
+}
+:host-context(.dark) .native-date-input {
+  border-color: var(--divider-color, #e0e0e0);
+  color: #e0e0e0;
+}
+:host-context(.dark) .native-date-input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
 }

@@ -14,7 +14,6 @@ import { DashboardCoursesComponent } from './pages/dashboard/dashboard-courses/d
 import { DashboardHomeComponent } from './pages/dashboard/dashboard-home/dashboard-home.component';
 import { DashboardSettingsComponent } from './pages/dashboard/dashboard-settings/dashboard-settings.component';
 import { authorizationGuardPrivate, authorizationGuardPublic } from './guards/authorization.guard';
-import { DashboardListViewComponent } from './pages/dashboard/dashboard-list-view/dashboard-list-view.component';
 import { CourseViewComponent } from './pages/dashboard/dashboard-courses/course-view/course-view.component';
 import { CoursesGridComponent } from './pages/dashboard/dashboard-courses/courses-grid/courses-grid.component';
 import { CourseCalendarComponent } from './pages/dashboard/dashboard-courses/course-view/course-calendar/course-calendar.component';
@@ -103,6 +102,5 @@ export const routes: Routes = [
       { path: 'settings', component: DashboardSettingsComponent },
     ],
   },
-  { path: 'dashboard-list-view', component: DashboardListViewComponent },
   { path: '**', component: Error404Component },
 ];

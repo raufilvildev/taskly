@@ -2,9 +2,17 @@
   border-right: 1px solid #eee;
   overflow-y: auto;
 }
+:host-context(.dark) .task-list,
+:host-context(.dark_bg) .task-list {
+  background: transparent;
+}
 
 .task-list h2 {
   color: var(--color-text-main);
+}
+:host-context(.dark) .task-list h2,
+:host-context(.dark_bg) .task-list h2 {
+  color: #e0e0e0;
 }
 
 .no-selection {
@@ -12,4 +20,8 @@
   color: #999;
   font-style: italic;
   margin-top: 2rem;
+}
+:host-context(.dark) .no-selection,
+:host-context(.dark_bg) .no-selection {
+  color: #666;
 }
