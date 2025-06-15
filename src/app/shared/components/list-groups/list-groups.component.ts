@@ -1,6 +1,6 @@
 import { Component, inject, Output, EventEmitter } from '@angular/core';
-import { ITask } from '../../../../../interfaces/itask';
-import { ProjectService } from '../../../../../services/tasks.service';
+import { ITask } from '../../../interfaces/itask';
+import { ProjectService } from '../../../services/tasks.service';
 
 @Component({
   selector: 'app-list-groups',
