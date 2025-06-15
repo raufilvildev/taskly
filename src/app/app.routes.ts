@@ -76,12 +76,23 @@ export const routes: Routes = [
           {
             path: 'view',
             component: CourseViewComponent,
-            canActivateChild: [courseGuard],
             children: [
-              { path: ':course_uuid', component: CourseHomeComponent },
-              { path: 'tasks/:course_uuid', component: CourseTasksComponent },
-              { path: 'calendar/:course_uuid', component: CourseCalendarComponent },
-              { path: 'forum/:course_uuid', component: CourseForumComponent },
+              { path: ':course_uuid', component: CourseHomeComponent, canActivate: [courseGuard] },
+              {
+                path: 'tasks/:course_uuid',
+                component: CourseTasksComponent,
+                canActivate: [courseGuard],
+              },
+              {
+                path: 'calendar/:course_uuid',
+                component: CourseCalendarComponent,
+                canActivate: [courseGuard],
+              },
+              {
+                path: 'forum/:course_uuid',
+                component: CourseForumComponent,
+                canActivate: [courseGuard],
+              },
             ],
           },
         ],

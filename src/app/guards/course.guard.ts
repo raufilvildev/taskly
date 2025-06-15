@@ -1,5 +1,18 @@
-import { CanActivateFn } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { CoursesService } from '../services/courses.service';
 
-export const courseGuard: CanActivateFn = (route, state) => {
-  return true;
+export const courseGuard: CanActivateFn = async (route, state) => {
+  const coursesService = inject(CoursesService);
+  const router = inject(Router);
+
+  const course_uuid = route.params['course_uuid'];
+  try {
+    await coursesService.getByUuid(course_uuid);
+    return true;
+  } catch (error) {
+    console.log(error);
+    router.navigate(['/dashboard']);
+    return false;
+  }
 };
