@@ -19,7 +19,7 @@ export class CoursesService {
     return lastValueFrom(this.httpClient.get<ICourse>(`${this.endpoint}/${course_uuid}`));
   }
 
-  create(course: ICourse) {
+  create(course: FormData) {
     return lastValueFrom(this.httpClient.post<ICourse>(this.endpoint, course));
   }
 }

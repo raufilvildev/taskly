@@ -21,19 +21,7 @@ export class UnitFormComponent {
     title: new FormControl('', Validators.required),
   });
 
-  planning: IUnitCourse[] = [
-    { title: 'Unidad 1', sections: [{ title: 'Sección 1.1. ' }, { title: 'Sección 1.2. ' }] },
-    {
-      title: 'Unidad 2',
-      sections: [
-        { title: 'Sección 2.1. ' },
-        { title: 'Sección 2.2. ' },
-        { title: 'Sección 2.3. ' },
-      ],
-    },
-    { title: 'Unidad 3', sections: [] },
-    { title: 'Unidad 4', sections: [] },
-  ];
+  planning: IUnitCourse[] = [];
 
   touchedUnit = -1;
   touchedSection = -1;

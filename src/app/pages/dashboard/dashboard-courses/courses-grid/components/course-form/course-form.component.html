@@ -29,14 +29,27 @@
           rows="15"
         ></textarea>
       </fieldset>
+
+      <fieldset class="flex flex-col gap-2">
+        <label for="course-image" class="text-base font-bold cursor-pointer">
+          Imagen del curso
+        </label>
+        <input
+          type="file"
+          name="course-image"
+          id="course-image"
+          class="bg-custom-background block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400 file:cursor-pointer cursor-pointer"
+          (change)="onImageSelected($event)"
+        />
+      </fieldset>
     </div>
 
     <div>
       <h3 class="text-xl font-bold mb-3">Planificación</h3>
-      <app-unit-form (updatePlanning)="plannning = $event"></app-unit-form>
+      <app-unit-form (updatePlanning)="planning = $event"></app-unit-form>
     </div>
 
-    <app-students-search-form></app-students-search-form>
+    <app-students-search-form (updateStudents)="students = $event"></app-students-search-form>
 
     @if (courseFormError) {
       <p class="pl-1 mt-1 italic text-sm text-custom-error text-center">{{ courseFormError }}</p>

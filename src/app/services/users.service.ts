@@ -23,6 +23,10 @@ export class UsersService {
     return lastValueFrom(this.httpClient.get<IGetByTokenUser>(this.endpoint));
   }
 
+  getByEmail(email: string) {
+    return lastValueFrom(this.httpClient.get<IGetByTokenUser>(`${this.endpoint}/email/${email}`));
+  }
+
   create(user: ISignupUser) {
     return lastValueFrom(this.httpClient.post<IToken>(`${this.endpoint}/signup`, user));
   }
