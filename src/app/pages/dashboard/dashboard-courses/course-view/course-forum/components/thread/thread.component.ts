@@ -58,6 +58,7 @@ export class ThreadComponent {
 
   updateForum() {
     this.showThreadForm = false;
+    this.showResponseForm = false;
     this.update.emit();
   }
 

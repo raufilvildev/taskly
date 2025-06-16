@@ -97,7 +97,7 @@
         <div class="flex gap-5 justify-center">
           <button
             class="px-3 py-2 text-sm text-custom-text-main rounded-lg border border-custom-accent bg-custom-primary-light hover:bg-custom-accent-dark hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-            (click)="deleteResponse(response.uuid)"
+            (click)="deleteResponse(response.uuid || '')"
           >
             Confirmar
           </button>

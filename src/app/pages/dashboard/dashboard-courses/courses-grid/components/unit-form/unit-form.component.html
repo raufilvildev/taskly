@@ -1,0 +1,102 @@
+<div class="flex flex-col items-stretch gap-3 mb-2">
+  <button
+    type="button"
+    class="w-fit mx-auto my-5 px-4 py-2 rounded-lg text-white bg-custom-accent hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+    (click)="displayCreateUnit()"
+  >
+    {{ !createUnitStatus ? 'Crear unidad' : 'Cancelar' }}
+  </button>
+  <div class="flex flex-col gap-3">
+    @for (unit of planning; track $index; let unit_index = $index; let planning_length = $count) {
+      <div
+        class="flex items-center rounded-full px-3 py-2 bg-purple-500/50 hover:bg-purple-500 transform hover:scale-101 transition-all duration-300"
+        (click)="touchedUnit = unit_index"
+      >
+        <p class="flex-1 text-base">
+          <span class="font-bold">{{ unit_index + 1 }}.</span>
+          {{ unit.title }}
+        </p>
+        <div class="flex gap-1 items-center">
+          <div (click)="displayCreateSection(unit_index)">
+            <app-create-edit-cancel-remove-button
+              [type]="
+                createSectionStatus && touchedUnit === unit_index && !editSectionStatus
+                  ? 'cancel'
+                  : 'create'
+              "
+            ></app-create-edit-cancel-remove-button>
+          </div>
+          <div (click)="displayEditUnit(unit_index)">
+            <app-create-edit-cancel-remove-button
+              [type]="editUnitStatus && touchedUnit === unit_index ? 'cancel' : 'edit'"
+            ></app-create-edit-cancel-remove-button>
+          </div>
+          <div (click)="removeUnit(unit_index)">
+            <app-create-edit-cancel-remove-button
+              [type]="'remove'"
+            ></app-create-edit-cancel-remove-button>
+          </div>
+          @if (unit_index > 0) {
+            <img
+              src="up_arrow.svg"
+              alt="Icono de flecha hacia arriba"
+              class="w-7 h-7 p-1 rounded-full hover:bg-white/60 transition-all duration-300 transform hover:scale-101"
+              (click)="increaseUnitNumber(unit_index)"
+            />
+          }
+          @if (unit_index < planning_length - 1) {
+            <img
+              src="down_arrow.svg"
+              alt="Icono de flecha hacia abajo"
+              class="w-7 h-7 rounded-full p-1 hover:bg-white/60 transition-all duration-300 transform hover:scale-101"
+              (click)="decreaseUnitNumber(unit_index)"
+            />
+          }
+        </div>
+      </div>
+
+      <app-section-form
+        [unit]="unit"
+        [unit_index]="unit_index"
+        [createSectionStatus]="createSectionStatus"
+        [editSectionStatus]="editSectionStatus"
+        [showSectionForm]="showSectionForm"
+        [sectionForm]="sectionForm"
+        [touchedUnit]="touchedUnit"
+        (updateUnitForm)="
+          updateUnitSections($event, unit_index);
+          touchedUnit = unit_index;
+          createSectionStatus = false
+        "
+        (setEditSectionStatus)="editSectionStatus = $event"
+        (setTouchedSection)="touchedSection = $event"
+        (closeUnitForms)="onCloseUnitForms()"
+        (cancelAllForms)="cancelAllFormsHandler()"
+        (setShowSectionForm)="showSectionForm = $event"
+      ></app-section-form>
+    }
+    @if (showUnitForm) {
+      <div [formGroup]="unitForm" class="flex-1 flex items-center gap-3 mt-3">
+        <input
+          type="text"
+          placeholder="Escribe el título de la unidad"
+          class="flex-1 w-full px-4 py-2 bg-custom-background placeholder-custom-muted dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+          formControlName="title"
+          (keydown.enter)="
+            $event.preventDefault(); editUnitStatus ? editUnit(editedUnit) : addUnit()
+          "
+        />
+        <button
+          type="button"
+          class="w-fit px-4 py-2 rounded-lg text-white bg-custom-accent hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+          (click)="editUnitStatus ? editUnit(editedUnit) : addUnit()"
+        >
+          {{ editUnitStatus ? 'Editar' : 'Guardar' }}
+        </button>
+      </div>
+      @if (unitFormError) {
+        <p class="mx-auto text-sm text-custom-error italic">{{ unitFormError }}</p>
+      }
+    }
+  </div>
+</div>

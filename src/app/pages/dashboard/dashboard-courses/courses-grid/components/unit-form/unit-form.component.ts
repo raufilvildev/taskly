@@ -1,0 +1,234 @@
+import { Component, EventEmitter, Output } from '@angular/core';
+import { IUnitCourse } from '../../../../../../interfaces/icourse.interface';
+import { CreateEditCancelRemoveButtonComponent } from '../../../../../../shared/components/buttons/create-edit-cancel-remove-button/create-edit-cancel-remove-button.component';
+import { SectionFormComponent } from '../section-form/section-form.component';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-unit-form',
+  imports: [ReactiveFormsModule, CreateEditCancelRemoveButtonComponent, SectionFormComponent],
+  templateUrl: './unit-form.component.html',
+  styleUrl: './unit-form.component.css',
+})
+export class UnitFormComponent {
+  @Output() updatePlanning = new EventEmitter<IUnitCourse[]>();
+
+  unitForm = new FormGroup({
+    title: new FormControl('', Validators.required),
+  });
+
+  sectionForm = new FormGroup({
+    title: new FormControl('', Validators.required),
+  });
+
+  planning: IUnitCourse[] = [
+    { title: 'Unidad 1', sections: [{ title: 'Sección 1.1. ' }, { title: 'Sección 1.2. ' }] },
+    {
+      title: 'Unidad 2',
+      sections: [
+        { title: 'Sección 2.1. ' },
+        { title: 'Sección 2.2. ' },
+        { title: 'Sección 2.3. ' },
+      ],
+    },
+    { title: 'Unidad 3', sections: [] },
+    { title: 'Unidad 4', sections: [] },
+  ];
+
+  touchedUnit = -1;
+  touchedSection = -1;
+  editedUnit = -1;
+  editedSection = -1;
+
+  createUnitStatus = false;
+  editUnitStatus = false;
+
+  createSectionStatus = false;
+  editSectionStatus = false;
+
+  showUnitForm = false;
+  showSectionForm = false;
+
+  unitFormError = '';
+
+  displayCreateUnit() {
+    // Si se está creando o editando sección, limpiamos esos estados
+    this.createSectionStatus = false;
+    this.editSectionStatus = false;
+    this.showSectionForm = false;
+    this.touchedSection = -1;
+
+    // Si estaba editando unidad y clic en crear unidad cancela edición
+    if (this.editUnitStatus) {
+      this.editUnitStatus = false;
+      this.editedUnit = -1;
+    }
+
+    // Alternar el estado de crear unidad
+    this.createUnitStatus = !this.createUnitStatus;
+
+    // Reset formulario de unidad cuando se abre
+    if (this.createUnitStatus) {
+      this.unitForm.reset();
+      this.showUnitForm = true;
+    } else {
+      this.showUnitForm = false;
+    }
+  }
+
+  displayEditUnit(unit_index: number) {
+    // Cancelar creación/edición de sección
+    this.createSectionStatus = false;
+    this.editSectionStatus = false;
+    this.showSectionForm = false;
+    this.touchedSection = -1;
+
+    this.editUnitStatus = !this.editUnitStatus || this.touchedUnit !== unit_index;
+    this.createUnitStatus = false;
+    this.editedUnit = unit_index;
+
+    this.unitForm.reset();
+
+    if (this.editUnitStatus) {
+      this.unitForm.setValue({ title: this.planning[unit_index].title });
+      this.showUnitForm = true;
+    } else {
+      this.showUnitForm = false;
+      this.editedUnit = -1;
+    }
+  }
+
+  displayCreateSection(unit_index: number) {
+    this.createUnitStatus = false;
+    this.editUnitStatus = false;
+    this.showUnitForm = false;
+    this.editedUnit = -1;
+
+    // Si ya estás creando o editando esta unidad y pulsas el botón para crear sección...
+    if (this.touchedUnit === unit_index) {
+      if (this.createSectionStatus) {
+        // Ya estás creando, toggle para cerrar
+        this.createSectionStatus = false;
+        this.editSectionStatus = false;
+        this.showSectionForm = false;
+        this.touchedSection = -1;
+        return;
+      }
+      if (this.editSectionStatus) {
+        // Estabas editando, ahora quieres crear, cambiamos estado sin cerrar el form
+        this.createSectionStatus = true;
+        this.editSectionStatus = false;
+        this.showSectionForm = true;
+        this.touchedSection = -1;
+        this.sectionForm.reset();
+        return;
+      }
+    }
+
+    // Caso normal: abrir crear sección en la unidad tocada
+    this.createSectionStatus = true;
+    this.editSectionStatus = false;
+    this.showSectionForm = true;
+    this.touchedUnit = unit_index;
+    this.touchedSection = -1;
+    this.sectionForm.reset();
+  }
+
+  addUnit() {
+    if (!this.unitForm.value.title) {
+      this.unitFormError = 'El título de la unidad no puede ser vacío.';
+      return;
+    }
+
+    this.planning.push({ title: this.unitForm.value.title, sections: [] });
+    this.unitForm.reset();
+    this.unitFormError = '';
+
+    this.updatePlanning.emit(this.planning);
+  }
+
+  editUnit(unit_index: number) {
+    if (!this.unitForm.value.title) {
+      this.unitFormError = 'El título de la unidad no puede ser vacío.';
+      return;
+    }
+    this.planning[unit_index].title = this.unitForm.value.title;
+    this.unitForm.reset();
+    this.unitFormError = '';
+
+    this.showUnitForm = false;
+
+    this.createUnitStatus = false;
+    this.editUnitStatus = false;
+
+    this.editedUnit = -1;
+    this.updatePlanning.emit(this.planning);
+  }
+
+  removeUnit(unit_index: number) {
+    this.planning.splice(unit_index, 1);
+
+    // Cancelar todo estado de formularios y edición
+    this.createUnitStatus = false;
+    this.editUnitStatus = false;
+    this.showUnitForm = false;
+
+    this.createSectionStatus = false;
+    this.editSectionStatus = false;
+    this.showSectionForm = false;
+
+    this.editedUnit = -1;
+    this.touchedUnit = -1;
+    this.touchedSection = -1;
+
+    this.updatePlanning.emit(this.planning);
+  }
+
+  increaseUnitNumber(unit_index: number) {
+    const currentUnit = this.planning[unit_index];
+    const previousUnit = this.planning[unit_index - 1];
+
+    this.planning[unit_index] = previousUnit;
+    this.planning[unit_index - 1] = currentUnit;
+  }
+
+  decreaseUnitNumber(unit_index: number) {
+    const currentUnit = this.planning[unit_index];
+    const nextUnit = this.planning[unit_index + 1];
+
+    this.planning[unit_index] = nextUnit;
+    this.planning[unit_index + 1] = currentUnit;
+  }
+
+  updateUnitSections(event: { title: string }[], unit_index: number) {
+    this.planning[unit_index].sections = event;
+
+    this.createUnitStatus = false;
+    this.editUnitStatus = false;
+    this.showUnitForm = false;
+
+    // Solo reinicia touchedSection si NO estás editando
+    if (!this.editSectionStatus) {
+      this.touchedSection = -1;
+    }
+
+    this.updatePlanning.emit(this.planning);
+  }
+
+  onCloseUnitForms() {
+    this.createUnitStatus = false;
+    this.editUnitStatus = false;
+    this.showUnitForm = false;
+
+    this.showSectionForm = false;
+
+    this.editedUnit = -1;
+  }
+
+  cancelAllFormsHandler() {
+    this.createSectionStatus = false;
+    this.editSectionStatus = false;
+    this.showSectionForm = false;
+    this.touchedSection = -1;
+  }
+}

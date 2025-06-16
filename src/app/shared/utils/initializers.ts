@@ -1,4 +1,4 @@
-import { ICourse } from '../../interfaces/icourse.interface';
+import { ICourse, IUnitCourse } from '../../interfaces/icourse.interface';
 import { IResponse } from '../../interfaces/iforum.interface';
 import { IUser } from '../../interfaces/iuser.interface';
 
@@ -28,7 +28,15 @@ export const initCourse = (): ICourse => {
     description: '',
     course_image_url: '',
     teacher: '',
+    students: [],
     planning: [],
+  };
+};
+
+export const initUnit = (): IUnitCourse => {
+  return {
+    title: '',
+    sections: [],
   };
 };
 

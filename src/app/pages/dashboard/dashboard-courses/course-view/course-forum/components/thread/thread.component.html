@@ -72,8 +72,10 @@
         @if (showResponseForm && threadUuidWhereAResponseIsBeingCreated === thread.uuid && !false) {
           <app-response-form
             [user]="user"
+            [threadUuid]="thread.uuid"
             (cancel)="updateShowResponseForm(false)"
             (create)="updateForum()"
+            (edit)="updateForum()"
           ></app-response-form>
           @if (!showResponses && thread.responses.length > 0) {
             <hr class="border-custom-muted" />
@@ -87,12 +89,12 @@
             @for (response of thread.responses; track response.uuid) {
               <app-response
                 [user]="user"
-                [response]="response"
-                (editResponse)="setEditedResponse($event)"
-                (delete)="updateForum()"
                 [editedResponseUuid]="editedResponseUuid"
                 [threadUuid]="thread.uuid ? thread.uuid : ''"
                 [threadUuidWhereAResponseIsBeingEdited]="threadUuidWhereAResponseIsBeingEdited"
+                [response]="response"
+                (editResponse)="setEditedResponse($event)"
+                (delete)="updateForum()"
               ></app-response>
             }
           </div>
