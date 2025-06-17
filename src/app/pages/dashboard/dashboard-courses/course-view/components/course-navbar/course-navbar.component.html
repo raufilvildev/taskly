@@ -1,0 +1,30 @@
+<nav>
+  <ul
+    class="flex gap-5 md:gap-15 lg:gap-25 justify-center bg-custom-background dark:bg-transparent dark:shadow-white shadow-xs"
+  >
+    <li
+      [routerLink]="['/dashboard', 'courses', 'view', course_uuid]"
+      class="p-5 cursor-pointer hover:bg-custom-accent hover:scale-105 transition-all duration 300"
+    >
+      <a>Contenido</a>
+    </li>
+    <li
+      [routerLink]="['/dashboard', 'courses', 'view', 'calendar', course_uuid]"
+      class="p-5 cursor-pointer hover:bg-custom-accent hover:scale-105 transition-all duration 300"
+    >
+      <a>Calendario</a>
+    </li>
+    <li
+      [routerLink]="['/dashboard', 'courses', 'view', 'tasks', course_uuid]"
+      class="p-5 cursor-pointer hover:bg-custom-accent hover:scale-105 transition-all duration 300"
+    >
+      <a>Tareas</a>
+    </li>
+    <li
+      [routerLink]="['/dashboard', 'courses', 'view', 'forum', course_uuid]"
+      class="p-5 cursor-pointer hover:bg-custom-accent hover:scale-105 transition-all duration 300"
+    >
+      <a>Foro</a>
+    </li>
+  </ul>
+</nav>
