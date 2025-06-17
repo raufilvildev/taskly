@@ -1,4 +1,8 @@
-<app-course-navbar></app-course-navbar>
-<div class="flex-1 flex flex-col items-stretch justify-center">
-  <router-outlet />
+<div class="relative">
+  <div class="sticky w-full shadow-sm shadow-gray-300 dark:shadow-white">
+    <app-course-navbar></app-course-navbar>
+  </div>
+  <div class="flex-1 flex flex-col items-stretch justify-center">
+    <router-outlet />
+  </div>
 </div>
