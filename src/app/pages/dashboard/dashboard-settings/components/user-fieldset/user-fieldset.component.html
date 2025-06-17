@@ -4,7 +4,7 @@
 
     @if (isEditing) {
       <img
-        src="edit.svg"
+        src="cancel.svg"
         alt="Cancelar edición"
         class="w-6 h-6 cursor-pointer"
         (click)="onCancelEdit()"
@@ -24,7 +24,7 @@
       [type]="type"
       [id]="controlName"
       [formControl]="control"
-      class="w-full px-4 py-2 bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300"
+      class="px-4 py-2 bg-custom-background dark:bg-gray-800 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
     />
   } @else {
     <p class="w-full mt-2 text-base">{{ value }}</p>
