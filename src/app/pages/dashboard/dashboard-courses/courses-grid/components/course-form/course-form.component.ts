@@ -62,6 +62,10 @@ export class CourseFormComponent {
     formData.append('planning', JSON.stringify(this.planning));
     formData.append('course-image', this.files[0]);
 
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
     try {
       await this.coursesService.create(formData);
       this.closeCourseForm.emit();
@@ -97,6 +101,7 @@ export class CourseFormComponent {
     formData.append('teacher', this.user.uuid);
     formData.append('students', JSON.stringify(this.students));
     formData.append('planning', JSON.stringify(this.planning));
+    formData.append('course_image_url', !this.files[0] ? this.course.course_image_url : '');
     formData.append('course-image', this.files[0]);
 
     try {
