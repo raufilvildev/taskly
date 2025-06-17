@@ -1,8 +1,8 @@
-<div class="w-full min-h-screen p-10 flex justify-center items-centert">
+
   <form
     [formGroup]="userSettingsForm"
     (ngSubmit)="updateUser(userSettingsForm.value)"
-    class="mx-auto p-6 bg-white rounded-xl shadow-md w-[700px] max-w-full dark:bg-transparent min-w-100 lg:w-125 rounded-lg shadow-xl my-10"
+    class="p-6 bg-white rounded-xl shadow-md w-full min-h-screen dark:bg-transparent rounded-lg shadow-xl my-10"
   >
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <app-user-fieldset
@@ -57,4 +57,4 @@
       </button>
     </div>
   </form>
-</div>
+

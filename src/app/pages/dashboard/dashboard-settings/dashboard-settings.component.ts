@@ -93,7 +93,7 @@ export class DashboardSettingsComponent {
         username: this.user.username,
       });
       const birthDate= this.user.birth_date
-        ? dayjs(this.user.birth_date).format('DD-MM-YYYY')
+        ? dayjs(this.user.birth_date).format('DD/MM/YYYY')
         : '';
 
       this.user.birth_date = birthDate;
