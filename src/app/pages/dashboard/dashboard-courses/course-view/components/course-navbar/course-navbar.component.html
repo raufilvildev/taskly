@@ -1,30 +1,42 @@
 <nav>
   <ul
-    class="flex gap-5 md:gap-15 lg:gap-25 justify-center bg-custom-background dark:bg-transparent dark:shadow-white shadow-xs"
+    class="flex justify-center gap-5 md:gap-15 lg:gap-25 bg-custom-background dark:bg-transparent"
   >
-    <li
-      [routerLink]="['/dashboard', 'courses', 'view', course_uuid]"
-      class="p-5 cursor-pointer hover:bg-custom-accent hover:scale-105 transition-all duration 300"
-    >
-      <a>Contenido</a>
+    <li class="p-4">
+      <a
+        [routerLink]="['/dashboard', 'courses', 'view', course_uuid]"
+        routerLinkActive="font-bold text-custom-accent-dark dark:text-purple-300"
+        class="p-4 cursor-pointer hover:bg-custom-accent/25 rounded-full hover:scale-105 transition-all duration-300"
+      >
+        Contenido
+      </a>
     </li>
-    <li
-      [routerLink]="['/dashboard', 'courses', 'view', 'calendar', course_uuid]"
-      class="p-5 cursor-pointer hover:bg-custom-accent hover:scale-105 transition-all duration 300"
-    >
-      <a>Calendario</a>
+    <li class="p-4">
+      <a
+        [routerLink]="['/dashboard', 'courses', 'view', 'calendar', course_uuid]"
+        routerLinkActive="font-bold text-custom-accent-dark dark:text-purple-300"
+        class="p-4 cursor-pointer hover:bg-custom-accent/25 rounded-full hover:scale-105 transition-all duration-300"
+      >
+        Calendario
+      </a>
     </li>
-    <li
-      [routerLink]="['/dashboard', 'courses', 'view', 'tasks', course_uuid]"
-      class="p-5 cursor-pointer hover:bg-custom-accent hover:scale-105 transition-all duration 300"
-    >
-      <a>Tareas</a>
+    <li class="p-4">
+      <a
+        [routerLink]="['/dashboard', 'courses', 'view', 'tasks', course_uuid]"
+        routerLinkActive="font-bold text-custom-accent-dark dark:text-purple-300"
+        class="p-4 cursor-pointer hover:bg-custom-accent/25 rounded-full hover:scale-105 transition-all duration-300"
+      >
+        Tareas
+      </a>
     </li>
-    <li
-      [routerLink]="['/dashboard', 'courses', 'view', 'forum', course_uuid]"
-      class="p-5 cursor-pointer hover:bg-custom-accent hover:scale-105 transition-all duration 300"
-    >
-      <a>Foro</a>
+    <li class="p-4">
+      <a
+        [routerLink]="['/dashboard', 'courses', 'view', 'forum', course_uuid]"
+        routerLinkActive="font-bold text-custom-accent-dark dark:text-purple-300"
+        class="p-4 cursor-pointer hover:bg-custom-accent/25 rounded-full hover:scale-105 transition-all duration-300"
+      >
+        Foro
+      </a>
     </li>
   </ul>
 </nav>

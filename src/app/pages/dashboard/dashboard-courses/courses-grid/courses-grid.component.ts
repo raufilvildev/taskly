@@ -6,6 +6,7 @@ import { IGetByTokenUser } from '../../../../interfaces/iuser.interface';
 import { UsersService } from '../../../../services/users.service';
 import { CourseFormComponent } from './components/course-form/course-form.component';
 import { initUser } from '../../../../shared/utils/initializers';
+import { environment } from '../../../../environments/environment.test';
 
 @Component({
   selector: 'app-courses-grid',
@@ -21,10 +22,17 @@ export class CoursesGridComponent {
   courses: ICourse[] = [];
   showCourseForm = false;
 
+  course_image_endpoint = `${environment.host.split('api')[0]}/uploads/courses/`;
+
+  async updateGrid() {
+    this.showCourseForm = false;
+    this.courses = await this.coursesService.getAll();
+  }
+
   async ngOnInit() {
     try {
       this.user = await this.usersService.getByToken();
-      this.courses = await this.coursesService.getAll();
+      await this.updateGrid();
     } catch (error) {
       return;
     }

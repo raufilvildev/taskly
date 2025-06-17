@@ -62,14 +62,11 @@ export class CourseFormComponent {
     formData.append('planning', JSON.stringify(this.planning));
     formData.append('course-image', this.files[0]);
 
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-
     try {
       await this.coursesService.create(formData);
       this.closeCourseForm.emit();
     } catch (errorResponse) {
+      console.log(errorResponse);
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
         this.courseFormError = constants.generalServerError;
         return;
