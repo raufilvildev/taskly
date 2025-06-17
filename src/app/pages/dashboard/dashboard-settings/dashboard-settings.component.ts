@@ -109,9 +109,22 @@ export class DashboardSettingsComponent {
     birth_date: false,
   };
 
-  updateUserFormState(field: string, state: boolean) {
-    this.editUserForm[field] = state;
+ updateUserFormState(field: string | null) {
+    const resetFormState: { [key: string]: boolean } = {
+      first_name: false,
+      last_name: false,
+      username: false,
+      birth_date: false,
+    };
+
+    if (field) {
+      resetFormState[field] = true;
+    }
+
+    this.editUserForm = { ...resetFormState };
   }
+
+
 
   async updateUser(userFormValue: any) {
     try {

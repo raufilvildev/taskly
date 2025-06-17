@@ -16,12 +16,18 @@ export class UserFieldsetComponent {
   @Input() formGroup!: FormGroup;
   @Input() isEditing!: boolean;
   @Input() value!: string | Date;
+  @Input() isDisabled: boolean = false;
 
-  @Output() toggleEdit = new EventEmitter<string>();
+  @Output() toggleEdit = new EventEmitter<string | null>();
 
   onToggleEdit() {
     this.toggleEdit.emit(this.controlName);
   }
+
+  onCancelEdit() {
+    this.toggleEdit.emit(null);
+  }
+
   get control(): FormControl {
     const ctrl = this.formGroup?.get(this.controlName);
     return ctrl as FormControl;

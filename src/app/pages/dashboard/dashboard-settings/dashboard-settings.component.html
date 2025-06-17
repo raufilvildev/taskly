@@ -11,7 +11,7 @@
         [formGroup]="userSettingsForm"
         [isEditing]="editUserForm['first_name']"
         [value]="user.first_name"
-        (toggleEdit)="updateUserFormState('first_name', !editUserForm['first_name'])"
+        (toggleEdit)="updateUserFormState($event)"
         [class]="getValidationStyleClasses('first_name', ['minlength', 'maxlength'])"
       ></app-user-fieldset>
 
@@ -21,7 +21,7 @@
         [formGroup]="userSettingsForm"
         [isEditing]="editUserForm['last_name']"
         [value]="user.last_name"
-        (toggleEdit)="updateUserFormState('last_name', !editUserForm['last_name'])"
+        (toggleEdit)="updateUserFormState($event)"
         [class]="getValidationStyleClasses('last_name', ['minlength', 'maxlength'])"
       ></app-user-fieldset>
 
@@ -32,7 +32,7 @@
         [isEditing]="editUserForm['username']"
         [value]="user.username"
         [type]="'text'"
-        (toggleEdit)="updateUserFormState('username', !editUserForm['username'])"
+        (toggleEdit)="updateUserFormState($event)"
         [class]="getValidationStyleClasses('username', ['minlength', 'maxlength'])"
       ></app-user-fieldset>
 
@@ -43,7 +43,7 @@
         [isEditing]="editUserForm['birth_date']"
         [value]="user.birth_date"
         [type]="'date'"
-        (toggleEdit)="updateUserFormState('birth_date', !editUserForm['birth_date'])"
+        (toggleEdit)="updateUserFormState($event)"
         [class]="getValidationStyleClasses('birth_date', [])"
       ></app-user-fieldset>
     </div>
