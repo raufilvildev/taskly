@@ -8,4 +8,5 @@ import { Component, Input } from '@angular/core';
 })
 export class CreateEditCancelRemoveButtonComponent {
   @Input() type: 'create' | 'edit' | 'cancel' | 'remove' = 'create';
+  @Input() icon: '_light' | '' = '';
 }

@@ -41,6 +41,7 @@ export class SectionFormComponent {
     }
 
     // Emitir evento para limpiar estado unidad (ya existente)
+    this.cancelAllForms.emit();
     this.closeUnitForms.emit();
 
     this.setEditSectionStatus.emit(true);
@@ -50,8 +51,6 @@ export class SectionFormComponent {
     this.sectionForm.setValue({
       title: this.unit.sections[section_index].title,
     });
-
-    this.updateUnitForm.emit(this.unit.sections);
   }
 
   addSection() {
@@ -62,9 +61,6 @@ export class SectionFormComponent {
 
     this.unit.sections.push({ title: this.sectionForm.value.title });
     this.sectionForm.reset();
-
-    this.setEditSectionStatus.emit(false);
-    this.setTouchedSection.emit(-1);
 
     this.updateUnitForm.emit(this.unit.sections);
   }
@@ -102,6 +98,7 @@ export class SectionFormComponent {
     this.unit.sections[section_index - 1] = currentSection;
 
     this.updateUnitForm.emit(this.unit.sections);
+    this.resetAllStates();
   }
 
   decreaseSectionNumber(section_index: number) {
@@ -112,5 +109,14 @@ export class SectionFormComponent {
     this.unit.sections[section_index + 1] = currentSection;
 
     this.updateUnitForm.emit(this.unit.sections);
+    this.resetAllStates();
+  }
+
+  resetAllStates() {
+    this.setEditSectionStatus.emit(false);
+    this.setTouchedSection.emit(-1);
+    this.setShowSectionForm.emit(false);
+    this.closeUnitForms.emit(); // cierra formularios de unidad desde el padre
+    this.sectionForm.reset();
   }
 }

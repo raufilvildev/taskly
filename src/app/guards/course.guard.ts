@@ -11,7 +11,7 @@ export const courseGuard: CanActivateFn = async (route, state) => {
     await coursesService.getByUuid(course_uuid);
     return true;
   } catch (error) {
-    //router.navigate(['/dashboard']);
-    return true;
+    router.navigate(['/dashboard']);
+    return false;
   }
 };

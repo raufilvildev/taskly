@@ -178,6 +178,8 @@ export class UnitFormComponent {
 
     this.planning[unit_index] = previousUnit;
     this.planning[unit_index - 1] = currentUnit;
+
+    this.resetAllStates();
   }
 
   decreaseUnitNumber(unit_index: number) {
@@ -186,19 +188,11 @@ export class UnitFormComponent {
 
     this.planning[unit_index] = nextUnit;
     this.planning[unit_index + 1] = currentUnit;
+    this.resetAllStates();
   }
 
   updateUnitSections(event: { title: string }[], unit_index: number) {
     this.planning[unit_index].sections = event;
-
-    this.createUnitStatus = false;
-    this.editUnitStatus = false;
-    this.showUnitForm = false;
-
-    // Solo reinicia touchedSection si NO estás editando
-    if (!this.editSectionStatus) {
-      this.touchedSection = -1;
-    }
 
     this.updatePlanning.emit(this.planning);
   }
@@ -218,5 +212,20 @@ export class UnitFormComponent {
     this.editSectionStatus = false;
     this.showSectionForm = false;
     this.touchedSection = -1;
+  }
+
+  resetAllStates() {
+    this.createUnitStatus = false;
+    this.editUnitStatus = false;
+    this.showUnitForm = false;
+    this.createSectionStatus = false;
+    this.editSectionStatus = false;
+    this.showSectionForm = false;
+    this.touchedUnit = -1;
+    this.touchedSection = -1;
+    this.editedUnit = -1;
+    this.editedSection = -1;
+    this.unitForm.reset();
+    this.sectionForm.reset();
   }
 }

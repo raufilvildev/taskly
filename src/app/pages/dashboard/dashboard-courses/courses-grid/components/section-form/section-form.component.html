@@ -21,16 +21,18 @@
                 ? 'cancel'
                 : 'edit'
             "
+            [icon]="'_light'"
           ></app-create-edit-cancel-remove-button>
         </div>
         <div (click)="removeSection(section_index)">
           <app-create-edit-cancel-remove-button
             [type]="'remove'"
+            [icon]="'_light'"
           ></app-create-edit-cancel-remove-button>
         </div>
         @if (section_index > 0) {
           <img
-            src="up_arrow.svg"
+            src="up_arrow_light.svg"
             alt="Icono de flecha hacia arriba"
             class="w-7 h-7 p-1 rounded-full hover:bg-white/60 transition-all duration-300 transform hover:scale-101"
             (click)="increaseSectionNumber(section_index)"
@@ -38,7 +40,7 @@
         }
         @if (section_index < sections_length - 1) {
           <img
-            src="down_arrow.svg"
+            src="down_arrow_light.svg"
             alt="Icono de flecha hacia abajo"
             class="w-7 h-7 rounded-full p-1 hover:bg-white/60 transition-all duration-300 transform hover:scale-101"
             (click)="decreaseSectionNumber(section_index)"

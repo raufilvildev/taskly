@@ -24,21 +24,24 @@
                   ? 'cancel'
                   : 'create'
               "
+              [icon]="'_light'"
             ></app-create-edit-cancel-remove-button>
           </div>
           <div (click)="displayEditUnit(unit_index)">
             <app-create-edit-cancel-remove-button
               [type]="editUnitStatus && touchedUnit === unit_index ? 'cancel' : 'edit'"
+              [icon]="'_light'"
             ></app-create-edit-cancel-remove-button>
           </div>
           <div (click)="removeUnit(unit_index)">
             <app-create-edit-cancel-remove-button
               [type]="'remove'"
+              [icon]="'_light'"
             ></app-create-edit-cancel-remove-button>
           </div>
           @if (unit_index > 0) {
             <img
-              src="up_arrow.svg"
+              src="up_arrow_light.svg"
               alt="Icono de flecha hacia arriba"
               class="w-7 h-7 p-1 rounded-full hover:bg-white/60 transition-all duration-300 transform hover:scale-101"
               (click)="increaseUnitNumber(unit_index)"
@@ -46,7 +49,7 @@
           }
           @if (unit_index < planning_length - 1) {
             <img
-              src="down_arrow.svg"
+              src="down_arrow_light.svg"
               alt="Icono de flecha hacia abajo"
               class="w-7 h-7 rounded-full p-1 hover:bg-white/60 transition-all duration-300 transform hover:scale-101"
               (click)="decreaseUnitNumber(unit_index)"
@@ -63,11 +66,7 @@
         [showSectionForm]="showSectionForm"
         [sectionForm]="sectionForm"
         [touchedUnit]="touchedUnit"
-        (updateUnitForm)="
-          updateUnitSections($event, unit_index);
-          touchedUnit = unit_index;
-          createSectionStatus = false
-        "
+        (updateUnitForm)="updateUnitSections($event, unit_index); touchedUnit = unit_index"
         (setEditSectionStatus)="editSectionStatus = $event"
         (setTouchedSection)="touchedSection = $event"
         (closeUnitForms)="onCloseUnitForms()"
