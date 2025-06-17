@@ -23,12 +23,12 @@ export class CourseFormComponent {
   @Input() course: ICourse = initCourse();
 
   @Output() cancel = new EventEmitter<void>();
+  @Output() closeCourseForm = new EventEmitter<void>();
 
   courseForm = new FormGroup({
     uuid: new FormControl(''),
     title: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
-    teacher: new FormControl(''),
   });
 
   planning: IUnitCourse[] = [];
@@ -51,19 +51,20 @@ export class CourseFormComponent {
       this.courseFormError = 'Existen campos vacíos.';
       return;
     }
-    const { title, description, teacher } = this.courseForm.value;
+    const { title, description } = this.courseForm.value;
 
     const formData = new FormData();
 
     formData.append('title', title || '');
     formData.append('description', description || '');
-    formData.append('teacher', teacher || '');
+    formData.append('teacher', this.user.uuid);
     formData.append('students', JSON.stringify(this.students));
     formData.append('planning', JSON.stringify(this.planning));
     formData.append('course-image', this.files[0]);
 
     try {
       await this.coursesService.create(formData);
+      this.closeCourseForm.emit();
     } catch (errorResponse) {
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
         this.courseFormError = constants.generalServerError;
@@ -79,7 +80,42 @@ export class CourseFormComponent {
     }
   }
 
-  editCourse(courseForm: FormGroup) {}
+  async editCourse(courseForm: FormGroup) {
+    this.courseFormError = '';
+
+    if (courseForm.invalid) {
+      this.courseFormError = 'Existen campos vacíos.';
+      return;
+    }
+    const { title, description } = this.courseForm.value;
+
+    const formData = new FormData();
+
+    formData.append('uuid', this.course.uuid);
+    formData.append('title', title || '');
+    formData.append('description', description || '');
+    formData.append('teacher', this.user.uuid);
+    formData.append('students', JSON.stringify(this.students));
+    formData.append('planning', JSON.stringify(this.planning));
+    formData.append('course-image', this.files[0]);
+
+    try {
+      await this.coursesService.edit(formData);
+      this.closeCourseForm.emit();
+    } catch (errorResponse) {
+      if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
+        this.courseFormError = constants.generalServerError;
+        return;
+      }
+
+      if (errorResponse instanceof HttpErrorResponse) {
+        this.courseFormError = errorResponse.error;
+        return;
+      }
+
+      this.courseFormError = constants.generalServerError;
+    }
+  }
 
   cancelCourseForm() {
     this.cancel.emit();
@@ -98,7 +134,6 @@ export class CourseFormComponent {
         uuid: new FormControl(this.course.uuid, Validators.required),
         title: new FormControl(this.course.title, Validators.required),
         description: new FormControl(this.course.description, Validators.required),
-        teacher: new FormControl(this.user.uuid, Validators.required),
       });
     }
   }

@@ -53,6 +53,8 @@ export class ResponseComponent {
       await this.forumService.deleteResponse(response_uuid);
       this.delete.emit();
       this.updateShowDeleteConfirmation(false);
+      this.showDeleteConfirmation = false;
+      this.showResponseForm = false;
     } catch (errorResponse) {
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
         this.deleteResponseError = constants.generalServerError;

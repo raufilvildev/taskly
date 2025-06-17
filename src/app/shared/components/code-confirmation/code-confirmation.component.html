@@ -1,7 +1,7 @@
 <form
   [formGroup]="confirmEmailForm"
   (ngSubmit)="confirmEmail(confirmEmailForm)"
-  class="mx-auto p-10 flex flex-col gap-5 bg-custom-panel max-w-150 rounded-lg shadow-sm shadow-custom-accent-dark"
+  class="mx-auto p-10 flex flex-col gap-5 bg-custom-panel dark:bg-transparent dark:shadow-none max-w-150 rounded-lg shadow-sm shadow-custom-accent-dark"
 >
   <p class="text-base">
     <span>
@@ -16,12 +16,16 @@
       type="text"
       formControlName="random_number_input"
       id="random_number_input"
-      class="text-center tracking-widest text-custom-text-main font-bold w-25 px-4 py-2 mx-auto bg-custom-background border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+      class="mt-5 text-center tracking-widest font-bold w-25 px-4 py-2 mx-auto bg-custom-background dark:bg-gray-800 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
     />
-    <countdown #cd [config]="config" class="mx-auto font-bold text-blue-500 mt-1" />
+    <countdown
+      #cd
+      [config]="config"
+      class="mt-5 mx-auto font-bold text-blue-500 dark:text-purple-300"
+    />
     <a
       (click)="generateRandomNumber()"
-      class="mt-2 text-sm text-center text-blue-500 cursor-pointer hover:underline"
+      class="mt-5 mx-auto inline-block align-baseline font-bold text-sm text-blue-500 hover:underline dark:text-purple-300"
     >
       ¿No te ha llegado el correo? Volver a enviar
     </a>
@@ -34,7 +38,7 @@
   }
   <button
     type="submit"
-    class="w-fit mx-auto px-4 py-2 rounded-lg border-2 border-custom-accent text-white bg-custom-accent hover:bg-custom-accent-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+    class="mx-auto w-fit px-3 py-2 rounded-lg text-white bg-custom-accent hover:bg-custom-accent-dark hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
   >
     Confirmar
   </button>

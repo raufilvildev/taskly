@@ -22,4 +22,8 @@ export class CoursesService {
   create(course: FormData) {
     return lastValueFrom(this.httpClient.post<ICourse>(this.endpoint, course));
   }
+
+  edit(course: FormData) {
+    return lastValueFrom(this.httpClient.put<ICourse>(this.endpoint, course));
+  }
 }
