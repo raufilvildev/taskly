@@ -1,60 +1,58 @@
+<form
+  [formGroup]="userSettingsForm"
+  (ngSubmit)="updateUser(userSettingsForm.value)"
+  class="h-full lg:min-h-screen w-screen lg:w-[calc(100vw-340px)] flex-1 p-6 bg-white shadow-md dark:bg-transparent rounded-lg shadow-xl"
+>
+  <div class="flex flex-col items-stretch">
+    <app-user-fieldset
+      label="Nombre"
+      controlName="first_name"
+      [formGroup]="userSettingsForm"
+      [isEditing]="editUserForm['first_name']"
+      [value]="user.first_name"
+      (toggleEdit)="updateUserFormState($event)"
+      [class]="getValidationStyleClasses('first_name', ['minlength', 'maxlength'])"
+    ></app-user-fieldset>
 
-  <form
-    [formGroup]="userSettingsForm"
-    (ngSubmit)="updateUser(userSettingsForm.value)"
-    class="p-6 bg-white rounded-xl shadow-md w-full min-h-screen dark:bg-transparent rounded-lg shadow-xl my-10"
-  >
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <app-user-fieldset
-        label="Nombre"
-        controlName="first_name"
-        [formGroup]="userSettingsForm"
-        [isEditing]="editUserForm['first_name']"
-        [value]="user.first_name"
-        (toggleEdit)="updateUserFormState($event)"
-        [class]="getValidationStyleClasses('first_name', ['minlength', 'maxlength'])"
-      ></app-user-fieldset>
+    <app-user-fieldset
+      label="Apellidos"
+      controlName="last_name"
+      [formGroup]="userSettingsForm"
+      [isEditing]="editUserForm['last_name']"
+      [value]="user.last_name"
+      (toggleEdit)="updateUserFormState($event)"
+      [class]="getValidationStyleClasses('last_name', ['minlength', 'maxlength'])"
+    ></app-user-fieldset>
 
-      <app-user-fieldset
-        label="Apellidos"
-        controlName="last_name"
-        [formGroup]="userSettingsForm"
-        [isEditing]="editUserForm['last_name']"
-        [value]="user.last_name"
-        (toggleEdit)="updateUserFormState($event)"
-        [class]="getValidationStyleClasses('last_name', ['minlength', 'maxlength'])"
-      ></app-user-fieldset>
+    <app-user-fieldset
+      label="Nombre de usuario"
+      controlName="username"
+      [formGroup]="userSettingsForm"
+      [isEditing]="editUserForm['username']"
+      [value]="user.username"
+      [type]="'text'"
+      (toggleEdit)="updateUserFormState($event)"
+      [class]="getValidationStyleClasses('username', ['minlength', 'maxlength'])"
+    ></app-user-fieldset>
 
-      <app-user-fieldset
-        label="Nombre de usuario"
-        controlName="username"
-        [formGroup]="userSettingsForm"
-        [isEditing]="editUserForm['username']"
-        [value]="user.username"
-        [type]="'text'"
-        (toggleEdit)="updateUserFormState($event)"
-        [class]="getValidationStyleClasses('username', ['minlength', 'maxlength'])"
-      ></app-user-fieldset>
+    <app-user-fieldset
+      label="Fecha de nacimiento"
+      controlName="birth_date"
+      [formGroup]="userSettingsForm"
+      [isEditing]="editUserForm['birth_date']"
+      [value]="user.birth_date"
+      [type]="'date'"
+      (toggleEdit)="updateUserFormState($event)"
+      [class]="getValidationStyleClasses('birth_date', [])"
+    ></app-user-fieldset>
+  </div>
 
-      <app-user-fieldset
-        label="Fecha de nacimiento"
-        controlName="birth_date"
-        [formGroup]="userSettingsForm"
-        [isEditing]="editUserForm['birth_date']"
-        [value]="user.birth_date"
-        [type]="'date'"
-        (toggleEdit)="updateUserFormState($event)"
-        [class]="getValidationStyleClasses('birth_date', [])"
-      ></app-user-fieldset>
-    </div>
-
-    <div class="flex justify-end mt-8">
-      <button
-        type="submit"
-        class="w-fit px-3 py-2 rounded-lg text-white bg-custom-accent hover:bg-custom-accent-dark hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-      >
-        Guardar cambios
-      </button>
-    </div>
-  </form>
-
+  <div class="flex justify-end mt-8">
+    <button
+      type="submit"
+      class="w-fit px-3 py-2 rounded-lg text-white bg-custom-accent hover:bg-custom-accent-dark hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+    >
+      Guardar cambios
+    </button>
+  </div>
+</form>

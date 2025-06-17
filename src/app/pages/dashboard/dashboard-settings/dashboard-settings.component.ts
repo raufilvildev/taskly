@@ -13,6 +13,7 @@ import { constants } from '../../../shared/utils/constants/constants.config';
 import { initUser } from '../../../shared/utils/initializers';
 import { UserFieldsetComponent } from './components/user-fieldset/user-fieldset.component';
 import dayjs from 'dayjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-settings',
@@ -23,6 +24,7 @@ import dayjs from 'dayjs';
 export class DashboardSettingsComponent {
   private usersService = inject(UsersService);
   private authorizationService = inject(AuthorizationService);
+  router = inject(Router);
 
   serverError = '';
   serverSuccess = '';
@@ -82,9 +84,8 @@ export class DashboardSettingsComponent {
     try {
       this.user = await this.usersService.getByToken();
       const birthDateFormatted = this.user.birth_date
-      ? dayjs(this.user.birth_date).format('YYYY-MM-DD')
-      : '';
-
+        ? dayjs(this.user.birth_date).format('YYYY-MM-DD')
+        : '';
 
       this.userSettingsForm.patchValue({
         first_name: this.user.first_name,
@@ -92,7 +93,7 @@ export class DashboardSettingsComponent {
         birth_date: birthDateFormatted,
         username: this.user.username,
       });
-      const birthDate= this.user.birth_date
+      const birthDate = this.user.birth_date
         ? dayjs(this.user.birth_date).format('DD/MM/YYYY')
         : '';
 
@@ -109,7 +110,7 @@ export class DashboardSettingsComponent {
     birth_date: false,
   };
 
- updateUserFormState(field: string | null) {
+  updateUserFormState(field: string | null) {
     const resetFormState: { [key: string]: boolean } = {
       first_name: false,
       last_name: false,
@@ -124,11 +125,12 @@ export class DashboardSettingsComponent {
     this.editUserForm = { ...resetFormState };
   }
 
-
-
   async updateUser(userFormValue: any) {
     try {
       const responseData = await this.usersService.update(userFormValue);
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate([this.router.url]);
+      });
       await this.ngOnInit();
       for (const key in this.editUserForm) {
         this.editUserForm[key] = false;

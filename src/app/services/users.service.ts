@@ -45,7 +45,7 @@ export class UsersService {
     return lastValueFrom(this.httpClient.delete<IMessage>(this.endpoint));
   }
 
-  update(user: IUser) {
+  update(user: FormData) {
     return lastValueFrom(this.httpClient.put<IToken>(`${this.endpoint}/update`, user));
   }
 }
