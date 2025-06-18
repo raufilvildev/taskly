@@ -20,7 +20,8 @@ app-courses-grid,
 app-course-view,
 app-course-forum,
 app-course-tasks,
-app-course-calendar {
+app-course-calendar,
+app-dashboard-settings {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;

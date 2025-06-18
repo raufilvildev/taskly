@@ -15,6 +15,11 @@ import { UserFieldsetComponent } from './components/user-fieldset/user-fieldset.
 import dayjs from 'dayjs';
 import { Router } from '@angular/router';
 
+// Pon las propiedades del componente arriba, junto a los Inputs/Outputs y las inyecciones (mi orden es inyección - Input/Output - propiedad al uso)
+// Tus funciones deberían ir antes del ngOnInit().
+// La función updateUser() debe tener la lógica de ngOnInit() y en ngOnInit() ejecutar updateUser() y no al contrario.
+// IMPORTANTE: HACER TESTS
+
 @Component({
   selector: 'app-dashboard-settings',
   imports: [ReactiveFormsModule, FormsModule, UserFieldsetComponent],
@@ -128,9 +133,6 @@ export class DashboardSettingsComponent {
   async updateUser(userFormValue: any) {
     try {
       const responseData = await this.usersService.update(userFormValue);
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.router.navigate([this.router.url]);
-      });
       await this.ngOnInit();
       for (const key in this.editUserForm) {
         this.editUserForm[key] = false;

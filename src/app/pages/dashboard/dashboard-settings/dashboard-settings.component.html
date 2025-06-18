@@ -1,9 +1,10 @@
+<!-- Añadir título a la página-->
 <form
   [formGroup]="userSettingsForm"
   (ngSubmit)="updateUser(userSettingsForm.value)"
-  class="h-full lg:min-h-screen w-screen lg:w-[calc(100vw-340px)] flex-1 p-6 bg-white shadow-md dark:bg-transparent rounded-lg shadow-xl"
+  class="flex-1 p-6 bg-white shadow-md dark:bg-transparent rounded-lg shadow-xl"
 >
-  <div class="flex flex-col items-stretch">
+  <div class="flex flex-col gap-5 items-stretch w-1/3">
     <app-user-fieldset
       label="Nombre"
       controlName="first_name"
@@ -13,6 +14,7 @@
       (toggleEdit)="updateUserFormState($event)"
       [class]="getValidationStyleClasses('first_name', ['minlength', 'maxlength'])"
     ></app-user-fieldset>
+    <!-- Llevarte getValidationStyleClasses al app-user-fieldset y aplicarle esas clases a los inputs!! -->
 
     <app-user-fieldset
       label="Apellidos"
@@ -47,7 +49,7 @@
     ></app-user-fieldset>
   </div>
 
-  <div class="flex justify-end mt-8">
+  <div class="flex justify-start mt-8">
     <button
       type="submit"
       class="w-fit px-3 py-2 rounded-lg text-white bg-custom-accent hover:bg-custom-accent-dark hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
