@@ -1,6 +1,6 @@
 import { Component, inject, Output, EventEmitter } from '@angular/core';
 import { ITask } from '../../../interfaces/itask';
-import { ProjectService } from '../../../services/tasks.service';
+import { TasksService } from '../../../services/tasks.service';
 
 @Component({
   selector: 'app-list-groups',
@@ -10,7 +10,7 @@ import { ProjectService } from '../../../services/tasks.service';
   styleUrls: ['./list-groups.component.css']
 })
 export class ListGroupsComponent {
-  private projectService = inject(ProjectService);
+  private projectService = inject(TasksService);
   projects = this.projectService.projects;
 
   @Output() filteredTasks = new EventEmitter<ITask[]>();

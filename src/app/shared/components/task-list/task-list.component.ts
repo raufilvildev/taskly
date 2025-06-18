@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { TaskComponent } from "../task/task.component";
 import { ISubtask, ITask } from '../../../interfaces/itask';
-import { ProjectService } from '../../../services/tasks.service';
+import { TasksService } from '../../../services/tasks.service';
 import { inject } from '@angular/core';
 
 @Component({
@@ -16,7 +16,7 @@ import { inject } from '@angular/core';
 export class TaskListComponent {
   @Input() tasks: ITask[] = [];
   @Input() selectedTask: ITask | null = null;
-  private projectService = inject(ProjectService);
+  private projectService = inject(TasksService);
 
   // Controla el estado expandido/colapsado de las subtareas por id de tarea
   expandedTasks: Record<number, boolean> = {};

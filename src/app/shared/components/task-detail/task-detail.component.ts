@@ -1,6 +1,6 @@
 import { Component, inject, computed, effect } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
-import { ProjectService } from '../../../services/tasks.service';
+import { TasksService } from '../../../services/tasks.service';
 import { ISubtask, ITask } from '../../../interfaces/itask';
 
 @Component({
@@ -13,7 +13,7 @@ import { ISubtask, ITask } from '../../../interfaces/itask';
   styleUrls: ['./task-detail.component.css']
 })
 export class TaskDetailComponent {
-  private projectService = inject(ProjectService);
+  private projectService = inject(TasksService);
   selectedTask = computed(() => this.projectService.selectedTask());
   taskForm: FormGroup;
   private fb = inject(FormBuilder);
