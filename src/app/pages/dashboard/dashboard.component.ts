@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AsideComponent } from './components/aside/aside.component';
 import { UsersService } from '../../services/users.service';
@@ -15,7 +15,13 @@ import { LightDarkButtonComponent } from '../../shared/components/buttons/light-
 export class DashboardComponent {
   usersService = inject(UsersService);
 
+  @ViewChild(AsideComponent) asideComponent!: AsideComponent;
+
   user: IGetByTokenUser = initUser();
+
+  get isAsideCollapsed(): boolean {
+    return this.asideComponent?.isCollapsed() ?? false;
+  }
 
   async ngOnInit() {
     try {
