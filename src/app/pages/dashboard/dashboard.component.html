@@ -1,9 +1,14 @@
 <div class="flex-1 flex items-stretch min-h-dvh">
   <app-aside [user]="user"></app-aside>
 
-  <div class="flex-1 flex items-stretch min-h-dvh pb-20 lg:pb-0">
+  <main
+    class="flex-1 flex items-stretch min-h-dvh pb-20 lg:pb-0 transition-all duration-300 ease-in-out"
+    [class.lg:ml-0]="isAsideCollapsed"
+    [class.lg:ml-80]="!isAsideCollapsed"
+  >
     <router-outlet />
-  </div>
+  </main>
+
   <div class="fixed p-5 lg:p-10 top-12 right-0 lg:top-auto lg:bottom-0">
     <app-light-dark-button></app-light-dark-button>
   </div>

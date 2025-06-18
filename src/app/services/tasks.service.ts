@@ -4,8 +4,8 @@ import { ITask } from '../interfaces/itask';
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectService {
-  public projects = signal<ITask[]>([
+export class TasksService {
+  public tasks = signal<ITask[]>([
     {
       id: 1,
       uuid: 'uuid-1',
@@ -80,10 +80,10 @@ export class ProjectService {
 
   selectedTask = signal<ITask | null>(null);
 
-  setSelectedTask(task: ITask) {
+  setSelectedTask(task: ITask | null) {
     this.selectedTask.set(task);
   }
-  updateProjects() {
-    this.projects.set([...this.projects()]);
+  updateTasks() {
+    this.tasks.set([...this.tasks()]);
   }
 }
