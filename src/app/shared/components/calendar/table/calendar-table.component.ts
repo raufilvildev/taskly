@@ -4,6 +4,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventApi } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import esLocale from '@fullcalendar/core/locales/es';
 import { TasksService } from '../../../../services/tasks.service';
 import { ITask } from '../../../../interfaces/itask';
 
@@ -22,6 +23,7 @@ export class TableComponent implements OnInit {
 
   calendarOptions = signal<CalendarOptions>({
     plugins: [dayGridPlugin, timeGridPlugin],
+    locale: esLocale,
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
@@ -46,6 +48,11 @@ export class TableComponent implements OnInit {
     expandRows: true,
     nowIndicator: true,
     dayHeaderFormat: { weekday: 'long' },
+    buttonText: {
+      today: 'Hoy',
+      month: 'Mes',
+      week: 'Semana'
+    },
     views: {
       timeGridWeek: {
         dayHeaderFormat: { weekday: 'short', day: 'numeric' },
