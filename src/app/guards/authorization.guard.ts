@@ -37,6 +37,7 @@ const authorizationGuard = (param: string): CanActivateFn => {
 
       return true;
     } catch (error) {
+      console.log(error);
       authorizationService.removeToken();
 
       if (param === 'public') return true;

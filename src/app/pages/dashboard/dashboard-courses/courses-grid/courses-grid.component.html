@@ -8,7 +8,7 @@
     </button>
   }
   <div class="w-full p-10 flex-1 flex justify-center items-center flex-wrap gap-8">
-    @for (course of courses; track course.uuid) {
+    @for (course of courses; track $index) {
       <div
         [routerLink]="['/dashboard', 'courses', 'view', course.uuid]"
         class="flex flex-col justify-between gap-1 w-60 h-fit rounded-lg bg-custom-background dark:bg-transparent dark:shadow-xs dark:shadow-white transition-all duration-300 transform hover:scale-105 shadow-lg lg:hover:shadow-xl dark:hover:shadow-sm"

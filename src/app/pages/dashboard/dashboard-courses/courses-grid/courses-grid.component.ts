@@ -22,11 +22,15 @@ export class CoursesGridComponent {
   courses: ICourse[] = [];
   showCourseForm = false;
 
-  course_image_endpoint = `${environment.host.split('api')[0]}/uploads/courses/`;
+  course_image_endpoint = `${environment.host.split('api')[0]}uploads/courses/`;
 
   async updateGrid() {
     this.showCourseForm = false;
-    this.courses = await this.coursesService.getAll();
+    try {
+      this.courses = await this.coursesService.getAll();
+    } catch (error) {
+      return;
+    }
   }
 
   async ngOnInit() {

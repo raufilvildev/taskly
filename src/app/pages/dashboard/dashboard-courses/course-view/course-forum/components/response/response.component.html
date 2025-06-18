@@ -1,7 +1,7 @@
 <div class="flex pt-3 p-1 gap-2">
   <div class="pt-1">
     <img
-      [src]="response.user.profile_image_url"
+      [src]="profile_image_endpoint + response.user.profile_image_url"
       [alt]="'Imagen de perfil de' + response.user.first_name + ' ' + response.user.last_name"
       class="w-10 h-10 rounded-full object-cover object-center"
     />
