@@ -10,58 +10,13 @@
       </p>
     </div>
 
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-        <div class="flex items-center">
-          <div class="p-3 rounded-full bg-blue-100">
-            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-            </svg>
-          </div>
-          <div class="ml-4">
-            <p class="text-sm font-medium text-gray-600">Total Tareas</p>
-            <p class="text-2xl font-bold text-gray-900">{{ getTotalTasksCount() }}</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-        <div class="flex items-center">
-          <div class="p-3 rounded-full bg-green-100">
-            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-          </div>
-          <div class="ml-4">
-            <p class="text-sm font-medium text-gray-600">Completadas</p>
-            <p class="text-2xl font-bold text-gray-900">{{ getCompletedTasksCount() }}</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-        <div class="flex items-center">
-          <div class="p-3 rounded-full bg-yellow-100">
-            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-          </div>
-          <div class="ml-4">
-            <p class="text-sm font-medium text-gray-600">Pendientes</p>
-            <p class="text-2xl font-bold text-gray-900">{{ getTotalTasksCount() - getCompletedTasksCount() }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Calendar Container -->
     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-      <div class="p-6 md:p-8">
+      <div class="p-4 md:p-6 lg:p-8">
         <full-calendar
           *ngIf="calendarVisible()"
           [options]="calendarOptions()"
-          class="min-h-[600px]"
+          class="w-full h-full min-h-[700px]"
         >
           <ng-template #eventContent let-arg>
             <div class="flex items-center space-x-2 p-1">

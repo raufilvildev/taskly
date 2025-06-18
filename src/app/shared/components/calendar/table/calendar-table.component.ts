@@ -85,12 +85,4 @@ export class TableComponent implements OnInit {
     this.currentEvents.set(events);
     this.changeDetector.detectChanges();
   }
-
-  getCompletedTasksCount(): number {
-    return this.tasksService.tasks().filter(task => task.is_completed).length;
-  }
-
-  getTotalTasksCount(): number {
-    return this.tasksService.tasks().length;
-  }
 }
