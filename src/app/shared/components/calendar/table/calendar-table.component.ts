@@ -1,4 +1,4 @@
-import { Component, signal, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, signal, ChangeDetectorRef, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventApi } from '@fullcalendar/core';
@@ -10,10 +10,13 @@ import { ITask } from '../../../../interfaces/itask';
   selector: 'app-calendar-table',
   imports: [CommonModule, FullCalendarModule],
   templateUrl: './calendar-table.component.html',
-  styleUrl: './calendar-table.component.css'
+  styleUrl: './calendar-table.component.css',
+  standalone: true
 })
 export class TableComponent implements OnInit {
-  calendarVisible = signal(true);
+  private readonly changeDetector = inject(ChangeDetectorRef);
+  private readonly tasksService = inject(TasksService);
+
   currentEvents = signal<EventApi[]>([]);
 
   calendarOptions = signal<CalendarOptions>({
@@ -35,16 +38,11 @@ export class TableComponent implements OnInit {
     eventsSet: this.handleEvents.bind(this)
   });
 
-  constructor(
-    private changeDetector: ChangeDetectorRef,
-    private tasksService: TasksService
-  ) {}
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadTasks();
   }
 
-  loadTasks() {
+  private loadTasks(): void {
     const tasks = this.tasksService.tasks();
     const events = tasks.map(task => ({
       id: task.uuid,
@@ -66,7 +64,7 @@ export class TableComponent implements OnInit {
     }));
   }
 
-  getPriorityColor(priority: string): string {
+  private getPriorityColor(priority: string): string {
     switch (priority) {
       case 'red':
         return '#ef4444';
@@ -81,7 +79,7 @@ export class TableComponent implements OnInit {
     }
   }
 
-  handleEvents(events: EventApi[]) {
+  private handleEvents(events: EventApi[]): void {
     this.currentEvents.set(events);
     this.changeDetector.detectChanges();
   }

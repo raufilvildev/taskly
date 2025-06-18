@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthorizationService } from '../../../../services/authorization.service';
 import { IGetByTokenUser } from '../../../../interfaces/iuser.interface';
 import { ThemeService } from '../../../../services/theme.service';
+import { DashboardLayoutService } from '../../../../services/dashboard-layout.service';
 import { Subscription } from 'rxjs';
 import { initUser } from '../../../../shared/utils/initializers';
 import { environment } from '../../../../environments/environment.test';
@@ -23,6 +24,7 @@ interface NavigationItem {
 export class AsideComponent {
   authorizationService = inject(AuthorizationService);
   themeService = inject(ThemeService);
+  dashboardLayoutService = inject(DashboardLayoutService);
   router = inject(Router);
 
   @Input() user: IGetByTokenUser = initUser();
@@ -31,7 +33,6 @@ export class AsideComponent {
 
   isDarkMode = signal(false);
   showList = false;
-  isCollapsed = signal(false);
   profile_image_endpoint = `${environment.host.split('api')[0]}uploads/users/`;
 
   navigationItems: NavigationItem[] = [
@@ -46,8 +47,12 @@ export class AsideComponent {
     return `${name}${this.isDarkMode() ? '_light' : ''}.svg`;
   }
 
+  isCollapsed() {
+    return this.dashboardLayoutService.isAsideCollapsed();
+  }
+
   toggleCollapse() {
-    this.isCollapsed.update(collapsed => !collapsed);
+    this.dashboardLayoutService.toggleAside();
   }
 
   logout() {
