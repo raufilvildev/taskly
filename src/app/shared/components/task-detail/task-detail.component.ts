@@ -88,4 +88,8 @@ export class TaskDetailComponent {
     const value = event.target.value;
     this.taskForm.get('due_date')?.setValue(value ? value : null);
   }
+
+  clearSelectedTask(): void {
+    this.projectService.setSelectedTask(null);
+  }
 }

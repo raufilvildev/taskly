@@ -35,7 +35,8 @@ export class TableComponent implements OnInit {
     eventDisplay: 'block',
     eventColor: '#3b82f6',
     eventTextColor: '#ffffff',
-    eventsSet: this.handleEvents.bind(this)
+    eventsSet: this.handleEvents.bind(this),
+    eventClick: this.handleEventClick.bind(this)
   });
 
   ngOnInit(): void {
@@ -82,5 +83,15 @@ export class TableComponent implements OnInit {
   private handleEvents(events: EventApi[]): void {
     this.currentEvents.set(events);
     this.changeDetector.detectChanges();
+  }
+
+  private handleEventClick(info: any): void {
+    const eventId = info.event.id;
+    const tasks = this.tasksService.tasks();
+    const selectedTask = tasks.find(task => task.uuid === eventId);
+
+    if (selectedTask) {
+      this.tasksService.setSelectedTask(selectedTask);
+    }
   }
 }

@@ -80,7 +80,7 @@ export class TasksService {
 
   selectedTask = signal<ITask | null>(null);
 
-  setSelectedTask(task: ITask) {
+  setSelectedTask(task: ITask | null) {
     this.selectedTask.set(task);
   }
   updateTasks() {
