@@ -1,12 +1,10 @@
-import { Component , signal, ChangeDetectorRef } from '@angular/core';
+import { Component, signal, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
-import interactionPlugin from '@fullcalendar/interaction';
+import { CalendarOptions, EventApi } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
-import { INITIAL_EVENTS, createEventId } from './event-utils';
+import { TasksService } from '../../../../services/tasks.service';
+import { ITask } from '../../../../interfaces/itask';
 
 @Component({
   selector: 'app-calendar-table',
@@ -14,77 +12,85 @@ import { INITIAL_EVENTS, createEventId } from './event-utils';
   templateUrl: './calendar-table.component.html',
   styleUrl: './calendar-table.component.css'
 })
-export class TableComponent {
- calendarVisible = signal(true);
+export class TableComponent implements OnInit {
+  calendarVisible = signal(true);
+  currentEvents = signal<EventApi[]>([]);
+
   calendarOptions = signal<CalendarOptions>({
-    plugins: [
-      interactionPlugin,
-      dayGridPlugin,
-      timeGridPlugin,
-      listPlugin,
-    ],
+    plugins: [dayGridPlugin],
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      right: 'dayGridMonth'
     },
     initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
     weekends: true,
-    editable: true,
-    selectable: true,
-    selectMirror: true,
+    editable: false,
+    selectable: false,
     dayMaxEvents: true,
-    select: this.handleDateSelect.bind(this),
-    eventClick: this.handleEventClick.bind(this),
+    events: [],
+    eventDisplay: 'block',
+    eventColor: '#3b82f6',
+    eventTextColor: '#ffffff',
     eventsSet: this.handleEvents.bind(this)
-    /* you can update a remote database when these fire:
-    eventAdd:
-    eventChange:
-    eventRemove:
-    */
   });
-  currentEvents = signal<EventApi[]>([]);
 
-  constructor(private changeDetector: ChangeDetectorRef) {
+  constructor(
+    private changeDetector: ChangeDetectorRef,
+    private tasksService: TasksService
+  ) {}
+
+  ngOnInit() {
+    this.loadTasks();
   }
 
-  handleCalendarToggle() {
-    this.calendarVisible.update((bool) => !bool);
-  }
+  loadTasks() {
+    const tasks = this.tasksService.tasks();
+    const events = tasks.map(task => ({
+      id: task.uuid,
+      title: task.title,
+      date: task.due_date,
+      backgroundColor: this.getPriorityColor(task.priority_color),
+      borderColor: this.getPriorityColor(task.priority_color),
+      textColor: '#ffffff',
+      extendedProps: {
+        description: task.description,
+        isCompleted: task.is_completed,
+        category: task.category
+      }
+    }));
 
-  handleWeekendsToggle() {
-    this.calendarOptions.update((options) => ({
+    this.calendarOptions.update(options => ({
       ...options,
-      weekends: !options.weekends,
+      events: events
     }));
   }
 
-  handleDateSelect(selectInfo: DateSelectArg) {
-    const title = prompt('Please enter a new title for your event');
-    const calendarApi = selectInfo.view.calendar;
-
-    calendarApi.unselect(); // clear date selection
-
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
-      });
-    }
-  }
-
-  handleEventClick(clickInfo: EventClickArg) {
-    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
+  getPriorityColor(priority: string): string {
+    switch (priority) {
+      case 'red':
+        return '#ef4444';
+      case 'yellow':
+        return '#eab308';
+      case 'green':
+        return '#22c55e';
+      case 'blue':
+        return '#3b82f6';
+      default:
+        return '#6b7280';
     }
   }
 
   handleEvents(events: EventApi[]) {
     this.currentEvents.set(events);
-    this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
+    this.changeDetector.detectChanges();
+  }
+
+  getCompletedTasksCount(): number {
+    return this.tasksService.tasks().filter(task => task.is_completed).length;
+  }
+
+  getTotalTasksCount(): number {
+    return this.tasksService.tasks().length;
   }
 }

@@ -11,7 +11,7 @@ import { TasksService } from '../../../services/tasks.service';
 })
 export class ListGroupsComponent {
   private projectService = inject(TasksService);
-  projects = this.projectService.projects;
+  projects = this.projectService.tasks;
 
   @Output() filteredTasks = new EventEmitter<ITask[]>();
 

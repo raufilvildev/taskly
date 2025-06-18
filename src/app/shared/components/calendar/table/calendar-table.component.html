@@ -1,53 +1,107 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8 text-center">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+        Mi Calendario de Tareas
+      </h1>
+      <p class="text-gray-600 text-lg">
+        Visualiza y organiza tus tareas de manera eficiente
+      </p>
+    </div>
 
-<div class='demo-app'>
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-blue-100">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Total Tareas</p>
+            <p class="text-2xl font-bold text-gray-900">{{ getTotalTasksCount() }}</p>
+          </div>
+        </div>
+      </div>
 
-  <div class='demo-app-sidebar'>
-    <div class='demo-app-sidebar-section'>
-      <h2>Instructions</h2>
-      <ul>
-        <li>Select dates and you will be prompted to create a new event</li>
-        <li>Drag, drop, and resize events</li>
-        <li>Click an event to delete it</li>
-      </ul>
+      <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-green-100">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Completadas</p>
+            <p class="text-2xl font-bold text-gray-900">{{ getCompletedTasksCount() }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-yellow-100">
+            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Pendientes</p>
+            <p class="text-2xl font-bold text-gray-900">{{ getTotalTasksCount() - getCompletedTasksCount() }}</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class='demo-app-sidebar-section'>
-      <label>
-        <input
-          type='checkbox'
-          [checked]='calendarVisible()'
-          (change)='handleCalendarToggle()'
-        />
-        toggle whole calendar
-      </label>
+
+    <!-- Calendar Container -->
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+      <div class="p-6 md:p-8">
+        <full-calendar
+          *ngIf="calendarVisible()"
+          [options]="calendarOptions()"
+          class="min-h-[600px]"
+        >
+          <ng-template #eventContent let-arg>
+            <div class="flex items-center space-x-2 p-1">
+              <div class="w-2 h-2 rounded-full"
+                   [style.background-color]="arg.event.backgroundColor">
+              </div>
+              <span class="text-sm font-medium truncate">
+                {{ arg.event.title }}
+              </span>
+            </div>
+          </ng-template>
+        </full-calendar>
+      </div>
     </div>
-    <div class='demo-app-sidebar-section'>
-      <label>
-        <input
-          type='checkbox'
-          [checked]='calendarOptions().weekends'
-          (change)='handleWeekendsToggle()'
-        />
-        toggle weekends
-      </label>
-    </div>
-    <div class='demo-app-sidebar-section'>
-      <h2>All Events ({{currentEvents().length}})</h2>
-      <ul>
-        <li *ngFor='let event of currentEvents()'>
-          <b>{{event.startStr}}</b>
-          <i>{{event.title}}</i>
-        </li>
-      </ul>
+
+    <!-- Legend -->
+    <div class="mt-6 bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Leyenda de Prioridades</h3>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div class="flex items-center space-x-2">
+          <div class="w-4 h-4 rounded-full bg-red-500"></div>
+          <span class="text-sm text-gray-600">Alta</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <div class="w-4 h-4 rounded-full bg-yellow-500"></div>
+          <span class="text-sm text-gray-600">Media</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <div class="w-4 h-4 rounded-full bg-green-500"></div>
+          <span class="text-sm text-gray-600">Baja</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <div class="w-4 h-4 rounded-full bg-blue-500"></div>
+          <span class="text-sm text-gray-600">Normal</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <div class="w-4 h-4 rounded-full bg-gray-500"></div>
+          <span class="text-sm text-gray-600">Sin prioridad</span>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div class='demo-app-main'>
-    <full-calendar *ngIf='calendarVisible()' [options]='calendarOptions()'>
-      <ng-template #eventContent let-arg>
-        <b>{{ arg.timeText }}</b>
-        <i>{{ arg.event.title }}</i>
-      </ng-template>
-    </full-calendar>
-  </div>
-
 </div>

@@ -5,7 +5,7 @@ import { ITask } from '../interfaces/itask';
   providedIn: 'root'
 })
 export class TasksService {
-  public projects = signal<ITask[]>([
+  public tasks = signal<ITask[]>([
     {
       id: 1,
       uuid: 'uuid-1',
@@ -84,6 +84,6 @@ export class TasksService {
     this.selectedTask.set(task);
   }
   updateTasks() {
-    this.projects.set([...this.projects()]);
+    this.tasks.set([...this.tasks()]);
   }
 }
