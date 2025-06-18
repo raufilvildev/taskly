@@ -1,0 +1,86 @@
+<div class="flex flex-col items-stretch gap-3 my-2">
+  @for (
+    section of unit.sections;
+    track $index;
+    let section_index = $index;
+    let sections_length = $count
+  ) {
+    <div
+      class="ml-3 flex items-center rounded-full px-3 py-2 bg-rose-500/50 hover:bg-rose-500 transform hover:scale-101 transition-all duration-300"
+      (click)="touchedSection = section_index"
+    >
+      <p class="flex-1 text-base">
+        <span class="font-bold">{{ unit_index + 1 }}.{{ section_index + 1 }}</span>
+        {{ section.title }}
+      </p>
+      <div class="flex gap-1 items-center">
+        <div (click)="displayEditSection(section_index)">
+          <app-create-edit-cancel-remove-button
+            [type]="
+              editSectionStatus && touchedUnit === unit_index && touchedSection === section_index
+                ? 'cancel'
+                : 'edit'
+            "
+            [icon]="'_light'"
+          ></app-create-edit-cancel-remove-button>
+        </div>
+        <div (click)="removeSection(section_index)">
+          <app-create-edit-cancel-remove-button
+            [type]="'remove'"
+            [icon]="'_light'"
+          ></app-create-edit-cancel-remove-button>
+        </div>
+        @if (section_index > 0) {
+          <img
+            src="up_arrow_light.svg"
+            alt="Icono de flecha hacia arriba"
+            class="w-7 h-7 p-1 rounded-full hover:bg-white/60 transition-all duration-300 transform hover:scale-101"
+            (click)="increaseSectionNumber(section_index)"
+          />
+        }
+        @if (section_index < sections_length - 1) {
+          <img
+            src="down_arrow_light.svg"
+            alt="Icono de flecha hacia abajo"
+            class="w-7 h-7 rounded-full p-1 hover:bg-white/60 transition-all duration-300 transform hover:scale-101"
+            (click)="decreaseSectionNumber(section_index)"
+          />
+        }
+      </div>
+    </div>
+  }
+  @if (showSectionForm && unit_index === touchedUnit) {
+    <div [formGroup]="sectionForm" class="ml-3 flex-1 flex items-center gap-3 mt-3">
+      <input
+        type="text"
+        placeholder="Escribe el título de la sección"
+        class="flex-1 w-full px-4 py-2 bg-custom-background placeholder-custom-muted dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+        formControlName="title"
+        (keydown.enter)="
+          $event.preventDefault();
+          editSectionStatus && touchedUnit === unit_index && touchedSection !== -1
+            ? editSection(touchedSection)
+            : addSection()
+        "
+      />
+      <button
+        type="button"
+        class="w-fit px-4 py-2 rounded-lg text-white bg-custom-accent hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+        (click)="
+          editSectionStatus && touchedUnit === unit_index && touchedSection !== -1
+            ? editSection(touchedSection)
+            : addSection()
+        "
+      >
+        {{
+          editSectionStatus && touchedUnit === unit_index && touchedSection !== -1
+            ? 'Editar'
+            : 'Guardar'
+        }}
+      </button>
+    </div>
+    @if (sectionFormError) {
+      <p class="mx-auto text-sm text-custom-error italic">{{ sectionFormError }}</p>
+    }
+  }
+</div>

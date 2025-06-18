@@ -1,7 +1,7 @@
 <form
   [formGroup]="threadForm"
   (ngSubmit)="type === 'create' ? createThread(threadForm) : editThread(threadForm)"
-  class="mx-auto p-8 flex flex-col gap-5 bg-custom-panel dark:bg-gray-800 min-w-100 md:min-w-125 lg:min-w-200 rounded-lg shadow-sm shadow-custom-accent-dark"
+  class="mx-auto p-8 flex flex-col gap-5 bg-custom-panel dark:bg-gray-800 min-w-100 sm:min-w-125 md:min-w-175 rounded-lg shadow-sm shadow-custom-accent-dark"
 >
   <div class="flex flex-col gap-4 w-full">
     <fieldset class="flex flex-col gap-2">

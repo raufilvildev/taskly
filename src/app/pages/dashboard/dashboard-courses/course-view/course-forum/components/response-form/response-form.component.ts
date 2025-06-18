@@ -36,7 +36,6 @@ export class ResponseFormComponent {
 
   async createResponse(responseForm: FormGroup) {
     const response = responseForm.value;
-    console.log(response);
     response.user = this.user;
 
     if (!response.content) {
@@ -46,6 +45,7 @@ export class ResponseFormComponent {
 
     try {
       await this.forumService.createResponse(this.threadUuid, response);
+      this.responseForm.reset();
       this.create.emit();
     } catch (errorResponse) {
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
@@ -73,6 +73,7 @@ export class ResponseFormComponent {
 
     try {
       await this.forumService.editResponse(response);
+      this.responseForm.reset();
       this.edit.emit();
     } catch (errorResponse) {
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {

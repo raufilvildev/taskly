@@ -5,23 +5,47 @@
 >
   <fieldset class="flex flex-col">
     <label class="text-lg font-bold" for="user-name">Usuario</label>
-    <input
-      class="px-4 py-2 mt-2 bg-custom-background dark:bg-gray-800 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
-      id="username"
-      type="text"
-      placeholder="Introduce tu usuario"
-      formControlName="username"
-    />
+    <div class="relative mt-2">
+      <img
+        class="w-6 h-6 absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none"
+        src="username.svg"
+        alt="Username icon"
+      />
+      <input
+        class="w-full placeholder:text-custom-muted pl-10 px-4 py-2 bg-custom-background dark:bg-gray-800 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+        id="username"
+        type="text"
+        placeholder="Introduce tu usuario"
+        formControlName="username"
+      />
+    </div>
   </fieldset>
   <fieldset class="flex flex-col">
     <label class="text-lg font-bold" for="password">Contraseña</label>
-    <input
-      class="px-4 py-2 mt-2 bg-custom-background dark:bg-gray-800 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
-      id="password"
-      type="password"
-      placeholder="Introduce tu contraseña"
-      formControlName="password"
-    />
+    <div class="relative mt-2">
+      @if (isVisiblePassword) {
+        <img
+          class="w-6 h-6 absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer"
+          (click)="isVisiblePassword = !isVisiblePassword"
+          src="visible_password.svg"
+          alt="Visible password icon"
+        />
+      } @else {
+        <img
+          class="w-6 h-6 absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer"
+          (click)="isVisiblePassword = !isVisiblePassword"
+          src="invisible_password.svg"
+          alt="Invisible password icon"
+        />
+      }
+      <input
+        class="w-full placeholder:text-custom-muted pl-10 px-4 py-2 bg-custom-background dark:bg-gray-800 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+        id="password"
+        [type]="isVisiblePassword ? 'text' : 'password'"
+        placeholder="Introduce tu contraseña"
+        formControlName="password"
+      />
+    </div>
   </fieldset>
   <a
     [routerLink]="['/login/change_password_email_request']"
@@ -30,7 +54,7 @@
     ¿Te has olvidado de la contraseña?
   </a>
   @if (loginError) {
-    <p class="pl-1 mt-1 italic text-sm text-custom-error pb-5">{{ loginError }}</p>
+    <p class="pl-1 mt-1 italic text-sm text-custom-error pb-5 text-center">{{ loginError }}</p>
   }
   <div class="flex justify-center">
     <button

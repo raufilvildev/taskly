@@ -5,6 +5,7 @@ import { IGetByTokenUser } from '../../../../interfaces/iuser.interface';
 import { ThemeService } from '../../../../services/theme.service';
 import { Subscription } from 'rxjs';
 import { initUser } from '../../../../shared/utils/initializers';
+import { environment } from '../../../../environments/environment.test';
 
 @Component({
   selector: 'app-aside',
@@ -19,10 +20,11 @@ export class AsideComponent {
 
   @Input() user: IGetByTokenUser = initUser();
 
+  private themeSub?: Subscription;
+
   isDarkMode = signal(false);
   showList = false;
-
-  private themeSub?: Subscription;
+  profile_image_endpoint = `${environment.host.split('api')[0]}uploads/users/`;
 
   getIcon(name: string): string {
     return `${name}${this.isDarkMode() ? '_light' : ''}.svg`;

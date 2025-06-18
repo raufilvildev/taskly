@@ -7,7 +7,7 @@ export interface IForumUser {
 }
 
 export interface IResponse {
-  uuid: string;
+  uuid?: string;
   user: IForumUser;
   created_at?: string;
   updated_at?: string;

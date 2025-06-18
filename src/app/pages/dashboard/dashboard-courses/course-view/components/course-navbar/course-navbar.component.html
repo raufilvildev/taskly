@@ -1,0 +1,42 @@
+<nav>
+  <ul
+    class="flex justify-center gap-0 md:gap-15 lg:gap-25 bg-custom-background dark:bg-transparent"
+  >
+    <li class="py-4">
+      <a
+        [routerLink]="['/dashboard', 'courses', 'view', course_uuid]"
+        routerLinkActive="font-bold text-custom-accent-dark dark:text-purple-300"
+        class="p-4 cursor-pointer hover:bg-custom-accent/25 rounded-full hover:scale-105 transition-all duration-300"
+      >
+        Contenido
+      </a>
+    </li>
+    <li class="py-4">
+      <a
+        [routerLink]="['/dashboard', 'courses', 'view', 'calendar', course_uuid]"
+        routerLinkActive="font-bold text-custom-accent-dark dark:text-purple-300"
+        class="p-4 cursor-pointer hover:bg-custom-accent/25 rounded-full hover:scale-105 transition-all duration-300"
+      >
+        Calendario
+      </a>
+    </li>
+    <li class="py-4">
+      <a
+        [routerLink]="['/dashboard', 'courses', 'view', 'tasks', course_uuid]"
+        routerLinkActive="font-bold text-custom-accent-dark dark:text-purple-300"
+        class="p-4 cursor-pointer hover:bg-custom-accent/25 rounded-full hover:scale-105 transition-all duration-300"
+      >
+        Tareas
+      </a>
+    </li>
+    <li class="py-4">
+      <a
+        [routerLink]="['/dashboard', 'courses', 'view', 'forum', course_uuid]"
+        routerLinkActive="font-bold text-custom-accent-dark dark:text-purple-300"
+        class="p-4 cursor-pointer hover:bg-custom-accent/25 rounded-full hover:scale-105 transition-all duration-300"
+      >
+        Foro
+      </a>
+    </li>
+  </ul>
+</nav>

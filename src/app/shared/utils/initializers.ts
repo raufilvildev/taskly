@@ -1,4 +1,4 @@
-import { ICourse } from '../../interfaces/icourse.interface';
+import { ICourse, IStudent, IUnitCourse } from '../../interfaces/icourse.interface';
 import { IResponse } from '../../interfaces/iforum.interface';
 import { IUser } from '../../interfaces/iuser.interface';
 
@@ -28,7 +28,15 @@ export const initCourse = (): ICourse => {
     description: '',
     course_image_url: '',
     teacher: '',
+    students: [],
     planning: [],
+  };
+};
+
+export const initUnit = (): IUnitCourse => {
+  return {
+    title: '',
+    sections: [],
   };
 };
 
@@ -43,5 +51,16 @@ export const initResponse = (): IResponse => {
       role: 'student',
     },
     content: '',
+  };
+};
+
+export const initStudent = (): IStudent => {
+  return {
+    uuid: '',
+    first_name: '',
+    last_name: '',
+    email: '',
+    username: '',
+    profile_image_url: '',
   };
 };

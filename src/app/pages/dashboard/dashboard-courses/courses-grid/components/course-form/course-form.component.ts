@@ -1,21 +1,17 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { IGetByTokenUser } from '../../../../../../interfaces/iuser.interface';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ICourse, IUnitCourse } from '../../../../../../interfaces/icourse.interface';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ICourse, IStudent, IUnitCourse } from '../../../../../../interfaces/icourse.interface';
 import { initCourse, initUser } from '../../../../../../shared/utils/initializers';
 import { CoursesService } from '../../../../../../services/courses.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { constants } from '../../../../../../shared/utils/constants/constants.config';
-import { CreateEditCancelRemoveButtonComponent } from '../../../../../../shared/components/buttons/create-edit-cancel-remove-button/create-edit-cancel-remove-button.component';
-
-type UnitFormGroup = FormGroup<{
-  title: FormControl<string | null>;
-  sections: FormArray<FormControl<string | null>>;
-}>;
+import { UnitFormComponent } from '../unit-form/unit-form.component';
+import { StudentsSearchFormComponent } from '../students-search-form/students-search-form.component';
 
 @Component({
   selector: 'app-course-form',
-  imports: [ReactiveFormsModule, CreateEditCancelRemoveButtonComponent],
+  imports: [ReactiveFormsModule, UnitFormComponent, StudentsSearchFormComponent],
   templateUrl: './course-form.component.html',
   styleUrl: './course-form.component.css',
 })
@@ -27,18 +23,26 @@ export class CourseFormComponent {
   @Input() course: ICourse = initCourse();
 
   @Output() cancel = new EventEmitter<void>();
-
-  courseFormError = '';
-  units: IUnitCourse[] = [];
+  @Output() closeCourseForm = new EventEmitter<void>();
 
   courseForm = new FormGroup({
     uuid: new FormControl(''),
     title: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
-    course_image_url: new FormControl(''),
-    teacher: new FormControl(''),
-    planning: new FormArray<FormGroup>([]),
   });
+
+  planning: IUnitCourse[] = [];
+  students: IStudent[] = [];
+  files: File[] = [];
+
+  sectionForm = new FormGroup({
+    title: new FormControl('', Validators.required),
+  });
+
+  courseFormError = '';
+  units: IUnitCourse[] = [];
+  studentsSearchFormError = '';
+  unitFormError = '';
 
   async createCourse(courseForm: FormGroup) {
     this.courseFormError = '';
@@ -47,9 +51,59 @@ export class CourseFormComponent {
       this.courseFormError = 'Existen campos vacíos.';
       return;
     }
+    const { title, description } = this.courseForm.value;
+
+    const formData = new FormData();
+
+    formData.append('title', title || '');
+    formData.append('description', description || '');
+    formData.append('teacher', this.user.uuid);
+    formData.append('students', JSON.stringify(this.students));
+    formData.append('planning', JSON.stringify(this.planning));
+    formData.append('course-image', this.files[0]);
 
     try {
-      await this.coursesService.create(courseForm.value);
+      await this.coursesService.create(formData);
+      this.closeCourseForm.emit();
+    } catch (errorResponse) {
+      console.log(errorResponse);
+      if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
+        this.courseFormError = constants.generalServerError;
+        return;
+      }
+
+      if (errorResponse instanceof HttpErrorResponse) {
+        this.courseFormError = errorResponse.error;
+        return;
+      }
+
+      this.courseFormError = constants.generalServerError;
+    }
+  }
+
+  async editCourse(courseForm: FormGroup) {
+    this.courseFormError = '';
+
+    if (courseForm.invalid) {
+      this.courseFormError = 'Existen campos vacíos.';
+      return;
+    }
+    const { title, description } = this.courseForm.value;
+
+    const formData = new FormData();
+
+    formData.append('uuid', this.course.uuid);
+    formData.append('title', title || '');
+    formData.append('description', description || '');
+    formData.append('teacher', this.user.uuid);
+    formData.append('students', JSON.stringify(this.students));
+    formData.append('planning', JSON.stringify(this.planning));
+    formData.append('course_image_url', !this.files[0] ? this.course.course_image_url : '');
+    formData.append('course-image', this.files[0]);
+
+    try {
+      await this.coursesService.edit(formData);
+      this.closeCourseForm.emit();
     } catch (errorResponse) {
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
         this.courseFormError = constants.generalServerError;
@@ -65,36 +119,15 @@ export class CourseFormComponent {
     }
   }
 
-  editCourse(courseForm: FormGroup) {}
-
   cancelCourseForm() {
     this.cancel.emit();
   }
 
-  get planning(): FormArray<UnitFormGroup> {
-    return this.courseForm.get('planning') as FormArray;
-  }
-
-  createUnit() {
-    const unitForm: UnitFormGroup = new FormGroup({
-      title: new FormControl('', Validators.required),
-      sections: new FormArray<FormControl<string | null>>([]),
-    });
-    this.planning.push(unitForm);
-  }
-
-  removeUnit(index: number) {
-    this.planning.removeAt(index);
-  }
-
-  createSection(unitIndex: number) {
-    const unit = this.planning.at(unitIndex);
-    unit.controls.sections.push(new FormControl('', Validators.required));
-  }
-
-  removeSection(unitIndex: number, sectionIndex: number) {
-    const unit = this.planning.at(unitIndex);
-    unit.controls.sections.removeAt(sectionIndex);
+  onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.files = Array.from(input.files);
+    }
   }
 
   ngOnInit() {
@@ -103,9 +136,6 @@ export class CourseFormComponent {
         uuid: new FormControl(this.course.uuid, Validators.required),
         title: new FormControl(this.course.title, Validators.required),
         description: new FormControl(this.course.description, Validators.required),
-        course_image_url: new FormControl(this.course.course_image_url, Validators.required),
-        teacher: new FormControl(this.user.uuid, Validators.required),
-        planning: new FormArray<UnitFormGroup>([]),
       });
     }
   }

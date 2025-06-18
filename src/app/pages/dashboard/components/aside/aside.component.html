@@ -7,7 +7,7 @@
       [routerLink]="['/dashboard', 'settings']"
     >
       <img
-        [src]="user.profile_image_url"
+        [src]="profile_image_endpoint + user.profile_image_url"
         alt=""
         class="w-8 h-8 lg:w-16 lg:h-16 object-cover object-center rounded-full"
       />

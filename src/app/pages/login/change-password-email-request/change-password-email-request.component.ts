@@ -22,12 +22,14 @@ export class ChangePasswordEmailRequestComponent {
 
     try {
       const { token } = await this.authorizationService.checkEmail(email);
-      await this.authorizationService.requestConfirmationByEmail('change_password');
 
       this.authorizationService.setToken(token);
 
+      await this.authorizationService.requestConfirmationByEmail('change_password');
+
       this.router.navigate(['/login/change_password_confirmation']);
     } catch (errorResponse) {
+      console.log(errorResponse);
       this.authorizationService.removeToken();
 
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {

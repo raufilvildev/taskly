@@ -10,6 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormatDatePipe } from '../../../../../../../pipes/format-date.pipe';
 import { FormatTextPipe } from '../../../../../../../pipes/format-text.pipe';
 import { initUser } from '../../../../../../../shared/utils/initializers';
+import { environment } from '../../../../../../../environments/environment.test';
 
 @Component({
   selector: 'app-thread',
@@ -43,6 +44,7 @@ export class ThreadComponent {
   showDeleteConfirmation = false;
   editedResponseUuid = '';
   deleteThreadError = '';
+  profile_image_endpoint = `${environment.host.split('api')[0]}uploads/users/`;
 
   type: 'create' | 'edit' = 'create';
 
@@ -58,6 +60,7 @@ export class ThreadComponent {
 
   updateForum() {
     this.showThreadForm = false;
+    this.showResponseForm = false;
     this.update.emit();
   }
 

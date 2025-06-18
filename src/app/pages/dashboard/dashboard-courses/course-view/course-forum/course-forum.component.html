@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-custom-background dark:bg-transparent">
-  <div class="fixed top-0 right-0 flex justify-end p-5 pointer-events-auto">
+  <div class="flex justify-start px-10 py-5">
     <button
-      class="px-6 py-3 text-xl text-black rounded-full border border-custom-accent-dark bg-custom-primary-dark hover:bg-custom-accent-dark dark:bg-purple-100 dark:hover:bg-purple-900 dark:border-purple-900 transition-all duration-300 transform hover:scale-105 hover:text-white shadow-lg hover:shadow-3xl"
+      class="cursor-pointer px-6 py-3 text-xl text-black rounded-full border border-custom-accent-dark bg-custom-primary-dark hover:bg-custom-accent-dark dark:bg-purple-100 dark:hover:bg-purple-900 dark:border-purple-900 transition-all duration-300 transform hover:scale-105 hover:text-white shadow-lg hover:shadow-3xl"
       (click)="showThreadForm = true"
     >
       Crear hilo
@@ -31,6 +31,8 @@
       (answeredThread)="onThreadAnswered($event)"
       (editedThread)="onThreadEdited($event)"
     ></app-thread>
+  } @empty {
+    <p class="text-[2.5rem] font-bold text-center mt-25">¡Vaya! No existe ningún hilo todavía.</p>
   }
   @if (showThreadForm) {
     <div class="fixed inset-0 bg-black/30 z-50 flex items-center justify-center">

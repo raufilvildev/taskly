@@ -1,0 +1,43 @@
+<fieldset class="flex flex-col">
+  <div class="flex flex-col gap-2">
+    <label [for]="controlName" class="text-sm font-bold">{{ label }}</label>
+
+    <div class="flex items-center gap-3">
+      @if (isEditing) {
+        <input
+          [type]="type"
+          [id]="controlName"
+          [formControl]="control"
+          class="w-full px-4 py-2 bg-custom-background dark:bg-gray-800 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+        />
+        <!-- Si estamos editando, añadir un borde de color al input para diferenciar el modo de edición del modo datos guardados. -->
+      } @else {
+        <p
+          class="w-full px-4 py-2 text-base bg-custom-background dark:bg-gray-800 border border-2 border-custom-border rounded-lg"
+        >
+          {{ value }}
+        </p>
+      }
+      @if (isEditing) {
+        <img
+          src="cancel.svg"
+          alt="Cancelar edición"
+          class="w-4 h-4 cursor-pointer"
+          (click)="onCancelEdit()"
+        />
+        <!--
+        
+        Añadir botón de guardar los cambios (un icono de check o algo así) con los siguientes usos:
+        
+        - Al pulsar en este botón, se deberá validar el valor del input:
+          1. Si el valor del input es correcto, dejaremos guardar.
+          2. Si el valor del input es incorrecto, aplicaremos un borde rojo y un fondo rojo al input, mostraremos un mensaje de error debajo del input y no permitiremos al usuario salir del modo edición.
+          3. Impedir al usuario que le dé a Guardar cambios si existe algún input en modo edición (sea correcto o incorrecto).
+        
+        -->
+      } @else {
+        <img src="edit.svg" alt="Editar" class="w-4 h-4 cursor-pointer" (click)="onToggleEdit()" />
+      }
+    </div>
+  </div>
+</fieldset>

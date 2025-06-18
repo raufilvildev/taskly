@@ -4,12 +4,12 @@
   <img
     [src]="
       type === 'edit'
-        ? 'edit.svg'
+        ? `edit${icon}.svg`
         : type === 'remove'
-          ? 'remove.svg'
+          ? `remove${icon}.svg`
           : type === 'cancel'
-            ? 'cancel.svg'
-            : 'create.svg'
+            ? `cancel${icon}.svg`
+            : `create${icon}.svg`
     "
     [alt]="
       type === 'edit'

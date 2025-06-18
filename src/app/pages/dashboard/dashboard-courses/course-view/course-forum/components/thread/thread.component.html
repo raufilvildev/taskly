@@ -36,7 +36,7 @@
           class="self-end mt-5 p-4 flex gap-5 rounded-lg bg-custom-primary-dark dark:bg-gray-900 dark:shadow-sm dark:shadow-white shadow-xl"
         >
           <img
-            [src]="thread.user?.profile_image_url"
+            [src]="profile_image_endpoint + thread.user?.profile_image_url"
             [alt]="
               'Imagen de perfil del usuario ' +
               thread.user?.first_name +
@@ -72,8 +72,10 @@
         @if (showResponseForm && threadUuidWhereAResponseIsBeingCreated === thread.uuid && !false) {
           <app-response-form
             [user]="user"
+            [threadUuid]="thread.uuid"
             (cancel)="updateShowResponseForm(false)"
             (create)="updateForum()"
+            (edit)="updateForum()"
           ></app-response-form>
           @if (!showResponses && thread.responses.length > 0) {
             <hr class="border-custom-muted" />
@@ -87,12 +89,12 @@
             @for (response of thread.responses; track response.uuid) {
               <app-response
                 [user]="user"
-                [response]="response"
-                (editResponse)="setEditedResponse($event)"
-                (delete)="updateForum()"
                 [editedResponseUuid]="editedResponseUuid"
                 [threadUuid]="thread.uuid ? thread.uuid : ''"
                 [threadUuidWhereAResponseIsBeingEdited]="threadUuidWhereAResponseIsBeingEdited"
+                [response]="response"
+                (editResponse)="setEditedResponse($event)"
+                (delete)="updateForum()"
               ></app-response>
             }
           </div>

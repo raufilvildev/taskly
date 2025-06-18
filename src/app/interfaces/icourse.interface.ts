@@ -4,14 +4,22 @@ export interface ICourse {
   description: string;
   course_image_url: string;
   teacher: string;
+  students: IStudent[];
   planning: IUnitCourse[];
 }
 
 export interface IUnitCourse {
-  id: number;
   title: string;
   sections: {
-    id: number;
     title: string;
   }[];
+}
+
+export interface IStudent {
+  uuid: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  username: string;
+  profile_image_url: string;
 }

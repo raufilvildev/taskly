@@ -13,6 +13,15 @@ export class ThemeService {
 
   isDarkMode$ = this.isDarkModeSubject.asObservable();
 
+  constructor() {
+    // Aplica la clase 'dark' en el html al iniciar el servicio
+    const isDark = this.isDarkModeSubject.value;
+    const htmlElement = document.querySelector('html');
+    if (htmlElement) {
+      htmlElement.classList.toggle('dark', isDark);
+    }
+  }
+
   setDarkMode(isDark: boolean) {
     this.isDarkModeSubject.next(isDark);
     localStorage.setItem('theme', isDark ? 'dark' : 'light');

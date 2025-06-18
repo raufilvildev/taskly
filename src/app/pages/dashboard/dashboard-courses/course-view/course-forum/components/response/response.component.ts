@@ -10,6 +10,7 @@ import { FormatDatePipe } from '../../../../../../../pipes/format-date.pipe';
 import { FormatTextPipe } from '../../../../../../../pipes/format-text.pipe';
 import { initResponse, initUser } from '../../../../../../../shared/utils/initializers';
 import { CreateEditCancelRemoveButtonComponent } from '../../../../../../../shared/components/buttons/create-edit-cancel-remove-button/create-edit-cancel-remove-button.component';
+import { environment } from '../../../../../../../environments/environment.test';
 
 @Component({
   selector: 'app-response',
@@ -38,6 +39,7 @@ export class ResponseComponent {
   showResponseForm = false;
   showDeleteConfirmation = false;
   deleteResponseError = '';
+  profile_image_endpoint = `${environment.host.split('api')[0]}uploads/users/`;
 
   updateThread(state: boolean, response_uuid: string | undefined) {
     this.showResponseForm = state;
@@ -53,6 +55,8 @@ export class ResponseComponent {
       await this.forumService.deleteResponse(response_uuid);
       this.delete.emit();
       this.updateShowDeleteConfirmation(false);
+      this.showDeleteConfirmation = false;
+      this.showResponseForm = false;
     } catch (errorResponse) {
       if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 0) {
         this.deleteResponseError = constants.generalServerError;
