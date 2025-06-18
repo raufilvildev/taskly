@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventApi } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import { TasksService } from '../../../../services/tasks.service';
 import { ITask } from '../../../../interfaces/itask';
 
@@ -20,11 +21,11 @@ export class TableComponent implements OnInit {
   currentEvents = signal<EventApi[]>([]);
 
   calendarOptions = signal<CalendarOptions>({
-    plugins: [dayGridPlugin],
+    plugins: [dayGridPlugin, timeGridPlugin],
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth'
+      right: 'dayGridMonth,timeGridWeek'
     },
     initialView: 'dayGridMonth',
     weekends: true,
@@ -36,7 +37,25 @@ export class TableComponent implements OnInit {
     eventColor: '#3b82f6',
     eventTextColor: '#ffffff',
     eventsSet: this.handleEvents.bind(this),
-    eventClick: this.handleEventClick.bind(this)
+    eventClick: this.handleEventClick.bind(this),
+    slotMinTime: '08:00:00',
+    slotMaxTime: '20:00:00',
+    allDaySlot: true,
+    slotDuration: '01:00:00',
+    height: 'auto',
+    expandRows: true,
+    nowIndicator: true,
+    dayHeaderFormat: { weekday: 'long' },
+    views: {
+      timeGridWeek: {
+        dayHeaderFormat: { weekday: 'short', day: 'numeric' },
+        slotLabelFormat: {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        }
+      }
+    }
   });
 
   ngOnInit(): void {
@@ -49,13 +68,15 @@ export class TableComponent implements OnInit {
       id: task.uuid,
       title: task.title,
       date: task.due_date,
+      allDay: true,
       backgroundColor: this.getPriorityColor(task.priority_color),
       borderColor: this.getPriorityColor(task.priority_color),
       textColor: '#ffffff',
       extendedProps: {
         description: task.description,
         isCompleted: task.is_completed,
-        category: task.category
+        category: task.category,
+        priority: task.priority_color
       }
     }));
 
