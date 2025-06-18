@@ -6,7 +6,6 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import esLocale from '@fullcalendar/core/locales/es';
 import { TasksService } from '../../../../services/tasks.service';
-import { ITask } from '../../../../interfaces/itask';
 
 @Component({
   selector: 'app-calendar-table',
