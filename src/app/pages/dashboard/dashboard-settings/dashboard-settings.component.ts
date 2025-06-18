@@ -42,48 +42,6 @@ export class DashboardSettingsComponent {
     username: new FormControl('', [Validators.minLength(2), Validators.maxLength(100)]),
   });
 
-  getValidationStyleClasses(control_name: string, errors: string[]) {
-    if (
-      !['first_name', 'last_name', 'birth_date', 'username'].includes(control_name) ||
-      errors.some((error) => !['minlength', 'maxlength'].includes(error))
-    ) {
-      return {};
-    }
-    let hasErrors: boolean = false;
-
-    if (this.userSettingsForm.get(control_name)?.touched) {
-      hasErrors = errors.some((error) => this.userSettingsForm.get(control_name)?.hasError(error));
-    }
-
-    const isValid = this.userSettingsForm.get(control_name)?.valid && !hasErrors;
-
-    return {
-      'border-custom-error': hasErrors,
-      'bg-red-100': hasErrors,
-      'hover:border-custom-error': hasErrors,
-      'focus:outline-custom-error': hasErrors,
-      'focus:shadow-custom-error': hasErrors,
-      'border-custom-success': isValid,
-      'hover:border-custom-success': isValid,
-      'focus:outline-custom-success': isValid,
-      'focus:shadow-custom-success': isValid,
-    };
-  }
-
-  getErrors(control_name: string) {
-    const errors: string[] = [];
-
-    for (const error in constants.messages) {
-      if (
-        this.userSettingsForm.get(control_name)?.touched &&
-        this.userSettingsForm.get(control_name)?.hasError(error)
-      ) {
-        errors.push(`El campo ${constants.fields[control_name]} ${constants.messages[error]}.`);
-      }
-    }
-
-    return errors;
-  }
 
   async ngOnInit() {
     try {
@@ -141,4 +99,15 @@ export class DashboardSettingsComponent {
       console.error(`Error al actualizar el usuario:`, error);
     }
   }
+
+  onSaveField(event: { controlName: string; value: string | Date }): void {
+  const { controlName, value } = event;
+  
+  // Aquí puedes enviar al backend o actualizar la vista
+  this.userSettingsForm.get(controlName)?.setValue(value);
+
+  // Si estás controlando algún estado adicional, actualízalo aquí
+}
+
+
 }

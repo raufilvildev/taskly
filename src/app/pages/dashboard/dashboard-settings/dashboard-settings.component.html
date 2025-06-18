@@ -12,9 +12,9 @@
       [isEditing]="editUserForm['first_name']"
       [value]="user.first_name"
       (toggleEdit)="updateUserFormState($event)"
-      [class]="getValidationStyleClasses('first_name', ['minlength', 'maxlength'])"
+      [validation]="['minlength', 'maxlength']"
+      (saveEdit)="onSaveField($event)"
     ></app-user-fieldset>
-    <!-- Llevarte getValidationStyleClasses al app-user-fieldset y aplicarle esas clases a los inputs!! -->
 
     <app-user-fieldset
       label="Apellidos"
@@ -23,7 +23,8 @@
       [isEditing]="editUserForm['last_name']"
       [value]="user.last_name"
       (toggleEdit)="updateUserFormState($event)"
-      [class]="getValidationStyleClasses('last_name', ['minlength', 'maxlength'])"
+      [validation]="['minlength', 'maxlength']"
+      (saveEdit)="onSaveField($event)"
     ></app-user-fieldset>
 
     <app-user-fieldset
@@ -34,7 +35,9 @@
       [value]="user.username"
       [type]="'text'"
       (toggleEdit)="updateUserFormState($event)"
-      [class]="getValidationStyleClasses('username', ['minlength', 'maxlength'])"
+      [validation]="['minlength', 'maxlength']"
+      (saveEdit)="onSaveField($event)"
+
     ></app-user-fieldset>
 
     <app-user-fieldset
@@ -45,7 +48,8 @@
       [value]="user.birth_date"
       [type]="'date'"
       (toggleEdit)="updateUserFormState($event)"
-      [class]="getValidationStyleClasses('birth_date', [])"
+      [validation]="['minlength', 'maxlength']"
+      (saveEdit)="onSaveField($event)"
     ></app-user-fieldset>
   </div>
 

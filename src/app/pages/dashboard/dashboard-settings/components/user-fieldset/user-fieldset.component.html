@@ -8,9 +8,9 @@
           [type]="type"
           [id]="controlName"
           [formControl]="control"
+          [class]="getValidationStyleClasses(controlName, validation)"
           class="w-full px-4 py-2 bg-custom-background dark:bg-gray-800 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
         />
-        <!-- Si estamos editando, añadir un borde de color al input para diferenciar el modo de edición del modo datos guardados. -->
       } @else {
         <p
           class="w-full px-4 py-2 text-base bg-custom-background dark:bg-gray-800 border border-2 border-custom-border rounded-lg"
@@ -19,11 +19,22 @@
         </p>
       }
       @if (isEditing) {
+        @if (control.valid) {
+          <img
+            src="cancel.svg"
+            alt="Cancelar edición"
+            class="w-4 h-4 cursor-pointer"
+            (click)="onCancelEdit()"
+          />
+        }
         <img
-          src="cancel.svg"
-          alt="Cancelar edición"
+          src="check-grey.svg"
+          alt="Guardar cambios"
           class="w-4 h-4 cursor-pointer"
-          (click)="onCancelEdit()"
+          [class.opacity-50]="!control.valid"
+          [class.cursor-not-allowed]="!control.valid"
+          [style.pointer-events]="!control.valid ? 'none' : 'auto'"
+          (click)="onSaveEdit()"
         />
         <!--
         
@@ -39,5 +50,13 @@
         <img src="edit.svg" alt="Editar" class="w-4 h-4 cursor-pointer" (click)="onToggleEdit()" />
       }
     </div>
+
+      @if (isEditing && control.touched && control.invalid) {
+      <div class="text-sm text-custom-error font-medium mt-1 list-disc list-inside space-y-1">
+        @for (error of getErrors(controlName); track error) {
+          <p>{{ error }}</p>
+        }
+      </div>
+}
   </div>
 </fieldset>
