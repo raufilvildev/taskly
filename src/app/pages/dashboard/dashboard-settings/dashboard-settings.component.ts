@@ -26,11 +26,14 @@ import { Router } from '@angular/router';
   templateUrl: './dashboard-settings.component.html',
   styleUrls: ['./dashboard-settings.component.css'],
 })
+
 export class DashboardSettingsComponent {
+  
   private usersService = inject(UsersService);
   private authorizationService = inject(AuthorizationService);
   router = inject(Router);
 
+  
   serverError = '';
   serverSuccess = '';
   user: IGetByTokenUser = initUser();
@@ -42,30 +45,6 @@ export class DashboardSettingsComponent {
     username: new FormControl('', [Validators.minLength(2), Validators.maxLength(100)]),
   });
 
-
-  async ngOnInit() {
-    try {
-      this.user = await this.usersService.getByToken();
-      const birthDateFormatted = this.user.birth_date
-        ? dayjs(this.user.birth_date).format('YYYY-MM-DD')
-        : '';
-
-      this.userSettingsForm.patchValue({
-        first_name: this.user.first_name,
-        last_name: this.user.last_name,
-        birth_date: birthDateFormatted,
-        username: this.user.username,
-      });
-      const birthDate = this.user.birth_date
-        ? dayjs(this.user.birth_date).format('DD/MM/YYYY')
-        : '';
-
-      this.user.birth_date = birthDate;
-    } catch (error) {
-      return;
-    }
-  }
-
   editUserForm: { [key: string]: boolean } = {
     first_name: false,
     last_name: false,
@@ -73,6 +52,7 @@ export class DashboardSettingsComponent {
     birth_date: false,
   };
 
+  
   updateUserFormState(field: string | null) {
     const resetFormState: { [key: string]: boolean } = {
       first_name: false,
@@ -101,13 +81,33 @@ export class DashboardSettingsComponent {
   }
 
   onSaveField(event: { controlName: string; value: string | Date }): void {
-  const { controlName, value } = event;
+    const { controlName, value } = event;
+    this.userSettingsForm.get(controlName)?.setValue(value);
+    this.updateUser(this.userSettingsForm.value);
+  }
+
   
-  // Aquí puedes enviar al backend o actualizar la vista
-  this.userSettingsForm.get(controlName)?.setValue(value);
+  async ngOnInit() {
+    try {
+      this.user = await this.usersService.getByToken();
+      const birthDateFormatted = this.user.birth_date
+        ? dayjs(this.user.birth_date).format('YYYY-MM-DD')
+        : '';
 
-  // Si estás controlando algún estado adicional, actualízalo aquí
-}
+      this.userSettingsForm.patchValue({
+        first_name: this.user.first_name,
+        last_name: this.user.last_name,
+        birth_date: birthDateFormatted,
+        username: this.user.username,
+      });
 
+      const birthDate = this.user.birth_date
+        ? dayjs(this.user.birth_date).format('DD/MM/YYYY')
+        : '';
 
+      this.user.birth_date = birthDate;
+    } catch (error) {
+      return;
+    }
+  }
 }

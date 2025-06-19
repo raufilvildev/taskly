@@ -7,10 +7,9 @@ import { constants } from '../../../../../shared/utils/constants/constants.confi
   selector: 'app-user-fieldset',
   templateUrl: './user-fieldset.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule],
 })
 export class UserFieldsetComponent {
-
   @Input() label!: string;
   @Input() controlName!: string;
   @Input() type: string = 'text';
@@ -22,7 +21,6 @@ export class UserFieldsetComponent {
 
   @Output() toggleEdit = new EventEmitter<string | null>();
   @Output() saveEdit = new EventEmitter<{ controlName: string; value: string | Date }>();
-
 
   onToggleEdit() {
     this.toggleEdit.emit(this.controlName);
@@ -81,20 +79,19 @@ export class UserFieldsetComponent {
   }
 
   onSaveEdit(): void {
-  const control = this.formGroup.get(this.controlName);
+    const control = this.formGroup.get(this.controlName);
 
-  if (!control) return;
+    if (!control) return;
 
-  control.markAsTouched(); 
+    control.markAsTouched();
 
-  if (control.valid) {
-    this.saveEdit.emit({
-      controlName: this.controlName,
-      value: control.value,
-    });
+    if (control.valid) {
+      this.saveEdit.emit({
+        controlName: this.controlName,
+        value: control.value,
+      });
 
-    this.toggleEdit.emit(null); 
+      this.toggleEdit.emit(null);
+    }
   }
-}
-
 }
