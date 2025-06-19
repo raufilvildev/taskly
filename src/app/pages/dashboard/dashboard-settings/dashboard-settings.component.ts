@@ -15,25 +15,17 @@ import { UserFieldsetComponent } from './components/user-fieldset/user-fieldset.
 import dayjs from 'dayjs';
 import { Router } from '@angular/router';
 
-// Pon las propiedades del componente arriba, junto a los Inputs/Outputs y las inyecciones (mi orden es inyección - Input/Output - propiedad al uso)
-// Tus funciones deberían ir antes del ngOnInit().
-// La función updateUser() debe tener la lógica de ngOnInit() y en ngOnInit() ejecutar updateUser() y no al contrario.
-// IMPORTANTE: HACER TESTS
-
 @Component({
   selector: 'app-dashboard-settings',
   imports: [ReactiveFormsModule, FormsModule, UserFieldsetComponent],
   templateUrl: './dashboard-settings.component.html',
   styleUrls: ['./dashboard-settings.component.css'],
 })
-
 export class DashboardSettingsComponent {
-  
   private usersService = inject(UsersService);
   private authorizationService = inject(AuthorizationService);
   router = inject(Router);
 
-  
   serverError = '';
   serverSuccess = '';
   user: IGetByTokenUser = initUser();
@@ -52,7 +44,6 @@ export class DashboardSettingsComponent {
     birth_date: false,
   };
 
-  
   updateUserFormState(field: string | null) {
     const resetFormState: { [key: string]: boolean } = {
       first_name: false,
@@ -68,28 +59,14 @@ export class DashboardSettingsComponent {
     this.editUserForm = { ...resetFormState };
   }
 
-  async updateUser(userFormValue: any) {
+  async updateUser(userFormValue?: any) {
     try {
-      const responseData = await this.usersService.update(userFormValue);
-      await this.ngOnInit();
-      for (const key in this.editUserForm) {
-        this.editUserForm[key] = false;
+      if (userFormValue) {
+        await this.usersService.update(userFormValue);
       }
-    } catch (error) {
-      console.error(`Error al actualizar el usuario:`, error);
-    }
-  }
 
-  onSaveField(event: { controlName: string; value: string | Date }): void {
-    const { controlName, value } = event;
-    this.userSettingsForm.get(controlName)?.setValue(value);
-    this.updateUser(this.userSettingsForm.value);
-  }
-
-  
-  async ngOnInit() {
-    try {
       this.user = await this.usersService.getByToken();
+
       const birthDateFormatted = this.user.birth_date
         ? dayjs(this.user.birth_date).format('YYYY-MM-DD')
         : '';
@@ -106,8 +83,22 @@ export class DashboardSettingsComponent {
         : '';
 
       this.user.birth_date = birthDate;
+
+      for (const key in this.editUserForm) {
+        this.editUserForm[key] = false;
+      }
     } catch (error) {
-      return;
+      console.error(`Error al actualizar el usuario:`, error);
     }
+  }
+
+  onSaveField(event: { controlName: string; value: string | Date }): void {
+    const { controlName, value } = event;
+    this.userSettingsForm.get(controlName)?.setValue(value);
+    this.updateUser(this.userSettingsForm.value);
+  }
+
+  async ngOnInit() {
+    await this.updateUser();
   }
 }

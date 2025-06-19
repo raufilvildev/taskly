@@ -30,6 +30,23 @@ export class UserFieldsetComponent {
     this.toggleEdit.emit(null);
   }
 
+  onSaveEdit(): void {
+    const control = this.formGroup.get(this.controlName);
+
+    if (!control) return;
+
+    control.markAsTouched();
+
+    if (control.valid) {
+      this.saveEdit.emit({
+        controlName: this.controlName,
+        value: control.value,
+      });
+
+      this.toggleEdit.emit(null);
+    }
+  }
+
   get control(): FormControl {
     const ctrl = this.formGroup?.get(this.controlName);
     return ctrl as FormControl;
@@ -78,20 +95,5 @@ export class UserFieldsetComponent {
     return errors;
   }
 
-  onSaveEdit(): void {
-    const control = this.formGroup.get(this.controlName);
-
-    if (!control) return;
-
-    control.markAsTouched();
-
-    if (control.valid) {
-      this.saveEdit.emit({
-        controlName: this.controlName,
-        value: control.value,
-      });
-
-      this.toggleEdit.emit(null);
-    }
-  }
+  
 }
