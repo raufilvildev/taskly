@@ -96,21 +96,19 @@ export class DashboardSettingsComponent {
       this.serverError = constants.generalServerError;
     } else if (error instanceof HttpErrorResponse) {
       this.serverError = error.error;
-    } else {
-      console.error('Error al actualizar el usuario:', error);
-    }
+    } 
   }
   }
 
   async loadUser() {
   try {
     this.user = await this.usersService.getByToken();
-    console.log('Usuario cargado:', this.user);
+    
 
     // Extraer sólo el nombre del archivo
     const fullUrl = this.user.profile_image_url;
     const filename = fullUrl.split('/').pop() ?? '';
-    console.log('Filename extraído:', filename);
+    
 
     this.originalImageName = filename;
 
