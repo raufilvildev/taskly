@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
+import { inject, Injectable, signal } from '@angular/core';
+import { BehaviorSubject, lastValueFrom, tap } from 'rxjs';
 import { environment } from '../environments/environment.test';
 import { IGetByTokenUser, ISignupUser, IUser } from '../interfaces/iuser.interface';
 import { IToken } from '../interfaces/itoken.interface';
 import { ILogin } from '../interfaces/ilogin.interface';
 import { IMessage } from '../interfaces/imessage.interface';
+import { initUser } from '../shared/utils/initializers';
 
 type Response = {
   success: string;
@@ -18,10 +19,17 @@ type Response = {
 export class UsersService {
   private endpoint = `${environment.host}/user`;
   private httpClient = inject(HttpClient);
+  private currentUserSubject = new BehaviorSubject<IGetByTokenUser>(initUser());
+  currentUser$ = this.currentUserSubject.asObservable();
 
-  getByToken() {
-    return lastValueFrom(this.httpClient.get<IGetByTokenUser>(this.endpoint));
-  }
+
+ getByToken() {
+  return lastValueFrom(
+    this.httpClient.get<IGetByTokenUser>(this.endpoint).pipe(
+      tap((user) => this.currentUserSubject.next(user)) // ⬅️ AQUÍ ACTUALIZAMOS EL STATE GLOBAL
+    )
+  );
+}
 
   getByEmail(email: string) {
     return lastValueFrom(this.httpClient.get<IGetByTokenUser>(`${this.endpoint}/email/${email}`));
@@ -46,6 +54,19 @@ export class UsersService {
   }
 
   update(user: FormData) {
-    return lastValueFrom(this.httpClient.put<IToken>(`${this.endpoint}/update`, user));
+    return lastValueFrom(
+      this.httpClient.put<IToken>(`${this.endpoint}/update`, user).pipe(
+        tap(() => {
+          // Volver a cargar el usuario después de actualizar
+          this.getByToken(); // ya hace next()
+        })
+      )
+    );
   }
+
+  get currentUser(): IGetByTokenUser {
+    return this.currentUserSubject.value;
+  }
+
+
 }

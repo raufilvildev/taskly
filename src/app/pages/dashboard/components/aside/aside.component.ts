@@ -7,6 +7,7 @@ import { DashboardLayoutService } from '../../../../services/dashboard-layout.se
 import { Subscription } from 'rxjs';
 import { initUser } from '../../../../shared/utils/initializers';
 import { environment } from '../../../../environments/environment.test';
+import { UsersService } from '../../../../services/users.service';
 
 interface NavigationItem {
   route: string[];
@@ -24,12 +25,15 @@ interface NavigationItem {
 export class AsideComponent {
   authorizationService = inject(AuthorizationService);
   themeService = inject(ThemeService);
+  UserService = inject(UsersService)
   dashboardLayoutService = inject(DashboardLayoutService);
   router = inject(Router);
 
   @Input() user: IGetByTokenUser = initUser();
 
   private themeSub?: Subscription;
+  private userSub?: Subscription;
+  User = initUser();
 
   isDarkMode = signal(false);
   showList = false;
@@ -68,10 +72,15 @@ export class AsideComponent {
     this.themeSub = this.themeService.isDarkMode$.subscribe((isDark) => {
       this.isDarkMode.set(isDark);
     });
+
+     this.userSub = this.UserService.currentUser$.subscribe((u) => {
+      this.user = u;
+    });
   }
 
   ngOnDestroy() {
     // Cancelar suscripción para evitar memory leaks
     this.themeSub?.unsubscribe();
+    this.userSub?.unsubscribe();
   }
 }
