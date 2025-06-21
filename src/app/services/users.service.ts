@@ -26,7 +26,7 @@ export class UsersService {
  getByToken() {
   return lastValueFrom(
     this.httpClient.get<IGetByTokenUser>(this.endpoint).pipe(
-      tap((user) => this.currentUserSubject.next(user)) // ⬅️ AQUÍ ACTUALIZAMOS EL STATE GLOBAL
+      tap((user) => this.currentUserSubject.next(user)) 
     )
   );
 }
@@ -57,8 +57,7 @@ export class UsersService {
     return lastValueFrom(
       this.httpClient.put<IToken>(`${this.endpoint}/update`, user).pipe(
         tap(() => {
-          // Volver a cargar el usuario después de actualizar
-          this.getByToken(); // ya hace next()
+          this.getByToken(); 
         })
       )
     );
