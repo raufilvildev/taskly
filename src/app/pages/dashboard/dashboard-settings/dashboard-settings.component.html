@@ -1,6 +1,6 @@
 <form
   [formGroup]="userSettingsForm"
-  (ngSubmit)="updateUser(userSettingsForm.value)"
+  (ngSubmit)="updateUser()"
   class="flex-1 p-6 bg-white shadow-md dark:bg-transparent rounded-lg shadow-xl"
 >
 
@@ -58,13 +58,13 @@
     ></app-user-fieldset>
     </div>
 
-    <fieldset class="flex flex-col items-center justify-start gap-4 w-1/2">
+    <fieldset class="flex flex-col items-center justify-center gap-4 w-1/2">
       <img
       [src]="user.profile_image_url"
       alt="Imagen de perfil"
       class="w-52 h-52 object-cover rounded-full border border-gray-300 shadow mx-auto"
       />
-      <label for="profile-image" class="text-base font-bold cursor-pointer">
+      <label for="profile-image" class="cursor-pointer w-fit px-3 py-2 rounded-lg text-white bg-custom-accent hover:bg-custom-accent-dark hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
         Cambiar imagen
       </label>
       <input
@@ -73,8 +73,7 @@
         id="profile-image"
         accept="image/*"
         class="hidden"
-      
-        
+        (change)="onImageSelected($event)"        
       />
   </fieldset>
 
