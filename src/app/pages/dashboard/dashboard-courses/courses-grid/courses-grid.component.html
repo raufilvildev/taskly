@@ -1,7 +1,7 @@
 <div class="flex-1 flex flex-col items-center" [class.overflow-hidden]="showCourseForm">
   @if (user.role === 'teacher') {
     <button
-      class="mt-5 px-6 py-3 text-xl text-black rounded-full border border-custom-accent-dark bg-custom-primary-light hover:bg-custom-accent-dark dark:bg-purple-100 dark:hover:bg-purple-900 dark:border-purple-900 transition-all duration-300 transform hover:scale-105 hover:text-white shadow-lg hover:shadow-3xl"
+      class="mt-5 px-6 py-3 text-xl text-black rounded-full border border-custom-accent-dark bg-custom-background hover:bg-custom-accent-dark dark:bg-purple-100 dark:hover:bg-purple-900 dark:border-purple-900 transition-all duration-300 transform hover:scale-105 hover:text-white shadow-lg hover:shadow-3xl"
       (click)="showCourseForm = true"
     >
       Crear curso

@@ -32,7 +32,11 @@
         <p class="py-10 mx-auto italic">No hemos encontrado a ningún usuario</p>
       } @else {
         <div class="p-3">
-          <img [src]="student.profile_image_url" alt="" class="w-15 h-15 rounded-full" />
+          <img
+            [src]="profile_image_endpoint + student.profile_image_url"
+            alt=""
+            class="w-15 h-15 rounded-full"
+          />
         </div>
         <div class="flex-1 flex flex-col p-3">
           <h4 class="text-base font-bold">{{ student.first_name }} {{ student.last_name }}</h4>

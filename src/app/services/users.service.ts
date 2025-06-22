@@ -22,17 +22,20 @@ export class UsersService {
   private currentUserSubject = new BehaviorSubject<IGetByTokenUser>(initUser());
   currentUser$ = this.currentUserSubject.asObservable();
 
-
- getByToken() {
-  return lastValueFrom(
-    this.httpClient.get<IGetByTokenUser>(this.endpoint).pipe(
-      tap((user) => this.currentUserSubject.next(user)) 
-    )
-  );
-}
+  getByToken() {
+    return lastValueFrom(
+      this.httpClient
+        .get<IGetByTokenUser>(this.endpoint)
+        .pipe(tap((user) => this.currentUserSubject.next(user)))
+    );
+  }
 
   getByEmail(email: string) {
     return lastValueFrom(this.httpClient.get<IGetByTokenUser>(`${this.endpoint}/email/${email}`));
+  }
+
+  get currentUser(): IGetByTokenUser {
+    return this.currentUserSubject.value;
   }
 
   create(user: ISignupUser) {
@@ -57,15 +60,9 @@ export class UsersService {
     return lastValueFrom(
       this.httpClient.put<IToken>(`${this.endpoint}/update`, user).pipe(
         tap(() => {
-          this.getByToken(); 
+          this.getByToken();
         })
       )
     );
   }
-
-  get currentUser(): IGetByTokenUser {
-    return this.currentUserSubject.value;
-  }
-
-
 }

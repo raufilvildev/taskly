@@ -1,11 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
+import { IGetByTokenUser } from '../../../../../interfaces/iuser.interface';
+import { initCourse, initUser } from '../../../../../shared/utils/initializers';
+import { UsersService } from '../../../../../services/users.service';
+import { CoursesService } from '../../../../../services/courses.service';
+import { ICourse } from '../../../../../interfaces/icourse.interface';
+import { CourseFormComponent } from '../../courses-grid/components/course-form/course-form.component';
 
 @Component({
   selector: 'app-course-home',
-  imports: [],
+  imports: [CourseFormComponent],
   templateUrl: './course-home.component.html',
-  styleUrl: './course-home.component.css'
+  styleUrl: './course-home.component.css',
 })
 export class CourseHomeComponent {
+  usersService = inject(UsersService);
+  coursesService = inject(CoursesService);
 
+  @Input() course_uuid: string = '';
+
+  user: IGetByTokenUser = initUser();
+  course: ICourse = initCourse();
+
+  showCourseForm = false;
+
+  async updateGrid() {
+    this.showCourseForm = false;
+    try {
+      this.course = await this.coursesService.getByUuid(this.course_uuid);
+    } catch (error) {
+      return;
+    }
+  }
+
+  async ngOnInit() {
+    try {
+      this.user = await this.usersService.getByToken();
+      await this.updateGrid();
+    } catch (error) {
+      return;
+    }
+  }
 }

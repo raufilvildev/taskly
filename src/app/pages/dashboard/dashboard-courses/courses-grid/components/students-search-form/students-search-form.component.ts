@@ -6,6 +6,7 @@ import { initStudent } from '../../../../../../shared/utils/initializers';
 import { UsersService } from '../../../../../../services/users.service';
 import { Subscription } from 'rxjs';
 import { ThemeService } from '../../../../../../services/theme.service';
+import { environment } from '../../../../../../environments/environment.test';
 
 @Component({
   selector: 'app-students-search-form',
@@ -26,8 +27,8 @@ export class StudentsSearchFormComponent {
   private themeSub?: Subscription;
 
   student: IStudent = initStudent();
-
   students: IStudent[] = [];
+  profile_image_endpoint = `${environment.host.split('api')[0]}uploads/users/`;
 
   showResult = false;
   studentsSearchFormError = '';
