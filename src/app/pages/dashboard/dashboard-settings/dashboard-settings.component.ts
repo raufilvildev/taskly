@@ -40,6 +40,7 @@ export class DashboardSettingsComponent {
 
   files: File[] = [];
   private originalImageName = '';
+  userImageUrl: string = '';
 
   editUserForm: { [key: string]: boolean } = {
     first_name: false,
@@ -47,6 +48,8 @@ export class DashboardSettingsComponent {
     username: false,
     birth_date: false,
   };
+
+  formattedBirthDate: string="";
 
   updateUserFormState(field: string | null) {
     const resetFormState: { [key: string]: boolean } = {
@@ -100,10 +103,15 @@ export class DashboardSettingsComponent {
       const fullUrl = this.user.profile_image_url;
       const filename = fullUrl.split('/').pop() ?? '';
 
+      this.formattedBirthDate = this.user.birth_date
+      ? dayjs(this.user.birth_date, 'YYYY-MM-DD').format('DD/MM/YYYY')
+      : '';
+
       this.originalImageName = filename;
 
-      this.user.profile_image_url = `http://localhost:3000/uploads/users/${filename}`;
+      this.userImageUrl = `http://localhost:3000/uploads/users/${filename}`;
 
+      // El formulario espera 'YYYY-MM-DD', pero puedes mostrar 'DD/MM/YYYY' en la vista usando un pipe personalizado en el template.
       this.userSettingsForm.patchValue({
         first_name: this.user.first_name,
         last_name: this.user.last_name,

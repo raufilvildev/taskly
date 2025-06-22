@@ -50,7 +50,7 @@
       controlName="birth_date"
       [formGroup]="userSettingsForm"
       [isEditing]="editUserForm['birth_date']"
-      [value]="user.birth_date"
+      [value]="formattedBirthDate"
       [type]="'date'"
       (toggleEdit)="updateUserFormState($event)"
       [validation]="['minlength', 'maxlength']"
@@ -60,7 +60,7 @@
 
     <fieldset class="flex flex-col items-center justify-center gap-4 w-full md:w-1/2 lg:w-1/2">
       <img
-      [src]="user.profile_image_url"
+      [src]="userImageUrl"
       alt="Imagen de perfil"
       class="w-72 h-72 object-cover rounded-full border border-gray-300 shadow mx-auto"
       />
