@@ -32,10 +32,10 @@ export class DashboardSettingsComponent {
   user: IGetByTokenUser = initUser();
 
   userSettingsForm = new FormGroup({
-    first_name: new FormControl('', [Validators.minLength(2), Validators.maxLength(100)]),
-    last_name: new FormControl('', [Validators.minLength(2), Validators.maxLength(100)]),
+    first_name: new FormControl('', [Validators.minLength(3), Validators.maxLength(100)]),
+    last_name: new FormControl('', [Validators.minLength(3), Validators.maxLength(100)]),
     birth_date: new FormControl(''),
-    username: new FormControl('', [Validators.minLength(2), Validators.maxLength(100)]),
+    username: new FormControl('', [Validators.minLength(3), Validators.maxLength(100)]),
   });
 
   files: File[] = [];

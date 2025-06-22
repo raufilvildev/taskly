@@ -95,5 +95,13 @@ export class UserFieldsetComponent {
     return errors;
   }
 
-  
+  onEnterKey(event: any): void {
+    event.preventDefault(); // Evita que el formulario o input actúe por defecto
+
+    if (this.control.valid) {
+      this.onSaveEdit(); // Solo si es válido
+    } else {
+      this.control.markAsTouched(); // Marca como tocado para que salten errores
+    }
+  }
 }
