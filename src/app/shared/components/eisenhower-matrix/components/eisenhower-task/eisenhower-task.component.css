@@ -1,0 +1,6 @@
+:host(.cdk-drag) {
+  cursor: grab;
+}
+:host(.cdk-drag-dragging) {
+  cursor: grabbing;
+}

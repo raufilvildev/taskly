@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { initUser } from '../../../../shared/utils/initializers';
 import { environment } from '../../../../environments/environment.test';
 import { UsersService } from '../../../../services/users.service';
+import { MatIconModule } from '@angular/material/icon';
 
 interface NavigationItem {
   route: string[];
@@ -18,7 +19,7 @@ interface NavigationItem {
 
 @Component({
   selector: 'app-aside',
-  imports: [RouterLink],
+  imports: [RouterLink, MatIconModule],
   templateUrl: './aside.component.html',
   styleUrl: './aside.component.css',
 })
@@ -43,28 +44,24 @@ export class AsideComponent {
     { route: ['/dashboard'], icon: 'home', label: 'Inicio', alt: 'Icono de inicio' },
     {
       route: ['/dashboard', 'calendar'],
-      icon: 'calendar',
+      icon: 'calendar_today',
       label: 'Calendario',
       alt: 'Icono de calendario',
     },
     {
       route: ['/dashboard', 'eisenhower_matrix'],
-      icon: 'matrix',
+      icon: 'apps',
       label: 'Matriz de Eisenhower',
       alt: 'Icono de matriz de Eisenhower',
     },
-    { route: ['/dashboard', 'tasks'], icon: 'tasks', label: 'Mis tareas', alt: 'Icono de tareas' },
+    { route: ['/dashboard', 'tasks'], icon: 'task', label: 'Mis tareas', alt: 'Icono de tareas' },
     {
       route: ['/dashboard', 'courses'],
-      icon: 'course',
+      icon: 'school',
       label: 'Mis cursos',
       alt: 'Icono de cursos',
     },
   ];
-
-  getIcon(name: string): string {
-    return `${name}${this.isDarkMode() ? '_light' : ''}.svg`;
-  }
 
   isCollapsed() {
     return this.dashboardLayoutService.isAsideCollapsed();

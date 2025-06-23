@@ -1,0 +1,34 @@
+<div class="grid grid-cols-1 md:grid-cols-2 grid-rows-2 gap-5 h-full container p-5 w-full mx-auto" cdkDropListGroup>
+  @for (quadrant of quadrants; track quadrant.title) {
+    <div class="bg-white dark:bg-custom-background-dark border border-gray-200 dark:border-custom-border-dark rounded-lg p-4 flex flex-col overflow-hidden group"
+         cdkDropList
+         [id]="quadrant.id"
+         [cdkDropListData]="quadrant.tasks()"
+         (cdkDropListDropped)="drop($event)">
+      <!-- Quadrant Header -->
+      <div class="flex items-center mb-4 flex-shrink-0" [ngClass]="quadrant.colorClass">
+        <mat-icon class="mr-2">{{quadrant.icon}}</mat-icon>
+        <h3 class="m-0 text-base font-medium">{{ quadrant.title }}</h3>
+      </div>
+
+      <!-- Task List -->
+      <div class="flex-grow overflow-y-auto">
+        @if (quadrant.tasks().length > 0) {
+          @for (task of quadrant.tasks(); track task.id) {
+            <app-eisenhower-task cdkDrag [cdkDragData]="task" [task]="task"></app-eisenhower-task>
+          }
+        } @else {
+          <!-- This placeholder is shown for empty lists -->
+          <div class="h-full flex justify-center items-center text-gray-400 dark:text-gray-500 text-sm group-[.cdk-drop-list-dragging]:hidden">
+            No hay tareas
+          </div>
+          <div class="hidden h-full group-[.cdk-drop-list-dragging]:flex justify-center items-center">
+            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg w-full h-full flex justify-center items-center">
+              <span class="text-gray-500 dark:text-gray-400 font-medium">Soltar aquí</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
