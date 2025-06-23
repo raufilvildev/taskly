@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './fullcalendar-theme.css';
 @plugin "daisyui";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -107,6 +108,9 @@ app-dashboard-settings {
   --color-custom-muted: #a1a1a1;
   --color-custom-border: #dddddd;
   --color-custom-border-dark: #333333;
+  --color-custom-text-main-dark: #ffffff;
+  --color-custom-text-secondary-dark: #d1d1d1;
+  --color-custom-muted-dark: #808080;
 
   /* Interactions colors */
   --color-custom-hover: #d6c3ff;

@@ -1,17 +1,17 @@
 <div class="min-h-screen p-4">
   <div class="container">
     <!-- Calendar Container -->
-    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+    <div
+      class="bg-custom-background dark:bg-custom-background-dark rounded-2xl shadow-xl border border-custom-border dark:border-custom-border-dark overflow-hidden"
+    >
       <div class="p-4 md:p-6 lg:p-8 w-full">
-        <full-calendar
-          [options]="calendarOptions()"
-          class="w-full h-full"
-        >
+        <full-calendar [options]="calendarOptions" class="w-full h-full">
           <ng-template #eventContent let-arg>
             <div class="flex items-center space-x-2 p-1">
-              <div class="w-2 h-2 rounded-full"
-                   [style.background-color]="arg.event.backgroundColor">
-              </div>
+              <div
+                class="w-2 h-2 rounded-full"
+                [style.background-color]="arg.event.backgroundColor"
+              ></div>
               <span class="text-sm font-medium truncate">
                 {{ arg.event.title }}
               </span>
@@ -22,30 +22,6 @@
     </div>
 
     <!-- Legend -->
-    <div class="mt-6 bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4">Leyenda de Prioridades</h3>
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <div class="flex items-center space-x-2">
-          <div class="w-4 h-4 rounded-full bg-red-500"></div>
-          <span class="text-sm text-gray-600">Alta</span>
-        </div>
-        <div class="flex items-center space-x-2">
-          <div class="w-4 h-4 rounded-full bg-yellow-500"></div>
-          <span class="text-sm text-gray-600">Media</span>
-        </div>
-        <div class="flex items-center space-x-2">
-          <div class="w-4 h-4 rounded-full bg-green-500"></div>
-          <span class="text-sm text-gray-600">Baja</span>
-        </div>
-        <div class="flex items-center space-x-2">
-          <div class="w-4 h-4 rounded-full bg-blue-500"></div>
-          <span class="text-sm text-gray-600">Normal</span>
-        </div>
-        <div class="flex items-center space-x-2">
-          <div class="w-4 h-4 rounded-full bg-gray-500"></div>
-          <span class="text-sm text-gray-600">Sin prioridad</span>
-        </div>
-      </div>
-    </div>
+    <app-calendar-legend></app-calendar-legend>
   </div>
 </div>

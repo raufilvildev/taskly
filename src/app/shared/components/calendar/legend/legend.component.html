@@ -1,0 +1,17 @@
+<div
+  class="mt-6 bg-custom-background dark:bg-custom-background-dark rounded-xl shadow-lg p-6 border border-custom-border dark:border-custom-border-dark"
+>
+  <h3 class="text-lg font-semibold text-custom-text-main dark:text-custom-text-main-dark mb-4">
+    Leyenda de Prioridades
+  </h3>
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+    @for (priority of priorities; track priority.name) {
+      <div class="flex items-center space-x-2">
+        <div class="w-4 h-4 rounded-full" [ngClass]="priority.colorClass"></div>
+        <span class="text-sm text-custom-text-main dark:text-custom-text-main-dark">
+          {{ priority.name }}
+        </span>
+      </div>
+    }
+  </div>
+</div>

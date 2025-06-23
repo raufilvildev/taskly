@@ -6,10 +6,11 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import esLocale from '@fullcalendar/core/locales/es';
 import { TasksService } from '../../../../services/tasks.service';
+import { CalendarLegendComponent } from '../legend/legend.component';
 
 @Component({
   selector: 'app-calendar-table',
-  imports: [CommonModule, FullCalendarModule],
+  imports: [CommonModule, FullCalendarModule, CalendarLegendComponent],
   templateUrl: './calendar-table.component.html',
   styleUrl: './calendar-table.component.css',
   standalone: true
@@ -19,53 +20,52 @@ export class TableComponent implements OnInit {
   private readonly tasksService = inject(TasksService);
 
   currentEvents = signal<EventApi[]>([]);
+  calendarOptions: CalendarOptions;
 
-  calendarOptions = signal<CalendarOptions>({
-    plugins: [dayGridPlugin, timeGridPlugin],
-    locale: esLocale,
-    headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek'
-    },
-    initialView: 'dayGridMonth',
-    weekends: true,
-    editable: false,
-    selectable: false,
-    dayMaxEvents: true,
-    events: [],
-    eventDisplay: 'block',
-    eventColor: '#3b82f6',
-    eventTextColor: '#ffffff',
-    eventsSet: this.handleEvents.bind(this),
-    eventClick: this.handleEventClick.bind(this),
-    slotMinTime: '08:00:00',
-    slotMaxTime: '20:00:00',
-    allDaySlot: true,
-    slotDuration: '01:00:00',
-    height: 'auto',
-    expandRows: true,
-    nowIndicator: true,
-    dayHeaderFormat: { weekday: 'long' },
-    buttonText: {
-      today: 'Hoy',
-      month: 'Mes',
-      week: 'Semana'
-    },
-    views: {
-      timeGridWeek: {
-        dayHeaderFormat: { weekday: 'short', day: 'numeric' },
-        slotLabelFormat: {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false
-        }
-      }
-    }
-  });
+  constructor() {
+    this.calendarOptions = this.getCalendarOptions();
+  }
 
   ngOnInit(): void {
     this.loadTasks();
+  }
+
+  private getCalendarOptions(): CalendarOptions {
+    return {
+      plugins: [dayGridPlugin, timeGridPlugin],
+      locale: esLocale,
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek',
+      },
+      buttonText: {
+        today: 'Hoy',
+        month: 'Mes',
+        week: 'Semana'
+      },
+      views: {
+        timeGridWeek: {
+          dayHeaderFormat: { weekday: 'short', day: 'numeric' },
+          slotLabelFormat: {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+          }
+        }
+      },
+      eventDisplay: 'block',
+      eventsSet: this.handleEvents.bind(this),
+      eventClick: this.handleEventClick.bind(this),
+      slotMinTime: '08:00:00',
+      slotMaxTime: '20:00:00',
+      allDaySlot: true,
+      slotDuration: '01:00:00',
+      height: 'auto',
+      expandRows: true,
+      nowIndicator: true,
+      dayHeaderFormat: { weekday: 'long' },
+    };
   }
 
   private loadTasks(): void {
@@ -86,10 +86,10 @@ export class TableComponent implements OnInit {
       }
     }));
 
-    this.calendarOptions.update(options => ({
-      ...options,
+    this.calendarOptions = {
+      ...this.calendarOptions,
       events: events
-    }));
+    };
   }
 
   private getPriorityColor(priority: string): string {

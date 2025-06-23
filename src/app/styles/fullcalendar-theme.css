@@ -1,0 +1,90 @@
+/*
+ * =================================================================================================
+ * FULLCALENDAR THEME OVERRIDE
+ *
+ * This file contains all the custom styles for the FullCalendar component.
+ * It's imported into the global 'styles.css' to ensure the styles are applied correctly.
+ * =================================================================================================
+ */
+
+/* 1. CSS Variables (Light & Dark Mode) */
+:root {
+  --fc-border-color: var(--color-custom-border);
+  --fc-day-bg: var(--color-custom-background);
+  --fc-event-bg-color: var(--color-custom-accent);
+  --fc-event-border-color: var(--color-custom-accent-dark);
+  --fc-event-text-color: var(--color-custom-text-main-dark);
+  --fc-today-bg-color: var(--color-custom-primary-light);
+  --fc-list-even-row-bg-color: var(--color-custom-panel);
+  --fc-list-odd-row-bg-color: var(--color-custom-background);
+}
+
+.dark {
+  --fc-border-color: var(--color-custom-border-dark);
+  --fc-day-bg: var(--color-custom-background-dark);
+  --fc-today-bg-color: var(--color-custom-panel-dark);
+  --fc-list-even-row-bg-color: var(--color-custom-panel-dark);
+  --fc-list-odd-row-bg-color: var(--color-custom-background-dark);
+}
+
+/* 2. Toolbar & Header Styles */
+.fc .fc-toolbar {
+  background-color: var(--color-custom-panel);
+  border-bottom: 1px solid var(--color-custom-border);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-custom-lg) var(--radius-custom-lg) 0 0;
+}
+
+.dark .fc .fc-toolbar {
+  background-color: var(--color-custom-panel-dark);
+  border-bottom: 1px solid var(--color-custom-border-dark);
+}
+
+/* 3. Toolbar Buttons */
+.fc .fc-toolbar .fc-button {
+  background-color: transparent;
+  color: var(--color-custom-text-main);
+  border: 1px solid var(--color-custom-border);
+  transition: all 0.3s;
+}
+
+.dark .fc .fc-toolbar .fc-button {
+  color: var(--color-custom-text-main-dark);
+  border-color: var(--color-custom-border-dark);
+}
+
+.fc .fc-toolbar .fc-button:hover {
+  background-color: var(--color-custom-hover);
+}
+
+.fc .fc-toolbar .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-toolbar .fc-button-primary:not(:disabled):active {
+  background-color: var(--color-custom-accent);
+  border-color: var(--color-custom-accent-dark);
+  color: var(--color-custom-text-main-dark);
+}
+
+/* 4. Day Header & Grid */
+.fc .fc-col-header-cell {
+  background-color: var(--color-custom-panel) !important;
+}
+
+.dark .fc .fc-col-header-cell {
+  background-color: var(--color-custom-panel-dark) !important;
+}
+
+.fc-col-header-cell-cushion { /* Text inside header cell */
+  color: var(--color-custom-text-secondary);
+}
+
+.dark .fc-col-header-cell-cushion {
+  color: var(--color-custom-text-secondary-dark);
+}
+
+.fc-daygrid-day-number { /* Day number in month view */
+  color: var(--color-custom-text-main);
+}
+
+.dark .fc-daygrid-day-number {
+  color: var(--color-custom-text-main-dark);
+}
