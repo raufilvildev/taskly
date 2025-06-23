@@ -9,7 +9,7 @@ import { IMessage } from '../interfaces/imessage.interface';
   providedIn: 'root',
 })
 export class AuthorizationService {
-  private endpoint = `${environment.host}/authorization`;
+  private endpoint = `${environment.host}/api/authorization`;
   private httpClient = inject(HttpClient);
 
   getToken(): string {

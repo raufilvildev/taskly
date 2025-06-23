@@ -22,7 +22,7 @@ export class CoursesGridComponent {
   courses: ICourse[] = [];
   showCourseForm = false;
 
-  course_image_endpoint = `${environment.host.split('api')[0]}uploads/courses/`;
+  course_image_endpoint = `${environment.host}/uploads/courses/`;
 
   async updateGrid() {
     this.showCourseForm = false;

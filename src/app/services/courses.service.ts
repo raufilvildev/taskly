@@ -8,7 +8,7 @@ import { ICourse } from '../interfaces/icourse.interface';
   providedIn: 'root',
 })
 export class CoursesService {
-  private endpoint = `${environment.host}/courses`;
+  private endpoint = `${environment.host}/api/courses`;
   private httpClient = inject(HttpClient);
 
   getAll() {

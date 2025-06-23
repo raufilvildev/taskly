@@ -5,6 +5,7 @@ import { ForumService } from '../../../../../../../services/forum.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { constants } from '../../../../../../../shared/utils/constants/constants.config';
 import { initUser } from '../../../../../../../shared/utils/initializers';
+import { environment } from '../../../../../../../environments/environment.test';
 
 @Component({
   selector: 'app-response-form',
@@ -25,6 +26,7 @@ export class ResponseFormComponent {
   @Output() edit = new EventEmitter<void>();
 
   responseFormError = '';
+  profile_image_endpoint = `${environment.host}/uploads/users/`;
 
   responseForm = new FormGroup({
     content: new FormControl('', Validators.required),

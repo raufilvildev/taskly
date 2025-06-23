@@ -25,7 +25,7 @@ interface NavigationItem {
 export class AsideComponent {
   authorizationService = inject(AuthorizationService);
   themeService = inject(ThemeService);
-  UserService = inject(UsersService)
+  UserService = inject(UsersService);
   dashboardLayoutService = inject(DashboardLayoutService);
   router = inject(Router);
 
@@ -37,14 +37,29 @@ export class AsideComponent {
 
   isDarkMode = signal(false);
   showList = false;
-  profile_image_endpoint = `${environment.host.split('api')[0]}uploads/users/`;
+  profile_image_endpoint = `${environment.host}/uploads/users/`;
 
   navigationItems: NavigationItem[] = [
     { route: ['/dashboard'], icon: 'home', label: 'Inicio', alt: 'Icono de inicio' },
-    { route: ['/dashboard', 'calendar'], icon: 'calendar', label: 'Calendario', alt: 'Icono de calendario' },
-    { route: ['/dashboard', 'eisenhower_matrix'], icon: 'matrix', label: 'Matriz de Eisenhower', alt: 'Icono de matriz de Eisenhower' },
+    {
+      route: ['/dashboard', 'calendar'],
+      icon: 'calendar',
+      label: 'Calendario',
+      alt: 'Icono de calendario',
+    },
+    {
+      route: ['/dashboard', 'eisenhower_matrix'],
+      icon: 'matrix',
+      label: 'Matriz de Eisenhower',
+      alt: 'Icono de matriz de Eisenhower',
+    },
     { route: ['/dashboard', 'tasks'], icon: 'tasks', label: 'Mis tareas', alt: 'Icono de tareas' },
-    { route: ['/dashboard', 'courses'], icon: 'course', label: 'Mis cursos', alt: 'Icono de cursos' }
+    {
+      route: ['/dashboard', 'courses'],
+      icon: 'course',
+      label: 'Mis cursos',
+      alt: 'Icono de cursos',
+    },
   ];
 
   getIcon(name: string): string {
@@ -73,7 +88,7 @@ export class AsideComponent {
       this.isDarkMode.set(isDark);
     });
 
-     this.userSub = this.UserService.currentUser$.subscribe((u) => {
+    this.userSub = this.UserService.currentUser$.subscribe((u) => {
       this.user = u;
     });
   }

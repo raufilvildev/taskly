@@ -9,7 +9,7 @@ import { IMessage } from '../interfaces/imessage.interface';
   providedIn: 'root',
 })
 export class ForumService {
-  private endpoint = `${environment.host}/forum`;
+  private endpoint = `${environment.host}/api/forum`;
   private httpClient = inject(HttpClient);
 
   getAll(course_uuid: string, order: string = 'desc') {

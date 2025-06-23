@@ -39,7 +39,7 @@ export class ResponseComponent {
   showResponseForm = false;
   showDeleteConfirmation = false;
   deleteResponseError = '';
-  profile_image_endpoint = `${environment.host.split('api')[0]}uploads/users/`;
+  profile_image_endpoint = `${environment.host}/uploads/users/`;
 
   updateThread(state: boolean, response_uuid: string | undefined) {
     this.showResponseForm = state;

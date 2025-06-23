@@ -44,7 +44,7 @@ export class ThreadComponent {
   showDeleteConfirmation = false;
   editedResponseUuid = '';
   deleteThreadError = '';
-  profile_image_endpoint = `${environment.host.split('api')[0]}uploads/users/`;
+  profile_image_endpoint = `${environment.host}/uploads/users/`;
 
   type: 'create' | 'edit' = 'create';
 

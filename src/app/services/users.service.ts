@@ -17,7 +17,7 @@ type Response = {
   providedIn: 'root',
 })
 export class UsersService {
-  private endpoint = `${environment.host}/user`;
+  private endpoint = `${environment.host}/api/user`;
   private httpClient = inject(HttpClient);
   private currentUserSubject = new BehaviorSubject<IGetByTokenUser>(initUser());
   currentUser$ = this.currentUserSubject.asObservable();
