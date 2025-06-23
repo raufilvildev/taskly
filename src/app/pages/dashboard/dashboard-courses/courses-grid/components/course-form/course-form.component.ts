@@ -137,6 +137,8 @@ export class CourseFormComponent {
         title: new FormControl(this.course.title, Validators.required),
         description: new FormControl(this.course.description, Validators.required),
       });
+      this.students = this.course.students;
+      this.planning = this.course.planning;
     }
   }
 }

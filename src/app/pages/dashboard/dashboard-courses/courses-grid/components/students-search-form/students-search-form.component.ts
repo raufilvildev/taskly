@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IStudent } from '../../../../../../interfaces/icourse.interface';
 import { CreateEditCancelRemoveButtonComponent } from '../../../../../../shared/components/buttons/create-edit-cancel-remove-button/create-edit-cancel-remove-button.component';
@@ -18,6 +18,7 @@ export class StudentsSearchFormComponent {
   usersService = inject(UsersService);
   themeService = inject(ThemeService);
 
+  @Input() students: IStudent[] = [];
   @Output() updateStudents = new EventEmitter<IStudent[]>();
 
   studentsSearchForm = new FormGroup({
@@ -27,8 +28,7 @@ export class StudentsSearchFormComponent {
   private themeSub?: Subscription;
 
   student: IStudent = initStudent();
-  students: IStudent[] = [];
-  profile_image_endpoint = `${environment.host.split('api')[0]}uploads/users/`;
+  profile_image_endpoint = `${environment.host}/uploads/users/`;
 
   showResult = false;
   studentsSearchFormError = '';
@@ -60,6 +60,11 @@ export class StudentsSearchFormComponent {
   removeStudent(student_uuid: string) {
     this.students = this.students.filter((student) => student.uuid !== student_uuid);
     this.updateStudents.emit(this.students);
+  }
+
+  checkStudentExistsOnStudents(student_uuid: string) {
+    const student = this.students.find((student) => student.uuid === student_uuid);
+    return !student ? false : true;
   }
 
   async ngOnInit() {

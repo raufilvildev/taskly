@@ -14,7 +14,7 @@
           type="text"
           formControlName="title"
           id="title"
-          class="px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+          class="px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
         />
       </fieldset>
 
@@ -24,7 +24,7 @@
           type="text"
           formControlName="description"
           id="content"
-          class="resize-none px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+          class="resize-none px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
           [value]="course.description"
           rows="15"
         ></textarea>
@@ -46,19 +46,22 @@
 
     <div>
       <h3 class="text-xl font-bold mb-3">Planificación</h3>
-      <app-unit-form (updatePlanning)="planning = $event"></app-unit-form>
+      <app-unit-form (updatePlanning)="planning = $event" [planning]="planning"></app-unit-form>
     </div>
 
-    <app-students-search-form (updateStudents)="students = $event"></app-students-search-form>
+    <app-students-search-form
+      (updateStudents)="students = $event"
+      [students]="students"
+    ></app-students-search-form>
 
     @if (courseFormError) {
       <p class="pl-1 mt-1 italic text-sm text-custom-error text-center">{{ courseFormError }}</p>
     }
 
-    <div class="flex flex justify-center gap-5">
+    <div class="flex justify-center gap-5">
       <button
         type="button"
-        class="w-fit mt-5 px-4 py-2 rounded-lg dark:hover:text-white bg-custom-background hover:bg-custom-accent-dark dark:text-black dark:bg-purple-100 dark:bg-purple-100 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+        class="w-fit mt-5 px-4 py-2 rounded-lg dark:hover:text-white bg-custom-background hover:bg-custom-accent-dark dark:text-black dark:bg-purple-100 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
         (click)="cancelCourseForm()"
       >
         Cancelar

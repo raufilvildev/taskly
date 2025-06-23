@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IUnitCourse } from '../../../../../../interfaces/icourse.interface';
 import { CreateEditCancelRemoveButtonComponent } from '../../../../../../shared/components/buttons/create-edit-cancel-remove-button/create-edit-cancel-remove-button.component';
 import { SectionFormComponent } from '../section-form/section-form.component';
@@ -11,6 +11,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
   styleUrl: './unit-form.component.css',
 })
 export class UnitFormComponent {
+  @Input() planning: IUnitCourse[] = [];
   @Output() updatePlanning = new EventEmitter<IUnitCourse[]>();
 
   unitForm = new FormGroup({
@@ -20,8 +21,6 @@ export class UnitFormComponent {
   sectionForm = new FormGroup({
     title: new FormControl('', Validators.required),
   });
-
-  planning: IUnitCourse[] = [];
 
   touchedUnit = -1;
   touchedSection = -1;

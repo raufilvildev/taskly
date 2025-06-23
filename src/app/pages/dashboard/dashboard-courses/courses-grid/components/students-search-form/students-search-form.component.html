@@ -4,14 +4,14 @@
     <input
       type="email"
       placeholder="Escribe el correo electrónico del estudiante"
-      class="w-full px-4 py-2 bg-custom-background placeholder-custom-muted dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+      class="w-full px-4 py-2 bg-custom-background placeholder-custom-muted dark:bg-gray-900 border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
       (input)="showResult = false"
       (keydown.enter)="$event.preventDefault(); searchStudentByEmail()"
       formControlName="email"
     />
     <button
       type="button"
-      class="absolute right-1 top-1/2 rounded-full -translate-y-1/2 hover:bg-gray-100 rounded-full transition-all duration-300"
+      class="absolute right-1 top-1/2 -translate-y-1/2 hover:bg-gray-100 rounded-full transition-all duration-300"
       (click)="searchStudentByEmail()"
     >
       <img src="search.svg" alt="Icono de búsqueda" class="p-2 h-10 w-10 pointer-events-none" />
@@ -47,10 +47,14 @@
         </div>
         <div
           class="p-2"
-          (click)="students.includes(student) ? removeStudent(student.uuid) : addStudent(student)"
+          (click)="
+            checkStudentExistsOnStudents(student.uuid)
+              ? removeStudent(student.uuid)
+              : addStudent(student)
+          "
         >
           <app-create-edit-cancel-remove-button
-            [type]="students.includes(student) ? 'remove' : 'create'"
+            [type]="checkStudentExistsOnStudents(student.uuid) ? 'remove' : 'create'"
             [icon]="isDarkMode() ? '_light' : ''"
           ></app-create-edit-cancel-remove-button>
         </div>
