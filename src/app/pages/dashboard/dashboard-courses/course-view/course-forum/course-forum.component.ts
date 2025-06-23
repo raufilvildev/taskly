@@ -36,7 +36,11 @@ export class CourseForumComponent {
   isDarkMode = signal(false);
 
   async updateForum() {
-    this.forum = await this.forumService.getAll(this.course_uuid, this.order);
+    try {
+      this.forum = await this.forumService.getAll(this.course_uuid, this.order);
+    } catch (error) {
+      return;
+    }
   }
 
   toggleOrder() {
