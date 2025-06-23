@@ -75,7 +75,6 @@
             [threadUuid]="thread.uuid"
             (cancel)="updateShowResponseForm(false)"
             (create)="updateForum()"
-            (edit)="updateForum()"
           ></app-response-form>
           @if (!showResponses && thread.responses.length > 0) {
             <hr class="border-custom-muted" />
@@ -93,8 +92,8 @@
                 [threadUuid]="thread.uuid ? thread.uuid : ''"
                 [threadUuidWhereAResponseIsBeingEdited]="threadUuidWhereAResponseIsBeingEdited"
                 [response]="response"
-                (editResponse)="setEditedResponse($event)"
-                (delete)="updateForum()"
+                (editResponse)="updateForum(); setEditedResponse($event)"
+                (delete)="updateForum(); showResponses = !showResponses"
               ></app-response>
             }
           </div>
@@ -125,7 +124,9 @@
 }
 @if (showDeleteConfirmation) {
   <div class="fixed inset-0 bg-black/30 z-50 flex items-center justify-center shadow-xl">
-    <div class="p-10 bg-custom-background rounded-lg w-75 flex flex-col gap-10">
+    <div
+      class="p-10 bg-custom-background dark:bg-black dark:shadow-sm dark:shadow-white rounded-lg w-75 flex flex-col gap-10"
+    >
       <p class="text-custom-main text-center">¿Estás seguro de que quieres borrar este hilo?</p>
       @if (deleteThreadError) {
         <p class="pl-1 mt-1 italic text-sm text-custom-error text-center">
