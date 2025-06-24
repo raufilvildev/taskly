@@ -31,15 +31,3 @@
 }
 
 
-/* Forzar borde negro en toda la tabla del calendario */
-.fc table {
-  border-collapse: collapse !important;
-  border: 1px solid black !important;
-}
-
-/* Borde negro en todas las celdas y encabezados */
-.fc table th,
-.fc table td {
-  border: 1px solid black !important;
-}
-

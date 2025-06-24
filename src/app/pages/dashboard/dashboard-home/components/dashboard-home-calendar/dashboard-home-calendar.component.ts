@@ -21,10 +21,9 @@ export class DashboardHomeCalendarComponent implements OnInit {
     plugins: [dayGridPlugin],
     initialView: 'dayGridMonth',
     locale: esLocale,
-    height: 300,
+    height: '100%',
     headerToolbar: false,
     dayHeaderFormat: { weekday: 'narrow' }, // L M X J V S D
-    aspectRatio: 1, // mantiene proporción cuadrada
     events: [], 
     eventDisplay: 'custom',
   });
