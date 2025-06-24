@@ -1,26 +1,34 @@
-<div class="flex flex-col min-h-screen p-6">
-  <div class="flex justify-center items-center m-4">
-    <h1 class="text-4xl md:text-5xl text-center font-bold text-gray-800 dark:text-white">
-      Bienvenido a Taskly
-    </h1>
+<div class="flex flex-col min-h-screen text-gray-800 dark:text-white p-6">
+
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-semibold">Dashboard</h1>
   </div>
-  <div class="flex flex-col md:flex-row flex-1 gap-4">
-    <a 
-      class="flex-1 md:flex-[2_1_0%] md:w-2/3 flex flex-col items-center p-0 m-0 cursor-pointer"
-      [routerLink]="['/dashboard/calendar']"
-      style="text-decoration: none;"
-    >
-      <app-calendar-table></app-calendar-table>
-    </a>
-    <div class="flex-1 md:flex-[1_1_0%] md:w-1/3 flex flex-col gap-8 p-4">
-      <div class="bg-white rounded-2xl shadow-lg p-8 border-l-8 border-purple-300">
-        <h2 class="text-xl text-custom-accent-dark dark:text-purple-300 font-bold">Cursos</h2>
-        <p class="text-purple-400 italic">No hay cursos disponibles.</p>
+
+  <div class="flex flex-col md:flex-row gap-6 flex-1 items-stretch">
+    
+    <div class="w-full md:w-[70%] flex flex-col">
+      <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-md p-6 h-full">
+        <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-2">Cursos actuales</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 italic">No hay cursos disponibles.</p>
       </div>
-      <div class="bg-white rounded-2xl shadow-lg p-8 border-l-8 border-purple-200">
-        <h2 class="text-xl text-custom-accent-dark dark:text-purple-300 font-bold">Tareas Pendientes</h2>
-        <app-task-list [tasks]="tasks"></app-task-list>
+    </div>
+
+    <div class="w-full md:w-[30%] flex flex-col gap-6">
+      
+      <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-md p-6">
+        <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-8">Tareas pendientes</h2>
+        <div class="space-y-4">
+          <app-task-list [tasks]="tasks"></app-task-list>
+        </div>
       </div>
+     
+      <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-md p-6 flex-1">
+        <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-8">Calendario</h2>
+        <div class="w-full">
+          <app-dashboard-home-calendar></app-dashboard-home-calendar>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
