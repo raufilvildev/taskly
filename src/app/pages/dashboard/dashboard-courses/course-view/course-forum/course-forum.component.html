@@ -9,14 +9,15 @@
   </div>
   <div class="fixed top-1/2 right-0 flex justify-end p-5 pointer-events-auto">
     <button
-      class="p-2 text-xl text-black rounded-full w-10 h-10 bg-custom-background dark:bg-transparent dark:shadow-sm dark:shadow-white hover:bg-custom-primary dark:hover:bg-purple-900 dark:border-purple-900 transition-all duration-300 transform hover:scale-105 hover:text-white shadow-lg hover:shadow-3xl"
+      class="p-2 text-xl rounded-full w-10 h-10 bg-custom-background dark:bg-transparent dark:shadow-sm dark:shadow-white hover:bg-custom-primary dark:hover:bg-purple-900 dark:border-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-3xl"
       (click)="toggleOrder(); updateForum()"
     >
-      <img
-        [src]="order === 'desc' ? `down_arrow${isDarkMode() ? '_light' : ''}.svg` : `up_arrow${isDarkMode() ? '_light' : ''}.svg`"
-        [alt]="order === 'desc' ? 'Icono de orden decreciente' : 'Icono de orden creciente'"
-        class=""
-      />
+      @if (order === 'desc') {
+        <mat-icon>arrow_downward</mat-icon>
+      }
+      @if (order === 'asc') {
+        <mat-icon>arrow_upward</mat-icon>
+      }
     </button>
   </div>
   @for (thread of forum; track thread.uuid) {

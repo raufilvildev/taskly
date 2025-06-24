@@ -30,21 +30,22 @@
             [icon]="'_light'"
           ></app-create-edit-cancel-remove-button>
         </div>
+
         @if (section_index > 0) {
-          <img
-            src="up_arrow_light.svg"
-            alt="Icono de flecha hacia arriba"
-            class="w-7 h-7 p-1 rounded-full hover:bg-white/60 transition-all duration-300 transform hover:scale-101"
+          <div
+            class="w-8 h-8 text-custom-muted-dark dark:text-inherit rounded-full hover:bg-white/60 transition-all duration-300 transform hover:scale-101 flex items-center justify-center"
             (click)="increaseSectionNumber(section_index)"
-          />
+          >
+            <mat-icon class="w-6 h-6">arrow_upward</mat-icon>
+          </div>
         }
         @if (section_index < sections_length - 1) {
-          <img
-            src="down_arrow_light.svg"
-            alt="Icono de flecha hacia abajo"
-            class="w-7 h-7 rounded-full p-1 hover:bg-white/60 transition-all duration-300 transform hover:scale-101"
+          <div
+            class="w-8 h-8 text-custom-muted-dark dark:text-inherit rounded-full hover:bg-white/60 transition-all duration-300 transform hover:scale-101 flex items-center justify-center"
             (click)="decreaseSectionNumber(section_index)"
-          />
+          >
+            <mat-icon class="w-6 h-6">arrow_downward</mat-icon>
+          </div>
         }
       </div>
     </div>
@@ -54,7 +55,7 @@
       <input
         type="text"
         placeholder="Escribe el título de la sección"
-        class="flex-1 w-full px-4 py-2 bg-custom-background placeholder-custom-muted dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+        class="flex-1 w-full px-4 py-2 bg-custom-background placeholder-custom-muted dark:bg-gray-900 border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
         formControlName="title"
         (keydown.enter)="
           $event.preventDefault();

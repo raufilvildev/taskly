@@ -3,10 +3,16 @@ import { IUnitCourse } from '../../../../../../interfaces/icourse.interface';
 import { CreateEditCancelRemoveButtonComponent } from '../../../../../../shared/components/buttons/create-edit-cancel-remove-button/create-edit-cancel-remove-button.component';
 import { SectionFormComponent } from '../section-form/section-form.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-unit-form',
-  imports: [ReactiveFormsModule, CreateEditCancelRemoveButtonComponent, SectionFormComponent],
+  imports: [
+    ReactiveFormsModule,
+    CreateEditCancelRemoveButtonComponent,
+    SectionFormComponent,
+    MatIcon,
+  ],
   templateUrl: './unit-form.component.html',
   styleUrl: './unit-form.component.css',
 })

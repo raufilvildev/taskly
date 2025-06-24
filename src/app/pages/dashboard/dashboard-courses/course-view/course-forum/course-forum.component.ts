@@ -9,10 +9,11 @@ import { Router } from '@angular/router';
 import { initUser } from '../../../../../shared/utils/initializers';
 import { Subscription } from 'rxjs';
 import { ThemeService } from '../../../../../services/theme.service';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-course-forum',
-  imports: [ThreadComponent, ThreadFormComponent],
+  imports: [ThreadComponent, ThreadFormComponent, MatIcon],
   templateUrl: './course-forum.component.html',
   styleUrl: './course-forum.component.css',
 })

@@ -7,10 +7,11 @@ import { UsersService } from '../../../../../../services/users.service';
 import { Subscription } from 'rxjs';
 import { ThemeService } from '../../../../../../services/theme.service';
 import { environment } from '../../../../../../environments/environment.test';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-students-search-form',
-  imports: [ReactiveFormsModule, CreateEditCancelRemoveButtonComponent],
+  imports: [ReactiveFormsModule, CreateEditCancelRemoveButtonComponent, MatIcon],
   templateUrl: './students-search-form.component.html',
   styleUrl: './students-search-form.component.css',
 })

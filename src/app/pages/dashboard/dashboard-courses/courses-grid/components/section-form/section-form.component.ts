@@ -2,10 +2,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { initUnit } from '../../../../../../shared/utils/initializers';
 import { CreateEditCancelRemoveButtonComponent } from '../../../../../../shared/components/buttons/create-edit-cancel-remove-button/create-edit-cancel-remove-button.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-section-form',
-  imports: [CreateEditCancelRemoveButtonComponent, ReactiveFormsModule],
+  imports: [CreateEditCancelRemoveButtonComponent, ReactiveFormsModule, MatIcon],
   templateUrl: './section-form.component.html',
   styleUrl: './section-form.component.css',
 })

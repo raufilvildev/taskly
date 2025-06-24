@@ -9,12 +9,12 @@
           [id]="controlName"
           [formControl]="control"
           [class]="getValidationStyleClasses(controlName, validation)"
-          class="w-full px-4 py-2 bg-custom-background dark:bg-gray-800 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+          class="w-full px-4 py-2 bg-custom-background dark:bg-gray-800 border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
           (keydown.enter)="onEnterKey($event)"
         />
       } @else {
         <p
-          class="w-full px-4 py-2 text-base bg-custom-background dark:bg-gray-800 border border-2 border-custom-border rounded-lg"
+          class="w-full px-4 py-2 text-base bg-custom-background dark:bg-gray-800 border-2 border-custom-border rounded-lg"
         >
           {{ value }}
         </p>
@@ -42,12 +42,12 @@
       }
     </div>
 
-      @if (isEditing && control.touched && control.invalid) {
+    @if (isEditing && control.touched && control.invalid) {
       <div class="text-sm text-custom-error font-medium mt-1 list-disc list-inside space-y-1">
         @for (error of getErrors(controlName); track error) {
           <p>{{ error }}</p>
         }
       </div>
-}
+    }
   </div>
 </fieldset>
