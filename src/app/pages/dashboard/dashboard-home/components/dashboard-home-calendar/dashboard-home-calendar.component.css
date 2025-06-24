@@ -1,0 +1,45 @@
+:host {
+  display: block;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+}
+
+.fc {
+  height: 100% !important;
+  font-size: 10px; /* texto pequeño */
+}
+
+.fc .fc-daygrid-day-frame {
+  padding: 1px;
+}
+
+/* Bordes de las celdas del calendario en negro */
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border: 1px solid black !important;
+}
+
+
+.fc {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  height: 100% !important;
+  width: 100% !important;
+  border: 1px solid black;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+
+/* Forzar borde negro en toda la tabla del calendario */
+.fc table {
+  border-collapse: collapse !important;
+  border: 1px solid black !important;
+}
+
+/* Borde negro en todas las celdas y encabezados */
+.fc table th,
+.fc table td {
+  border: 1px solid black !important;
+}
+
