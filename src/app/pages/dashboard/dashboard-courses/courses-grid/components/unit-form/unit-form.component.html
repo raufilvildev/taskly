@@ -72,6 +72,7 @@
         (closeUnitForms)="onCloseUnitForms()"
         (cancelAllForms)="cancelAllFormsHandler()"
         (setShowSectionForm)="showSectionForm = $event"
+        (requestEditSection)="handleRequestEditSection($event)"
       ></app-section-form>
     }
     @if (showUnitForm) {

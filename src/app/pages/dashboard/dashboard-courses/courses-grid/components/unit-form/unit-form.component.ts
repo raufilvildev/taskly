@@ -233,4 +233,34 @@ export class UnitFormComponent {
     this.unitForm.reset();
     this.sectionForm.reset();
   }
+
+  handleRequestEditSection(event: { unit_index: number; section_index: number }) {
+    const { unit_index, section_index } = event;
+
+    // Si ya estás editando esta misma sección, cancela edición
+    if (
+      this.editSectionStatus &&
+      this.touchedUnit === unit_index &&
+      this.touchedSection === section_index
+    ) {
+      this.editSectionStatus = false;
+      this.showSectionForm = false;
+      this.touchedUnit = -1;
+      this.touchedSection = -1;
+      return;
+    }
+
+    // Resetear todos los estados anteriores
+    this.resetAllStates();
+
+    // Activar la edición en la sección deseada
+    this.editSectionStatus = true;
+    this.showSectionForm = true;
+    this.touchedUnit = unit_index;
+    this.touchedSection = section_index;
+
+    // Si necesitas cargar el título en el formulario:
+    const section = this.planning[unit_index].sections[section_index];
+    this.sectionForm.setValue({ title: section.title });
+  }
 }
