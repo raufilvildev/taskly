@@ -5,6 +5,7 @@ import { UsersService } from '../../../../../services/users.service';
 import { CoursesService } from '../../../../../services/courses.service';
 import { ICourse } from '../../../../../interfaces/icourse.interface';
 import { CourseFormComponent } from '../../courses-grid/components/course-form/course-form.component';
+import { environment } from '../../../../../environments/environment.test';
 
 @Component({
   selector: 'app-course-home',
@@ -15,6 +16,8 @@ import { CourseFormComponent } from '../../courses-grid/components/course-form/c
 export class CourseHomeComponent {
   usersService = inject(UsersService);
   coursesService = inject(CoursesService);
+
+  course_image_endpoint = `${environment.host}/uploads/courses/`;
 
   @Input() course_uuid: string = '';
 
@@ -32,12 +35,22 @@ export class CourseHomeComponent {
     }
   }
 
-  async ngOnInit() {
+  async loadCourse() {
     try {
-      this.user = await this.usersService.getByToken();
-      await this.updateGrid();
+      this.course = await this.coursesService.getByUuid(this.course_uuid);
     } catch (error) {
-      return;
+      console.error('Error al cargar el usuario:', error);
     }
+  }
+
+  async ngOnInit() {
+  try {
+    this.user = await this.usersService.getByToken();
+    await this.updateGrid();
+    this.loadCourse();
+    console.log(this.course.planning)
+  } catch (error) {
+    return;
+  }
   }
 }
