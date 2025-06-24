@@ -1,7 +1,7 @@
 <form
   [formGroup]="threadForm"
   (ngSubmit)="type === 'create' ? createThread(threadForm) : editThread(threadForm)"
-  class="mx-auto p-8 flex flex-col gap-5 bg-custom-panel dark:bg-gray-800 min-w-100 sm:min-w-125 md:min-w-175 rounded-lg shadow-sm shadow-custom-accent-dark"
+  class="mx-auto p-8 flex flex-col gap-5 bg-custom-panel dark:bg-custom-background-dark min-w-100 sm:min-w-125 md:min-w-175 rounded-lg shadow-xs dark:shadow-white"
 >
   <div class="flex flex-col gap-4 w-full">
     <fieldset class="flex flex-col gap-2">
@@ -10,7 +10,7 @@
         type="text"
         formControlName="title"
         id="title"
-        class="px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+        class="px-4 py-2 mt-2 bg-custom-background dark:bg-custom-input-background-dark border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
       />
     </fieldset>
     <fieldset class="flex flex-col gap-2">
@@ -19,7 +19,7 @@
         type="text"
         formControlName="content"
         id="content"
-        class="whitespace-pre-line text-pretty resize-none px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+        class="whitespace-pre-line text-pretty resize-none px-4 py-2 mt-2 bg-custom-background dark:bg-custom-input-background-dark border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
         rows="15"
       ></textarea>
     </fieldset>

@@ -1,4 +1,4 @@
-import { Component, signal, ChangeDetectorRef, OnInit, inject } from '@angular/core';
+import { Component, signal, ChangeDetectorRef, OnInit, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventApi } from '@fullcalendar/core';
@@ -13,11 +13,13 @@ import { CalendarLegendComponent } from '../legend/legend.component';
   imports: [CommonModule, FullCalendarModule, CalendarLegendComponent],
   templateUrl: './calendar-table.component.html',
   styleUrl: './calendar-table.component.css',
-  standalone: true
+  standalone: true,
 })
 export class TableComponent implements OnInit {
   private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly tasksService = inject(TasksService);
+
+  @Input() course_uuid = '';
 
   currentEvents = signal<EventApi[]>([]);
   calendarOptions: CalendarOptions;
@@ -42,7 +44,7 @@ export class TableComponent implements OnInit {
       buttonText: {
         today: 'Hoy',
         month: 'Mes',
-        week: 'Semana'
+        week: 'Semana',
       },
       views: {
         timeGridWeek: {
@@ -50,9 +52,9 @@ export class TableComponent implements OnInit {
           slotLabelFormat: {
             hour: '2-digit',
             minute: '2-digit',
-            hour12: false
-          }
-        }
+            hour12: false,
+          },
+        },
       },
       eventDisplay: 'block',
       eventsSet: this.handleEvents.bind(this),
@@ -70,7 +72,7 @@ export class TableComponent implements OnInit {
 
   private loadTasks(): void {
     const tasks = this.tasksService.tasks();
-    const events = tasks.map(task => ({
+    const events = tasks.map((task) => ({
       id: task.uuid,
       title: task.title,
       date: task.due_date,
@@ -82,13 +84,13 @@ export class TableComponent implements OnInit {
         description: task.description,
         isCompleted: task.is_completed,
         category: task.category,
-        priority: task.priority_color
-      }
+        priority: task.priority_color,
+      },
     }));
 
     this.calendarOptions = {
       ...this.calendarOptions,
-      events: events
+      events: events,
     };
   }
 
@@ -115,7 +117,7 @@ export class TableComponent implements OnInit {
   private handleEventClick(info: any): void {
     const eventId = info.event.id;
     const tasks = this.tasksService.tasks();
-    const selectedTask = tasks.find(task => task.uuid === eventId);
+    const selectedTask = tasks.find((task) => task.uuid === eventId);
 
     if (selectedTask) {
       this.tasksService.setSelectedTask(selectedTask);

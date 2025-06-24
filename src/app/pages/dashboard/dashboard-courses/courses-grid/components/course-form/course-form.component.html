@@ -4,7 +4,7 @@
   <form
     [formGroup]="courseForm"
     (ngSubmit)="type === 'create' ? createCourse(courseForm) : editCourse(courseForm)"
-    class="h-full overflow-auto p-5 lg:p-10 flex flex-col gap-5 bg-custom-primary-light dark:bg-gray-800 md:min-w-125 lg:min-w-200 rounded-lg shadow-sm shadow-custom-accent-dark"
+    class="h-full overflow-auto p-5 lg:p-10 flex flex-col gap-5 bg-custom-primary-light dark:bg-custom-background-dark md:min-w-125 lg:min-w-200 rounded-lg shadow-sm shadow-custom-accent-dark"
   >
     <div class="flex flex-col gap-4 w-full">
       <h3 class="text-xl font-bold mb-3">Datos del curso</h3>
@@ -14,7 +14,7 @@
           type="text"
           formControlName="title"
           id="title"
-          class="px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+          class="px-4 py-2 mt-2 bg-custom-background dark:bg-custom-input-background-dark border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
         />
       </fieldset>
 
@@ -24,7 +24,7 @@
           type="text"
           formControlName="description"
           id="content"
-          class="resize-none px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+          class="resize-none px-4 py-2 mt-2 bg-custom-background dark:bg-custom-input-background-dark border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
           [value]="course.description"
           rows="15"
         ></textarea>

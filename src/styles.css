@@ -101,6 +101,7 @@ app-dashboard-settings {
   --color-custom-panel: #f8f5fc;
   --color-custom-background-dark: #1f1f1f;
   --color-custom-panel-dark: #2c2c2c;
+  --color-custom-input-background-dark: #2e2e2e;
 
   /* Grays & text colors */
   --color-custom-text-main: #2c2c2c;
