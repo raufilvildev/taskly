@@ -10,7 +10,7 @@
         type="text"
         formControlName="title"
         id="title"
-        class="px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+        class="px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
       />
     </fieldset>
     <fieldset class="flex flex-col gap-2">
@@ -19,7 +19,7 @@
         type="text"
         formControlName="content"
         id="content"
-        class="whitespace-pre-line text-pretty resize-none px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+        class="whitespace-pre-line text-pretty resize-none px-4 py-2 mt-2 bg-custom-background dark:bg-gray-900 border-b-2 border-b-custom-border outline-transparent text-base hover:border-b-custom-accent focus:outline-b-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
         rows="15"
       ></textarea>
     </fieldset>
@@ -27,10 +27,10 @@
   @if (threadFormError) {
     <p class="pl-1 mt-1 italic text-sm text-custom-error text-center">{{ threadFormError }}</p>
   }
-  <div class="flex flex justify-center gap-5">
+  <div class="flex justify-center gap-5">
     <button
       type="button"
-      class="w-fit mt-5 px-4 py-2 rounded-lg dark:hover:text-white bg-custom-background hover:bg-custom-accent-dark dark:text-black dark:bg-purple-100 dark:bg-purple-100 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+      class="w-fit mt-5 px-4 py-2 rounded-lg dark:hover:text-white bg-custom-background hover:bg-custom-accent-dark dark:text-black dark:bg-purple-100 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
       (click)="cancelThreadForm()"
     >
       Cancelar

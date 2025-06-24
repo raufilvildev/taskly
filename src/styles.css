@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import './fullcalendar-theme.css';
+@import './app/styles/fullcalendar-theme.css';
 @plugin "daisyui";
 
 @custom-variant dark (&:where(.dark, .dark *));
