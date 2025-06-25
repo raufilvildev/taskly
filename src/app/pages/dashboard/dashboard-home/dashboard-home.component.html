@@ -1,62 +1,68 @@
 <div class="flex flex-col min-h-screen text-gray-800 dark:text-white p-6">
   <div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-semibold">Bienvenido a Taskly</h1>
+    <h1 class="text-3xl font-semibold">
+      Bienvenid&#64; a Taskly {{ user.first_name.charAt(0).toUpperCase() + user.first_name.slice(1) }} <!-- Fuerzo mayúscula nombre -->
+    </h1>
   </div>
 
   <div class="flex flex-1 flex-col md:flex-row gap-6 items-stretch">
-    <!-- Cursos (70% izquierda en desktop, apilado arriba en mobile) -->
-    <div class="w-full md:w-[70%] order-1 md:order-1">
+    <div class="flex-1 order-1">
       <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-md p-6 h-full">
         <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-2">Cursos actuales</h2>
-        <div class="w-full p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          @for (course of courses.slice(0, 6); track $index) {
-            <div
-              [routerLink]="['/dashboard', 'courses', 'view', course.uuid]"
-              class="flex flex-col justify-between gap-1 w-full rounded-lg bg-custom-background dark:bg-custom-background-dark dark:shadow-xs dark:shadow-white transition-all duration-300 transform hover:scale-105 shadow-lg lg:hover:shadow-xl dark:hover:shadow-sm"
-            >
-              <img
-                [src]="course_image_endpoint + course.course_image_url"
-                [alt]="'Imagen del curso ' + course.title"
-                class="h-35 rounded-lg bg-gray-900 dark:bg-gray-500 object-cover object-center"
-              />
-              <div class="p-4 flex flex-col gap-2">
-                <div class="flex flex-col">
-                  <h3 class="text-sm font-bold truncate">{{ course.title }}</h3>
+
+        @if (courses.length > 0) {
+          <div class="w-full p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            @for (course of courses.slice(0, 6); track $index) {
+              <div
+                [routerLink]="['/dashboard', 'courses', 'view', course.uuid]"
+                class="flex flex-col justify-between gap-1 w-full rounded-lg bg-custom-background dark:bg-custom-background-dark dark:shadow-xs dark:shadow-white transition-all duration-300 transform hover:scale-105 shadow-lg lg:hover:shadow-xl dark:hover:shadow-sm"
+              >
+                <img
+                  [src]="course_image_endpoint + course.course_image_url"
+                  [alt]="'Imagen del curso ' + course.title"
+                  class="h-35 rounded-lg bg-gray-900 dark:bg-gray-500 object-cover object-center"
+                />
+                <div class="p-4 flex flex-col gap-2">
+                  <div class="flex flex-col">
+                    <h3 class="text-sm font-bold truncate">{{ course.title }}</h3>
+                  </div>
                 </div>
               </div>
-            </div>
-          } @empty {
-            <p class="text-[2.5rem] font-bold text-center">
-              ¡Vaya! No tienes ningún curso todavía.
-            </p>
-          }
-        </div>
+            }
+          </div>
+        } @else {
+          <p class="text-l italic text-center text-gray-400 dark:text-gray-400">
+            ¡Vaya! No tienes ningún curso todavía.
+          </p>
+        }
+
         @if (courses.length > 6) {
-            <div class="w-full flex justify-center mt-4">
-              <a
-                [routerLink]="['/dashboard', 'courses']"
-                class="px-4 py-2 rounded-lg text-white bg-custom-accent hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-              >
-                Ver todos los cursos
-              </a>
-            </div>
-          }
+          <div class="w-full flex justify-center mt-4">
+            <a
+              [routerLink]="['/dashboard', 'courses']"
+              class="px-4 py-2 rounded-lg text-white bg-custom-accent hover:bg-custom-accent-dark dark:bg-purple-800 dark:hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              Ver todos los cursos
+            </a>
+          </div>
+        }
       </div>
     </div>
 
-    <!-- Tareas y Calendario (30% derecha en desktop, apilado abajo en mobile) -->
-    <div class="w-full md:w-[30%] flex flex-col gap-6 order-2 md:order-2">
+
+    <div class="w-full md:w-[350px] shrink-0 flex flex-col gap-6 order-2">
       <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-md p-6">
         <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-8">Tareas pendientes</h2>
         <div class="space-y-4">
           <app-task-list [tasks]="tasks"></app-task-list>
         </div>
       </div>
-      <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-md p-6 flex-1">
+
+      <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-md p-6 flex flex-col flex-1">
         <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-8">Calendario</h2>
         <a class="w-full block cursor-pointer" [routerLink]="['/dashboard/calendar']">
-          <div>
-            <app-dashboard-home-calendar></app-dashboard-home-calendar>
+          <div class="w-full h-full">
+            <app-dashboard-home-calendar class="w-full h-full"></app-dashboard-home-calendar>
           </div>
         </a>
       </div>
