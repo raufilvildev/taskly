@@ -137,8 +137,11 @@ export class CourseFormComponent {
         title: new FormControl(this.course.title, Validators.required),
         description: new FormControl(this.course.description, Validators.required),
       });
-      this.students = this.course.students;
-      this.planning = this.course.planning;
+
+      // Copia profunda para evitar que en course-home se actualice los datos antes de confirmar la edición.
+
+      this.students = JSON.parse(JSON.stringify(this.course.students));
+      this.planning = JSON.parse(JSON.stringify(this.course.planning));
     }
   }
 }
