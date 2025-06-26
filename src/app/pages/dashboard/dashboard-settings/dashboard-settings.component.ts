@@ -19,7 +19,7 @@ import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard-settings',
-  imports: [ReactiveFormsModule, FormsModule, UserFieldsetComponent, NgClass],
+  imports: [ReactiveFormsModule, FormsModule, UserFieldsetComponent],
   templateUrl: './dashboard-settings.component.html',
   styleUrls: ['./dashboard-settings.component.css'],
 })
