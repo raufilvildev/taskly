@@ -16,6 +16,7 @@ import dayjs from 'dayjs';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgClass, NgStyle } from '@angular/common';
+import { environment } from '../../../environments/environment.test';
 
 @Component({
   selector: 'app-dashboard-settings',
@@ -31,6 +32,7 @@ export class DashboardSettingsComponent {
   serverError = '';
   serverSuccess = '';
   user: IGetByTokenUser = initUser();
+  user_image_endpoint = `${environment.host}/uploads/users/`;
 
   userSettingsForm = new FormGroup({
     first_name: new FormControl('', [Validators.minLength(3), Validators.maxLength(100)]),
@@ -111,8 +113,6 @@ export class DashboardSettingsComponent {
         : '';
 
       this.originalImageName = filename;
-
-      this.userImageUrl = `http://localhost:3000/uploads/users/${filename}`;
 
       this.userSettingsForm.patchValue({
         first_name: this.user.first_name,
