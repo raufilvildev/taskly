@@ -15,6 +15,8 @@ import { UserFieldsetComponent } from './components/user-fieldset/user-fieldset.
 import dayjs from 'dayjs';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NgClass, NgStyle } from '@angular/common';
+import { environment } from '../../../environments/environment.test';
 
 @Component({
   selector: 'app-dashboard-settings',
@@ -30,12 +32,14 @@ export class DashboardSettingsComponent {
   serverError = '';
   serverSuccess = '';
   user: IGetByTokenUser = initUser();
+  user_image_endpoint = `${environment.host}/uploads/users/`;
 
   userSettingsForm = new FormGroup({
     first_name: new FormControl('', [Validators.minLength(3), Validators.maxLength(100)]),
     last_name: new FormControl('', [Validators.minLength(3), Validators.maxLength(100)]),
     birth_date: new FormControl(''),
     username: new FormControl('', [Validators.minLength(3), Validators.maxLength(100)]),
+    notify_by_email: new FormControl(0),
   });
 
   files: File[] = [];
@@ -49,7 +53,7 @@ export class DashboardSettingsComponent {
     birth_date: false,
   };
 
-  formattedBirthDate: string="";
+  formattedBirthDate: string = '';
 
   updateUserFormState(field: string | null) {
     const resetFormState: { [key: string]: boolean } = {
@@ -74,6 +78,7 @@ export class DashboardSettingsComponent {
       formData.append('last_name', this.userSettingsForm.value.last_name ?? '');
       formData.append('username', this.userSettingsForm.value.username ?? '');
       formData.append('birth_date', this.userSettingsForm.value.birth_date ?? '');
+      formData.append('notify_by_email', String(this.userSettingsForm.value.notify_by_email ?? 0));
 
       if (this.files.length > 0) {
         formData.append('profile-image', this.files[0]);
@@ -104,19 +109,17 @@ export class DashboardSettingsComponent {
       const filename = fullUrl.split('/').pop() ?? '';
 
       this.formattedBirthDate = this.user.birth_date
-      ? dayjs(this.user.birth_date, 'YYYY-MM-DD').format('DD/MM/YYYY')
-      : '';
+        ? dayjs(this.user.birth_date, 'YYYY-MM-DD').format('DD/MM/YYYY')
+        : '';
 
       this.originalImageName = filename;
 
-      this.userImageUrl = `http://localhost:3000/uploads/users/${filename}`;
-
-      // El formulario espera 'YYYY-MM-DD', pero puedes mostrar 'DD/MM/YYYY' en la vista usando un pipe personalizado en el template.
       this.userSettingsForm.patchValue({
         first_name: this.user.first_name,
         last_name: this.user.last_name,
         username: this.user.username,
         birth_date: this.user.birth_date ? dayjs(this.user.birth_date).format('YYYY-MM-DD') : '',
+        notify_by_email: this.user.notify_by_email,
       });
     } catch (error) {
       console.error('Error al cargar el usuario:', error);
@@ -139,5 +142,12 @@ export class DashboardSettingsComponent {
       this.files = Array.from(input.files);
       this.updateUser();
     }
+  }
+
+  toggleNotifyByEmail(): void {
+    const currentValue = this.userSettingsForm.get('notify_by_email')?.value ?? 0;
+    const newValue = currentValue === 1 ? 0 : 1;
+    this.userSettingsForm.get('notify_by_email')?.setValue(newValue);
+    this.updateUser();
   }
 }

@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '../environments/environment.test';
 import { ICourse } from '../interfaces/icourse.interface';
+import { IMessage } from '../interfaces/imessage.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -25,5 +26,9 @@ export class CoursesService {
 
   edit(course: FormData) {
     return lastValueFrom(this.httpClient.put<ICourse>(this.endpoint, course));
+  }
+
+  delete(course_uuid: string) {
+    return lastValueFrom(this.httpClient.delete<IMessage>(`${this.endpoint}/${course_uuid}`));
   }
 }

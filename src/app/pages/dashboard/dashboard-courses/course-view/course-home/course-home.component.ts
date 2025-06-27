@@ -5,6 +5,8 @@ import { UsersService } from '../../../../../services/users.service';
 import { CoursesService } from '../../../../../services/courses.service';
 import { ICourse } from '../../../../../interfaces/icourse.interface';
 import { CourseFormComponent } from '../../courses-grid/components/course-form/course-form.component';
+import { environment } from '../../../../../environments/environment.test';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-home',
@@ -15,6 +17,9 @@ import { CourseFormComponent } from '../../courses-grid/components/course-form/c
 export class CourseHomeComponent {
   usersService = inject(UsersService);
   coursesService = inject(CoursesService);
+  router = inject(Router);
+
+  course_image_endpoint = `${environment.host}/uploads/courses/`;
 
   @Input() course_uuid: string = '';
 
@@ -22,6 +27,8 @@ export class CourseHomeComponent {
   course: ICourse = initCourse();
 
   showCourseForm = false;
+  showDeleteConfirmation = false;
+  deleteCourseError = '';
 
   async updateGrid() {
     this.showCourseForm = false;
@@ -32,10 +39,31 @@ export class CourseHomeComponent {
     }
   }
 
+  async loadCourse() {
+    try {
+      this.course = await this.coursesService.getByUuid(this.course_uuid);
+    } catch (error) {
+      console.error('Error al cargar el usuario:', error);
+    }
+  }
+
+  async deleteCourse() {
+    this.deleteCourseError = '';
+    try {
+      await this.coursesService.delete(this.course_uuid);
+      this.router.navigate(['/dashboard', 'courses']);
+    } catch (error: any) {
+      this.deleteCourseError =
+        'Ha ocurrido un error inesperado al eliminar el curso. Por favor, inténtalo de nuevo más tarde.';
+    }
+  }
+
   async ngOnInit() {
     try {
       this.user = await this.usersService.getByToken();
       await this.updateGrid();
+      this.loadCourse();
+      console.log(this.course.planning);
     } catch (error) {
       return;
     }

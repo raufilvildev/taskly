@@ -1,4 +1,4 @@
-import { Component, signal, ChangeDetectorRef, OnInit, inject } from '@angular/core';
+import { Component, signal, ChangeDetectorRef, OnInit, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventApi } from '@fullcalendar/core';
@@ -6,71 +6,73 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import esLocale from '@fullcalendar/core/locales/es';
 import { TasksService } from '../../../../services/tasks.service';
+import { CalendarLegendComponent } from '../legend/legend.component';
 
 @Component({
   selector: 'app-calendar-table',
-  imports: [CommonModule, FullCalendarModule],
+  imports: [CommonModule, FullCalendarModule, CalendarLegendComponent],
   templateUrl: './calendar-table.component.html',
   styleUrl: './calendar-table.component.css',
-  standalone: true
+  standalone: true,
 })
 export class TableComponent implements OnInit {
   private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly tasksService = inject(TasksService);
 
-  currentEvents = signal<EventApi[]>([]);
+  @Input() course_uuid = '';
 
-  calendarOptions = signal<CalendarOptions>({
-    plugins: [dayGridPlugin, timeGridPlugin],
-    locale: esLocale,
-    headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek'
-    },
-    initialView: 'dayGridMonth',
-    weekends: true,
-    editable: false,
-    selectable: false,
-    dayMaxEvents: true,
-    events: [],
-    eventDisplay: 'block',
-    eventColor: '#3b82f6',
-    eventTextColor: '#ffffff',
-    eventsSet: this.handleEvents.bind(this),
-    eventClick: this.handleEventClick.bind(this),
-    slotMinTime: '08:00:00',
-    slotMaxTime: '20:00:00',
-    allDaySlot: true,
-    slotDuration: '01:00:00',
-    height: 'auto',
-    expandRows: true,
-    nowIndicator: true,
-    dayHeaderFormat: { weekday: 'long' },
-    buttonText: {
-      today: 'Hoy',
-      month: 'Mes',
-      week: 'Semana'
-    },
-    views: {
-      timeGridWeek: {
-        dayHeaderFormat: { weekday: 'short', day: 'numeric' },
-        slotLabelFormat: {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false
-        }
-      }
-    }
-  });
+  currentEvents = signal<EventApi[]>([]);
+  calendarOptions: CalendarOptions;
+
+  constructor() {
+    this.calendarOptions = this.getCalendarOptions();
+  }
 
   ngOnInit(): void {
     this.loadTasks();
   }
 
+  private getCalendarOptions(): CalendarOptions {
+    return {
+      plugins: [dayGridPlugin, timeGridPlugin],
+      locale: esLocale,
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek',
+      },
+      buttonText: {
+        today: 'Hoy',
+        month: 'Mes',
+        week: 'Semana',
+      },
+      views: {
+        timeGridWeek: {
+          dayHeaderFormat: { weekday: 'short', day: 'numeric' },
+          slotLabelFormat: {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+          },
+        },
+      },
+      eventDisplay: 'block',
+      eventsSet: this.handleEvents.bind(this),
+      eventClick: this.handleEventClick.bind(this),
+      slotMinTime: '08:00:00',
+      slotMaxTime: '20:00:00',
+      allDaySlot: true,
+      slotDuration: '01:00:00',
+      height: 'auto',
+      expandRows: true,
+      nowIndicator: true,
+      dayHeaderFormat: { weekday: 'long' },
+    };
+  }
+
   private loadTasks(): void {
     const tasks = this.tasksService.tasks();
-    const events = tasks.map(task => ({
+    const events = tasks.map((task) => ({
       id: task.uuid,
       title: task.title,
       date: task.due_date,
@@ -82,14 +84,14 @@ export class TableComponent implements OnInit {
         description: task.description,
         isCompleted: task.is_completed,
         category: task.category,
-        priority: task.priority_color
-      }
+        priority: task.priority_color,
+      },
     }));
 
-    this.calendarOptions.update(options => ({
-      ...options,
-      events: events
-    }));
+    this.calendarOptions = {
+      ...this.calendarOptions,
+      events: events,
+    };
   }
 
   private getPriorityColor(priority: string): string {
@@ -115,7 +117,7 @@ export class TableComponent implements OnInit {
   private handleEventClick(info: any): void {
     const eventId = info.event.id;
     const tasks = this.tasksService.tasks();
-    const selectedTask = tasks.find(task => task.uuid === eventId);
+    const selectedTask = tasks.find((task) => task.uuid === eventId);
 
     if (selectedTask) {
       this.tasksService.setSelectedTask(selectedTask);

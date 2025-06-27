@@ -1,3 +1,8 @@
-<div class="flex-1 flex items-center flex-col justify-center">
-  <p>course-calendar works!</p>
-</div>
+<main class="flex h-full w-full">
+  <section class="flex-1">
+    <app-calendar-table [course_uuid]="course_uuid"></app-calendar-table>
+  </section>
+  @if (isAsideCollapsed()) {
+    <section class="w-1/3"><app-task-detail></app-task-detail></section>
+  }
+</main>

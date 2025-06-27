@@ -2,10 +2,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { initUnit } from '../../../../../../shared/utils/initializers';
 import { CreateEditCancelRemoveButtonComponent } from '../../../../../../shared/components/buttons/create-edit-cancel-remove-button/create-edit-cancel-remove-button.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-section-form',
-  imports: [CreateEditCancelRemoveButtonComponent, ReactiveFormsModule],
+  imports: [CreateEditCancelRemoveButtonComponent, ReactiveFormsModule, MatIcon],
   templateUrl: './section-form.component.html',
   styleUrl: './section-form.component.css',
 })
@@ -28,29 +29,10 @@ export class SectionFormComponent {
   sectionFormError = '';
   @Output() cancelAllForms = new EventEmitter<void>();
   @Output() setShowSectionForm = new EventEmitter<boolean>();
+  @Output() requestEditSection = new EventEmitter<{ unit_index: number; section_index: number }>();
 
   displayEditSection(section_index: number) {
-    if (
-      this.editSectionStatus &&
-      this.touchedSection === section_index &&
-      this.touchedUnit === this.unit_index
-    ) {
-      this.setEditSectionStatus.emit(false);
-      this.setTouchedSection.emit(-1);
-      return;
-    }
-
-    // Emitir evento para limpiar estado unidad (ya existente)
-    this.cancelAllForms.emit();
-    this.closeUnitForms.emit();
-
-    this.setEditSectionStatus.emit(true);
-    this.setTouchedSection.emit(section_index);
-    this.setShowSectionForm.emit(true);
-
-    this.sectionForm.setValue({
-      title: this.unit.sections[section_index].title,
-    });
+    this.requestEditSection.emit({ unit_index: this.unit_index, section_index: section_index });
   }
 
   addSection() {

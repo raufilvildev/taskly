@@ -1,23 +1,27 @@
 import { Component, Input, HostListener } from '@angular/core';
 import { AngularSplitModule } from 'angular-split';
-import { ListGroupsComponent } from "../list-groups/list-groups.component";
-import { TaskListComponent } from "../task-list/task-list.component";
-import { TaskDetailComponent } from "../task-detail/task-detail.component";
+import { ListGroupsComponent } from '../list-groups/list-groups.component';
+import { TaskListComponent } from '../task-list/task-list.component';
+import { TaskDetailComponent } from '../task-detail/task-detail.component';
 import { ITask } from '../../../interfaces/itask';
 
 @Component({
   selector: 'app-tasks',
   imports: [AngularSplitModule, ListGroupsComponent, TaskListComponent, TaskDetailComponent],
   templateUrl: './tasks.component.html',
-  styleUrls: ['./tasks.component.css']
+  styleUrls: ['./tasks.component.css'],
 })
 export class TasksComponent {
+
   @Input() isCourse: boolean = false;
   @Input() isTeacher: boolean = false;
+  @Input() course_uuid = '';
+  @Input() user_role: 'general' | 'student' | 'teacher' = 'general';
+
   tasks: ITask[] = [];
   selectedFilter: string | null = null;
 
-  // Responsive y navegación
+  // Responsive y navegación. Lo uso para que se pueda navegar entre componentes en el tasks
   isMobile = window.innerWidth <= 768;
   currentView: 'groups' | 'list' | 'detail' = 'groups';
 

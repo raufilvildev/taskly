@@ -34,6 +34,7 @@ export interface IGetByTokenUser {
   email: string;
   username: string;
   profile_image_url: string;
+  notify_by_email: number;
   email_confirmed: number;
   role: 'general' | 'student' | 'teacher';
 }

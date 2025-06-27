@@ -3,10 +3,16 @@ import { IUnitCourse } from '../../../../../../interfaces/icourse.interface';
 import { CreateEditCancelRemoveButtonComponent } from '../../../../../../shared/components/buttons/create-edit-cancel-remove-button/create-edit-cancel-remove-button.component';
 import { SectionFormComponent } from '../section-form/section-form.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-unit-form',
-  imports: [ReactiveFormsModule, CreateEditCancelRemoveButtonComponent, SectionFormComponent],
+  imports: [
+    ReactiveFormsModule,
+    CreateEditCancelRemoveButtonComponent,
+    SectionFormComponent,
+    MatIcon,
+  ],
   templateUrl: './unit-form.component.html',
   styleUrl: './unit-form.component.css',
 })
@@ -226,5 +232,35 @@ export class UnitFormComponent {
     this.editedSection = -1;
     this.unitForm.reset();
     this.sectionForm.reset();
+  }
+
+  handleRequestEditSection(event: { unit_index: number; section_index: number }) {
+    const { unit_index, section_index } = event;
+
+    // Si ya estás editando esta misma sección, cancela edición
+    if (
+      this.editSectionStatus &&
+      this.touchedUnit === unit_index &&
+      this.touchedSection === section_index
+    ) {
+      this.editSectionStatus = false;
+      this.showSectionForm = false;
+      this.touchedUnit = -1;
+      this.touchedSection = -1;
+      return;
+    }
+
+    // Resetear todos los estados anteriores
+    this.resetAllStates();
+
+    // Activar la edición en la sección deseada
+    this.editSectionStatus = true;
+    this.showSectionForm = true;
+    this.touchedUnit = unit_index;
+    this.touchedSection = section_index;
+
+    // Si necesitas cargar el título en el formulario:
+    const section = this.planning[unit_index].sections[section_index];
+    this.sectionForm.setValue({ title: section.title });
   }
 }

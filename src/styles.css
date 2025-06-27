@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './app/styles/fullcalendar-theme.css';
 @plugin "daisyui";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -98,12 +99,19 @@ app-dashboard-settings {
   /* Backgrounds & panels */
   --color-custom-background: #ffffff;
   --color-custom-panel: #f8f5fc;
+  --color-custom-background-dark: #1f1f1f;
+  --color-custom-panel-dark: #2c2c2c;
+  --color-custom-input-background-dark: #2e2e2e;
 
   /* Grays & text colors */
   --color-custom-text-main: #2c2c2c;
   --color-custom-text-secondary: #6f6f6f;
   --color-custom-muted: #a1a1a1;
   --color-custom-border: #dddddd;
+  --color-custom-border-dark: #333333;
+  --color-custom-text-main-dark: #ffffff;
+  --color-custom-text-secondary-dark: #d1d1d1;
+  --color-custom-muted-dark: #808080;
 
   /* Interactions colors */
   --color-custom-hover: #d6c3ff;

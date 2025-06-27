@@ -86,4 +86,12 @@ export class TasksService {
   updateTasks() {
     this.tasks.set([...this.tasks()]);
   }
+
+  updateTaskProperties(taskId: number, properties: { is_urgent?: boolean; is_important?: boolean }) {
+    this.tasks.update(tasks =>
+      tasks.map(task =>
+        task.id === taskId ? { ...task, ...properties } : task
+      )
+    );
+  }
 }
