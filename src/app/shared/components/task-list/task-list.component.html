@@ -1,4 +1,30 @@
 <div class="task-list">
+  <div class="task-list-header flex justify-between items-center mb-4">
+    @if (showBackButton) {
+      <button (click)="back.emit()" class="mr-2" aria-label="Atrás">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    }
+    <h2 class="text-lg font-bold">Tareas</h2>
+    @if (!isCourse || (isCourse && isTeacher)) {
+      <button (click)="openTaskFormModal()" mat-icon-button aria-label="Agregar tarea" class="custom-add-btn{{isCourse && isTeacher && selectedFilter !== 'cursos' ? ' with-text' : ''}}" [disabled]="selectedFilter === 'cursos'">
+        <mat-icon>add</mat-icon>
+        @if (isCourse && isTeacher && selectedFilter !== 'cursos') {
+          <span class="ml-2 font-medium">Añadir tarea para alumnos</span>
+        }
+      </button>
+    }
+  </div>
+
+  @if (showTaskFormModal) {
+    <div class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+      <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg relative">
+        <button (click)="closeTaskFormModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-xl">&times;</button>
+        <app-task-form></app-task-form>
+      </div>
+    </div>
+  }
+
   @if (tasks.length > 0) {
     <div>
       @for (task of tasks; track task.id) {

@@ -1,5 +1,4 @@
 .task-list {
-  border-right: 1px solid #eee;
   overflow-y: auto;
 }
 :host-context(.dark) .task-list,
@@ -24,4 +23,90 @@
 :host-context(.dark) .no-selection,
 :host-context(.dark_bg) .no-selection {
   color: #666;
+}
+
+.mat-icon-button {
+  transition: background 0.2s, box-shadow 0.2s;
+  border-radius: 50%;
+}
+
+.mat-icon-button:hover, .mat-icon-button:focus {
+  background: #2563eb;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+  color: #fff;
+}
+
+.custom-add-btn {
+  background: var(--color-focus);
+  color: #fff;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.10);
+  transition: background 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.custom-add-btn.with-text {
+  border-radius: 22px;
+  width: auto;
+  min-width: 0;
+  padding: 0 10px 0 10px;
+  height: 44px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.custom-add-btn:hover, .custom-add-btn:focus {
+  background: #1e40af;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(30, 64, 175, 0.18);
+}
+
+.custom-add-btn mat-icon {
+  color: #fff;
+  font-size: 28px;
+  transition: font-size 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  height: 100%;
+}
+
+.custom-add-btn:hover mat-icon, .custom-add-btn:focus mat-icon {
+  font-size: 32px;
+}
+
+.custom-add-btn[disabled], .custom-add-btn:disabled {
+  background: #d1d5db !important;
+  color: #888 !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+  transition: none !important;
+}
+.custom-add-btn[disabled] mat-icon, .custom-add-btn:disabled mat-icon {
+  color: #888 !important;
+  font-size: 28px !important;
+  transition: none !important;
+}
+
+.task-list-header {
+  padding: 12px 16px;
+}
+
+.fixed.inset-0.bg-black.bg-opacity-60.flex.items-center.justify-center.z-50 {
+  background: rgba(0,0,0,0.85) !important;
+}
+
+
+:host-context(.dark) .bg-white.p-8.rounded-lg.shadow-lg.w-full.max-w-lg.relative,
+.dark .bg-white.p-8.rounded-lg.shadow-lg.w-full.max-w-lg.relative {
+  background: #1f2937 !important;
+  color: #e0e0e0;
 }

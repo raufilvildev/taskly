@@ -71,3 +71,11 @@
 :host-context(.dark_bg) .divider span {
   color: #fff;
 }
+
+.project-list span.font-semibold {
+  color: var(--color-text-main, #333);
+}
+:host-context(.dark) .project-list span.font-semibold,
+:host-context(.dark_bg) .project-list span.font-semibold {
+  color: #fff;
+}
