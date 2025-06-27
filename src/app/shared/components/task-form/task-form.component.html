@@ -1,0 +1,117 @@
+<div class="task-detail">
+  <div class="task-detail-header flex justify-between items-center mb-4">
+    <div class="flex items-center">
+      @if (showBackButton) {
+        <button (click)="back.emit()" class="mr-2" aria-label="Atrás">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      }
+      <h3 class="flex-1 text-lg font-semibold text-center">Crear Nueva Tarea</h3>
+    </div>
+  </div>
+  
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <div class="task-actions flex items-center mb-4">
+      <div class="flex items-center">
+        <input type="date" 
+               class="native-date-input" 
+               formControlName="due_date" 
+               required />
+      </div>
+    </div>
+    
+    <div class="divider divider-vertical"></div>
+    <div class="task-header">
+      <input class="task-title-input font-medium text-lg"
+             formControlName="title" 
+             placeholder="Título de la tarea"
+             required />
+      @if (taskForm.get('title')?.touched && taskForm.get('title')?.invalid) {
+        <div class="text-red-500 text-xs mt-1">El título es obligatorio y debe tener máximo 255 caracteres.</div>
+      }
+    </div>
+    
+    <div class="full-width">
+      <textarea class="textarea" 
+                rows="1" 
+                formControlName="description" 
+                placeholder="Describe la tarea..."
+                required></textarea>
+      @if (taskForm.get('description')?.touched && taskForm.get('description')?.invalid) {
+        <div class="text-red-500 text-xs mt-1">La descripción es obligatoria.</div>
+      }
+    </div>
+    
+    <div class="priority-section mb-4">
+      <div class="flex items-center gap-4 mb-3">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" formControlName="is_urgent">
+          <span class="text-sm font-medium">Urgente</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" formControlName="is_important">
+          <span class="text-sm font-medium">Importante</span>
+        </label>
+      </div>
+      
+      <div class="priority-color-section">
+        <div class="flex items-center gap-2">
+          <span class="text-sm font-medium">Prioridad:</span>
+          @for (color of priorityColors; track color.value) {
+            <button type="button"
+                    class="priority-color-btn px-2 py-1 rounded text-xs font-medium border-2 transition-all"
+                    [class]="color.class"
+                    [class.border-current]="taskForm.get('priority_color')?.value === color.value"
+                    [class.border-transparent]="taskForm.get('priority_color')?.value !== color.value"
+                    (click)="taskForm.get('priority_color')?.setValue(color.value)">
+              {{ color.label }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+    
+    <div class="subtasks-section">
+      <h3>Subtareas:</h3>
+      <ul class="subtasks-list">
+        @for (subtask of subtasks.controls; track $index; let i = $index) {
+          <li class="subtask-item" [formGroupName]="i">
+            <input type="checkbox" 
+                   formControlName="is_completed"
+                   class="subtask-checkbox" />
+            <input type="text" 
+                   formControlName="title"
+                   class="subtask-name" 
+                   placeholder="Título de la subtarea" />
+            <button type="button" 
+                    class="remove-subtask-btn text-red-500 hover:text-red-700 text-sm"
+                    (click)="removeSubtask(i)">
+              Eliminar
+            </button>
+          </li>
+        }
+      </ul>
+      <button type="button" 
+              class="add-subtask-btn mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium"
+              (click)="addSubtask()">
+        + Agregar subtarea
+      </button>
+    </div>
+    
+    <!-- Botones de acción -->
+    <div class="save-changes-section mt-6">
+      <div class="flex gap-3">
+        <button type="button" 
+                class="cancel-btn flex-1 py-2 px-4 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                (click)="closeForm()">
+          Cancelar
+        </button>
+        <button type="submit" 
+                class="save-changes-btn flex-1 py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                [disabled]="taskForm.invalid">
+          Crear Tarea
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

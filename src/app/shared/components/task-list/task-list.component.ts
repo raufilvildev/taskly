@@ -1,14 +1,18 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { TaskComponent } from "../task/task.component";
 import { ISubtask, ITask } from '../../../interfaces/itask';
 import { TasksService } from '../../../services/tasks.service';
 import { inject } from '@angular/core';
+import { TaskFormComponent } from '../task-form/task-form.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
   imports: [
-    TaskComponent
+    TaskComponent,
+    TaskFormComponent,
+    MatIconModule
   ],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css']
@@ -16,14 +20,31 @@ import { inject } from '@angular/core';
 export class TaskListComponent {
   @Input() tasks: ITask[] = [];
   @Input() selectedTask: ITask | null = null;
+  @Input() isCourse: boolean = false;
+  @Input() isTeacher: boolean = false;
+  @Input() selectedFilter: string | null = null;
+  @Input() showBackButton: boolean = false;
+  @Output() back = new EventEmitter<void>();
+  @Output() selectTaskMobile = new EventEmitter<void>();
   private projectService = inject(TasksService);
+
+  showTaskFormModal = false;
 
   // Controla el estado expandido/colapsado de las subtareas por id de tarea
   expandedTasks: Record<number, boolean> = {};
 
+  openTaskFormModal() {
+    this.showTaskFormModal = true;
+  }
+
+  closeTaskFormModal() {
+    this.showTaskFormModal = false;
+  }
+
   selectTask(task: ITask) {
     this.selectedTask = task;
     this.projectService.setSelectedTask(task); // Actualiza el signal global
+    this.selectTaskMobile.emit();
   }
 
   toggleTask(task: ITask) {

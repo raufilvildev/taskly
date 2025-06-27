@@ -97,10 +97,15 @@
   font-size: 0.9rem;
   color: var(--color-text-main);
   transition: all 0.3s ease;
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
 }
 :host-context(.dark) .subtask-name,
 :host-context(.dark_bg) .subtask-name {
   color: #e0e0e0;
+  background: transparent;
 }
 
 .subtask-name.completed {
@@ -117,7 +122,7 @@
   font-style: italic;
   margin-top: 2rem;
 }
-:host-context(.dark) .no-selection,
+:host-context(.no-selection) .no-selection,
 :host-context(.dark_bg) .no-selection {
   color: #666;
 }
@@ -200,6 +205,13 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.save-changes-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 :host-context(.dark) .save-changes-btn,
 :host-context(.dark_bg) .save-changes-btn {
   background: #60a5fa;
@@ -210,36 +222,44 @@
   background: #3b82f6;
 }
 
-/* Estilos para el botón de eliminar tarea */
-.delete-task-btn {
-  background: #dc2626;
+/* Estilos para el botón de cancelar */
+.cancel-btn {
+  background: #6b7280;
   color: white;
   transition: all 0.2s ease;
 }
 
-.delete-task-btn:hover {
-  background: #b91c1c;
+.cancel-btn:hover {
+  background: #4b5563;
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-:host-context(.dark) .delete-task-btn,
-:host-context(.dark_bg) .delete-task-btn {
-  background: #ef4444;
+:host-context(.dark) .cancel-btn,
+:host-context(.dark_bg) .cancel-btn {
+  background: #6b7280;
 }
 
-:host-context(.dark) .delete-task-btn:hover,
-:host-context(.dark_bg) .delete-task-btn:hover {
-  background: #dc2626;
+:host-context(.dark) .cancel-btn:hover,
+:host-context(.dark_bg) .cancel-btn:hover {
+  background: #4b5563;
 }
 
-/* Estilos para el modal */
-.modal-overlay {
-  backdrop-filter: blur(4px);
+/* Estilos para botones de subtareas */
+.add-subtask-btn {
+  transition: all 0.2s ease;
 }
 
-.modal-content {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.123), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+.add-subtask-btn:hover {
+  transform: translateY(-1px);
+}
+
+.remove-subtask-btn {
+  transition: all 0.2s ease;
+}
+
+.remove-subtask-btn:hover {
+  transform: translateY(-1px);
 }
 
 :host-context(.dark) .divider {
