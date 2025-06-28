@@ -15,7 +15,7 @@
             @for (course of courses.slice(0, 6); track $index) {
               <div
                 [routerLink]="['/dashboard', 'courses', 'view', course.uuid]"
-                class="flex flex-col justify-between gap-1 w-full rounded-lg bg-custom-background dark:bg-custom-background-dark dark:shadow-xs dark:shadow-white transition-all duration-300 transform hover:scale-105 shadow-lg lg:hover:shadow-xl dark:hover:shadow-sm"
+                class="flex flex-col justify-between gap-1 w-full rounded-lg bg-custom-background dark:bg-custom-background-dark dark:shadow-xs dark:shadow-white transition-all duration-300 transform hover:scale-105 shadow-lg lg:hover:shadow-xl dark:hover:shadow-sm cursor-pointer"
               >
                 <img
                   [src]="course_image_endpoint + course.course_image_url"

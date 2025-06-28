@@ -10,33 +10,38 @@
 
     <div class="absolute top-1/3 inset-x-0 flex flex-col items-center">
       <h1
-        class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white drop-shadow-lg text-center px-2 md:px-4 mb-4 break-words w-full max-w-full"
+        class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white drop-shadow-lg text-center px-2 md:px-4 mb-8 break-words w-full max-w-full"
         style="word-break: break-word"
       >
         {{ course.title }}
       </h1>
 
       @if (user.role === 'teacher') {
-        <div class="flex gap-5">
-          <button
-            class="px-6 py-3 text-xl text-black rounded-full border border-custom-accent-dark bg-custom-background hover:bg-custom-accent-dark dark:bg-purple-100 dark:hover:bg-purple-900 dark:border-purple-900 transition-all duration-300 transform hover:scale-105 hover:text-white shadow-lg hover:shadow-3xl"
-            (click)="showCourseForm = true"
-          >
-            Editar curso
-          </button>
-          <button
-            class="px-6 py-3 text-xl text-black rounded-full border border-custom-accent-dark bg-custom-background hover:bg-custom-accent-dark dark:bg-purple-100 dark:hover:bg-purple-900 dark:border-purple-900 transition-all duration-300 transform hover:scale-105 hover:text-white shadow-lg hover:shadow-3xl"
-            (click)="showDeleteConfirmation = true"
-          >
-            Borrar curso
-          </button>
-        </div>
-        <button
-          class="px-6 py-3 text-xl text-black rounded-full border border-custom-accent-dark bg-custom-background hover:bg-custom-accent-dark dark:bg-purple-100 dark:hover:bg-purple-900 dark:border-purple-900 transition-all duration-300 transform hover:scale-105 hover:text-white shadow-lg hover:shadow-3xl"
-          (click)="exportPdfViewCourse()"
-        >
-          Exportar vista del curso
-        </button>
+        <div class="flex flex-wrap gap-3 items-center">
+      <button
+        (click)="showCourseForm = true"
+        class="flex items-center justify-center gap-2 px-3 py-2 rounded-full text-sm font-medium text-black bg-custom-background border border-custom-accent-dark hover:bg-custom-accent-dark hover:text-white dark:bg-purple-100 dark:border-purple-900 dark:hover:bg-purple-900 dark:hover:text-white transition-all duration-200 cursor-pointer"
+      >
+        <mat-icon class="text-base">edit</mat-icon>
+        <span class="hidden sm:inline">Editar</span>
+      </button>
+
+      <button
+        (click)="showDeleteConfirmation = true"
+        class="flex items-center justify-center gap-2 px-3 py-2 rounded-full text-sm font-medium text-black bg-custom-background  hover:bg-red-500 hover:text-white dark:bg-purple-100 dark:hover:bg-red-800 dark:hover:text-white transition-all duration-200 cursor-pointer"
+      >
+        <mat-icon class="text-base">delete</mat-icon>
+        <span class="hidden sm:inline">Borrar</span>
+      </button>
+
+      <button
+        (click)="exportPdfViewCourse(); showDownloadPdf = true"
+        class="flex items-center justify-center gap-2 px-3 py-2 rounded-full text-sm font-medium text-black bg-custom-background border border-custom-accent-dark hover:bg-custom-accent-dark hover:text-white dark:bg-purple-100 dark:border-purple-900 dark:hover:bg-purple-900 dark:hover:text-white transition-all duration-200 cursor-pointer"
+      >
+        <mat-icon class="text-base">picture_as_pdf</mat-icon>
+        <span class="hidden sm:inline">Exportar</span>
+      </button>
+    </div>  
       }
     </div>
   </div>
@@ -200,6 +205,15 @@
             Cancelar
           </button>
         </div>
+      </div>
+    </div>
+  }
+
+  @if (showDownloadPdf) {
+    <div class="fixed inset-0 bg-black/30 z-50 flex items-center justify-center shadow-xl">
+      <div class="bg-white dark:bg-zinc-900 p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-lg font-bold mb-4">Descargando PDF del curso...</h2>
+        <p class="text-gray-600 dark:text-gray-300">Por favor, espera mientras se genera el PDF.</p>
       </div>
     </div>
   }

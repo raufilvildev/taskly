@@ -8,10 +8,11 @@ import { CourseFormComponent } from '../../courses-grid/components/course-form/c
 import { environment } from '../../../../../environments/environment.test';
 import { Router } from '@angular/router';
 import { saveAs } from 'file-saver';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-course-home',
-  imports: [CourseFormComponent],
+  imports: [CourseFormComponent, MatIconModule],
   templateUrl: './course-home.component.html',
   styleUrl: './course-home.component.css',
 })
@@ -19,6 +20,7 @@ export class CourseHomeComponent {
   usersService = inject(UsersService);
   coursesService = inject(CoursesService);
   router = inject(Router);
+  showDownloadPdf: boolean = false;
 
   course_image_endpoint = `${environment.host}/uploads/courses/`;
 
@@ -44,6 +46,7 @@ export class CourseHomeComponent {
     try {
       const pdfBlob = await this.coursesService.exportPdfViewCourse(this.course_uuid);
       saveAs(pdfBlob, `informe-del-curso.pdf`);
+      this.showDownloadPdf = false;
     } catch (error) {
       console.log(error);
     }
