@@ -20,6 +20,14 @@ export class CoursesService {
     return lastValueFrom(this.httpClient.get<ICourse>(`${this.endpoint}/${course_uuid}`));
   }
 
+  exportPdfViewCourse(course_uuid: string) {
+    return lastValueFrom(
+      this.httpClient.get(`${this.endpoint}/${course_uuid}/export-pdf`, {
+        responseType: 'blob',
+      })
+    );
+  }
+
   create(course: FormData) {
     return lastValueFrom(this.httpClient.post<ICourse>(this.endpoint, course));
   }

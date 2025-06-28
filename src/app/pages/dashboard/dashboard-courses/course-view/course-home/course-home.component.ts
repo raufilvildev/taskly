@@ -7,6 +7,7 @@ import { ICourse } from '../../../../../interfaces/icourse.interface';
 import { CourseFormComponent } from '../../courses-grid/components/course-form/course-form.component';
 import { environment } from '../../../../../environments/environment.test';
 import { Router } from '@angular/router';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-course-home',
@@ -36,6 +37,15 @@ export class CourseHomeComponent {
       this.course = await this.coursesService.getByUuid(this.course_uuid);
     } catch (error) {
       return;
+    }
+  }
+
+  async exportPdfViewCourse() {
+    try {
+      const pdfBlob = await this.coursesService.exportPdfViewCourse(this.course_uuid);
+      saveAs(pdfBlob, `informe-del-curso.pdf`);
+    } catch (error) {
+      console.log(error);
     }
   }
 
