@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { TableComponent } from "../../../shared/components/calendar/table/calendar-table.component";
-import { TasksComponent } from "../../../shared/components/tasks/tasks.component";
-import { TaskListComponent } from '../../../shared/components/task-list/task-list.component';
+import { TableComponent } from '../../../shared/components/calendar/table/calendar-table.component';
+import { TasksComponent } from '../../../shared/components/tasks/tasks.component';
 import { ITask } from '../../../interfaces/itask';
 import { RouterLink } from '@angular/router';
 import { DashboardHomeCalendarComponent } from './components/dashboard-home-calendar/dashboard-home-calendar.component';
@@ -12,14 +11,12 @@ import { initUser } from '../../../shared/utils/initializers';
 import { ICourse } from '../../../interfaces/icourse.interface';
 import { environment } from '../../../environments/environment.test';
 
-
-
 @Component({
   selector: 'app-dashboard-home',
   standalone: true,
-  imports: [TaskListComponent, DashboardHomeCalendarComponent, RouterLink],
+  imports: [DashboardHomeCalendarComponent, RouterLink],
   templateUrl: './dashboard-home.component.html',
-  styleUrl: './dashboard-home.component.css'
+  styleUrl: './dashboard-home.component.css',
 })
 export class DashboardHomeComponent {
   tasks: ITask[] = [];
@@ -49,4 +46,9 @@ export class DashboardHomeComponent {
     }
   }
 
+   get todayTasksSorted(): ITask[] {
+    const today = new Date().toISOString().slice(0, 10);
+    return this.tasks
+      .filter(task => task.due_date === today)
+  }
 }
