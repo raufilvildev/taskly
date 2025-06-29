@@ -1,6 +1,8 @@
-// home.component.ts
-
-import { AfterViewInit, Component, ViewChild, NgZone } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ViewChild
+} from '@angular/core';
 import { HeroComponent } from './components/hero/hero.component';
 import { FeaturesComponent } from './components/features/features.component';
 import gsap from 'gsap';
@@ -10,97 +12,107 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
   selector: 'app-home',
   standalone: true,
   imports: [HeroComponent, FeaturesComponent],
-  templateUrl: './home.component.html',
+  templateUrl: './home.component.html'
 })
 export class HomeComponent implements AfterViewInit {
   @ViewChild(FeaturesComponent) featuresComponent!: FeaturesComponent;
 
-  constructor(private ngZone: NgZone) {}
-
   ngAfterViewInit(): void {
-    this.ngZone.runOutsideAngular(() => {
-      gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger);
 
-      const responsive = gsap.matchMedia();
-
-      responsive.add('(max-width: 768px)', () => {
-        this.animateHero(true);
-        this.animateZoom(false);
-      });
-
-      responsive.add('(min-width: 769px)', () => {
-        this.animateHero(true);
-        this.animateZoom(true);
-      });
-
-      // Animación infinita para tags o scrollers
-      if (this.featuresComponent) {
-        this.animateTags(this.featuresComponent.professorScroller.nativeElement, 1);
-        this.animateTags(this.featuresComponent.studentScroller.nativeElement, -1);
-      }
-    });
+    this.animateHeroSection();
+    this.animateTags(this.featuresComponent.professorScroller.nativeElement, 1);
+    this.animateTags(this.featuresComponent.studentScroller.nativeElement, -1);
   }
 
-  private animateHero(pin: boolean): void {
-    const isMobile = window.innerWidth <= 768;
-    const titleScale = isMobile ? 1.15 : 1.6;
-    const contentY = isMobile ? 100 : 200;
-    const buttonsY = isMobile ? 60 : 100;
+  private animateHeroSection(): void {
+    ScrollTrigger.matchMedia({
+      // Pantallas pequeñas
+      "(max-width: 768px)": () => {
+        gsap.set('.scroll-header__title', {
+          scale: 1.3,
+          transformOrigin: 'center top'
+        });
+        gsap.set('.scroll-header__content', {
+          opacity: 0,
+          y: 100
+        });
+        gsap.set('.scroll-header__buttons', {
+          opacity: 0,
+          y: 80
+        });
 
-    gsap.set('.scroll-header__title', {
-      scale: titleScale,
-      transformOrigin: 'center top',
-    });
+        const scrollTL = gsap.timeline({
+          scrollTrigger: {
+            trigger: '.scroll-header',
+            start: 'top top',
+            end: '+=200',
+            scrub: true,
+            pin: true
+          }
+        });
 
-    gsap.set('.scroll-header__content', {
-      opacity: 0,
-      y: contentY,
-    });
+        scrollTL.to('.scroll-header__title', {
+          scale: 1,
+          ease: 'none'
+        }, 0);
 
-    gsap.set('.scroll-header__buttons', {
-      opacity: 0,
-      y: buttonsY,
-    });
+        scrollTL.to('.scroll-header__content', {
+          opacity: 1,
+          y: 0,
+          ease: 'power2.out'
+        }, 0.4);
 
-    const timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: '.scroll-header',
-        start: 'top top',
-        end: pin ? '+=300' : '+=200',
-        scrub: true,
-        pin: pin,
-        invalidateOnRefresh: true,
+        scrollTL.to('.scroll-header__buttons', {
+          opacity: 1,
+          y: 0,
+          ease: 'power2.out'
+        }, 0.5);
       },
+
+      // Pantallas grandes
+      "(min-width: 769px)": () => {
+        gsap.set('.scroll-header__title', {
+          scale: 1.6,
+          transformOrigin: 'center top'
+        });
+        gsap.set('.scroll-header__content', {
+          opacity: 0,
+          y: 200
+        });
+        gsap.set('.scroll-header__buttons', {
+          opacity: 0,
+          y: 100
+        });
+
+        const scrollTL = gsap.timeline({
+          scrollTrigger: {
+            trigger: '.scroll-header',
+            start: 'top top',
+            end: '+=300',
+            scrub: true,
+            pin: true
+          }
+        });
+
+        scrollTL.to('.scroll-header__title', {
+          scale: 1,
+          ease: 'none'
+        }, 0);
+
+        scrollTL.to('.scroll-header__content', {
+          opacity: 1,
+          y: 0,
+          ease: 'power2.out'
+        }, 0.5);
+
+        scrollTL.to('.scroll-header__buttons', {
+          opacity: 1,
+          y: 0,
+          ease: 'power2.out'
+        }, 0.6);
+      }
     });
-
-    timeline.to(
-      '.scroll-header__title',
-      {
-        scale: 1,
-        ease: 'none',
-      },
-      0
-    );
-
-    timeline.to(
-      '.scroll-header__content',
-      {
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out',
-      },
-      0.4
-    );
-
-    timeline.to(
-      '.scroll-header__buttons',
-      {
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out',
-      },
-      0.5
-    );
 
     gsap.to('.scroll-arrow', {
       opacity: 0,
@@ -109,27 +121,25 @@ export class HomeComponent implements AfterViewInit {
         trigger: '.scroll-header',
         start: 'top top+=10',
         end: '+=10',
-        scrub: true,
-      },
+        scrub: true
+      }
     });
-  }
 
-  private animateZoom(isDesktop: boolean): void {
     gsap.set('.scroll-zoom', {
-      scale: isDesktop ? 0.8 : 1,
-      transformOrigin: 'center center',
+      scale: 0.8,
+      transformOrigin: 'center center'
     });
 
     gsap.to('.scroll-zoom', {
-      scale: isDesktop ? 1.3 : 1.05,
-      y: isDesktop ? 100 : 20,
+      scale: 1.3,
+      y: 100,
       scrollTrigger: {
         trigger: '.scroll-zoom',
         start: 'top bottom',
         end: 'bottom bottom',
         scrub: true,
-        markers: false,
-      },
+        markers: false
+      }
     });
   }
 
@@ -146,8 +156,8 @@ export class HomeComponent implements AfterViewInit {
         ease: 'linear',
         repeat: -1,
         modifiers: {
-          x: gsap.utils.unitize((x) => parseFloat(x) % totalWidth),
-        },
+          x: gsap.utils.unitize(x => parseFloat(x) % totalWidth)
+        }
       }
     );
   }

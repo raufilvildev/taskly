@@ -1,0 +1,10 @@
+.tag-mask {
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.scroller {
+  display: inline-flex;
+  white-space: nowrap;
+  will-change: transform;
+}
