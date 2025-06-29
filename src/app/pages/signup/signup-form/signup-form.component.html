@@ -11,7 +11,7 @@
           type="text"
           formControlName="first_name"
           id="firstName"
-          class="px-4 py-2 mt-2 bg-custom-background dark:bg-gray-800 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+            class="px-4 py-2 mt-2 bg-custom-background dark:bg-black/20 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
           [class]="getValidationStyleClasses('first_name', ['required', 'minlength', 'maxlength'])"
         />
         @for (error of getErrors('first_name'); track $index) {
@@ -24,7 +24,7 @@
           type="text"
           formControlName="last_name"
           id="lastName"
-          class="px-4 py-2 bg-custom-background dark:bg-gray-800 mt-2 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+          class="px-4 py-2 bg-custom-background dark:bg-black/20 mt-2 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
           [class]="getValidationStyleClasses('last_name', ['required', 'minlength', 'maxlength'])"
         />
         @for (error of getErrors('last_name'); track $index) {
@@ -38,7 +38,7 @@
           formControlName="birth_date"
           id="birthDate"
           placeholder="dd/mm/aaaa"
-          class="px-4 py-2 mt-2 placeholder:text-custom-muted bg-custom-background dark:bg-gray-800 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+          class="px-4 py-2 mt-2 placeholder:text-custom-muted bg-custom-background dark:bg-black/20 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
           [class]="getValidationStyleClasses('birth_date', ['required'])"
         />
 
@@ -75,7 +75,7 @@
             type="email"
             formControlName="email"
             id="email"
-            class="w-full pl-10 px-4 py-2 bg-custom-background dark:bg-gray-800 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+            class="w-full pl-10 px-4 py-2 bg-custom-background dark:bg-black/20 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
             [class]="getValidationStyleClasses('email', ['required', 'email'])"
           />
         </div>
@@ -96,7 +96,7 @@
             type="text"
             formControlName="username"
             id="username"
-            class="w-full pl-10 px-4 py-2 bg-custom-background dark:bg-gray-800 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+            class="w-full pl-10 px-4 py-2 bg-custom-background dark:bg-black/20 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
             [class]="getValidationStyleClasses('username', ['required', 'minlength', 'maxlength'])"
           />
         </div>
@@ -126,7 +126,7 @@
             [type]="isVisiblePassword ? 'text' : 'password'"
             formControlName="password"
             id="password"
-            class="w-full pl-10 px-4 py-2 bg-custom-background dark:bg-gray-800 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+            class="w-full pl-10 px-4 py-2 bg-custom-background dark:bg-black/20 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
             [class]="getValidationStyleClasses('password', ['required', 'pattern'])"
           />
         </div>
@@ -158,7 +158,7 @@
             [type]="isVisiblePassword ? 'text' : 'password'"
             formControlName="password_confirmation"
             id="password_confirmation"
-            class="w-full pl-10 px-4 py-2 bg-custom-background dark:bg-gray-800 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
+            class="w-full pl-10 px-4 py-2 bg-custom-background dark:bg-black/20 border border-2 border-custom-border outline-transparent rounded-lg text-base hover:border-custom-accent focus:outline-custom-accent-dark focus:shadow-md focus:shadow-custom-accent transition-all duration-300 transform"
             [class]="getValidationStyleClasses('password_confirmation', ['required', 'pattern'])"
           />
         </div>

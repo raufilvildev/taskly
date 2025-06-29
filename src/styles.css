@@ -159,5 +159,9 @@ app-dashboard-settings {
 }
 
 .dark .custom-container {
-  background: var(--color-gray-950);
+   background: radial-gradient(
+    circle at center,
+    #2e1a4a 0%,
+    #18181b 80%
+  );
 }
