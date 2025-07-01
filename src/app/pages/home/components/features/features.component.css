@@ -1,10 +1,24 @@
 .tag-mask {
-  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
 }
 
 .scroller {
   display: inline-flex;
   white-space: nowrap;
   will-change: transform;
+}
+
+
+@media (max-width: 768px) {
+  .professor-wrapper, .student-wrapper {
+    overflow: hidden; /* se mantiene */
+    width: 100vw; /* ancho completo viewport */
+  }
+
+  .scroller {
+    width: max-content;
+    padding-left: 1.5rem; /* espacio para que entre desde fuera */
+    margin-left: -1.5rem; /* compensar el padding para que quede alineado */
+  }
 }

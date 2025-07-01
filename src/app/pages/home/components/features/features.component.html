@@ -3,7 +3,7 @@
   <!-- Carrusel profesores -->
   <div #professorWrapper class="overflow-hidden mb-5 relative tag-mask flex justify-center">
     <div #professorScroller class="scroller flex gap-2 sm:gap-4 w-max will-change-transform px-2 sm:px-0">
-      @for (tag of professorTags.concat(professorTags); track i; let i = $index) {
+      @for (tag of professorTags; track tag) {
         <span
           class="bg-white border border-custom-accent text-custom-accent px-2 sm:px-4 py-1 sm:py-2 rounded-full font-medium shadow-custom-md whitespace-nowrap text-xs sm:text-base"
         >
@@ -16,7 +16,7 @@
   <!-- Carrusel alumnos -->
   <div #studentWrapper class="overflow-hidden relative tag-mask flex justify-center">
     <div #studentScroller class="scroller flex gap-2 sm:gap-4 w-max will-change-transform px-2 sm:px-0">
-      @for (tag of studentTags.concat(studentTags); track i; let i = $index) {
+      @for (tag of studentTags; track tag) {
         <span
           class="bg-custom-accent text-white px-2 sm:px-4 py-1 sm:py-2 rounded-full font-medium shadow-custom-md whitespace-nowrap text-xs sm:text-base"
         >
