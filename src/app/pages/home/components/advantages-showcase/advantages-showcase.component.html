@@ -1,0 +1,48 @@
+<div class="flex justify-start pt-24">
+  <button
+    id="role-switch"
+    type="button"
+    role="switch"
+    aria-label="Seleccionar rol: Profesor o Alumno"
+    [attr.aria-checked]="currentType === 'teacher'"
+    (click)="toggleRole()"
+    class="relative inline-flex h-17 w-75 items-center justify-center rounded-full transition-colors duration-300"
+    [class.bg-custom-accent]="currentType === 'teacher'"
+    [class.bg-custom-accent-dark]="currentType === 'alumn'"
+  >
+    <!-- Texto central -->
+    <span class="text-[var(--color-custom-text-main)] font-semibold text-4xl z-10 select-none">
+      {{ currentType === 'teacher' ? 'Profesor' : 'Alumno' }}
+    </span>
+
+    <!-- Bola que se mueve -->
+    <span
+      #toggleBall
+      class="absolute left-1 top-1 h-15 w-15 rounded-full bg-white shadow transition-transform duration-300 flex items-center justify-center"
+      [style.transform]="
+        currentType === 'teacher' ? 'translateX(0)' : 'translateX(387%)'
+      "
+    >
+      <!-- Flecha direccional dentro de la bola -->
+      <svg
+        class="w-6 h-6 text-custom-accent"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        [attr.transform]="currentType === 'teacher' ? 'rotate(0)' : 'rotate(180)'"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </span>
+  </button>
+</div>
+
+<!-- Componente hijo que muestra la ventaja actual -->
+<app-adventages-list
+  [item]="selectedItem"
+  [type]="currentType"
+  (next)="prev()"
+  (prev)="next()"
+></app-adventages-list>

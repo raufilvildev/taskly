@@ -1,0 +1,54 @@
+<section
+  class="flex flex-col lg:flex-row items-center gap-6 px-4 py-16 mx-auto"
+>
+<!-- Imagen -->
+<div class="w-full lg:w-[40%] flex justify-center">
+    <div
+        class="relative w-[220px] sm:w-[260px] lg:w-[300px] aspect-[9/18] rounded-[3rem] shadow-xl"
+    >
+        <img
+            [src]="item.image"
+            alt="Vista previa"
+            class="w-full h-full object-cover transition-all duration-300 rounded-[3rem] z-0"
+        />
+        <img
+            src="iphone-bg.png"
+            class="absolute inset-0 w-full h-full z-20 pointer-events-none"
+            style="mix-blend-mode: normal; opacity: 1;"
+        />
+    </div>
+</div>
+
+  <!-- Contenido -->
+  <div class="w-full lg:w-[60%] space-y-8 lg:pl-6 text-center lg:text-left">
+    <h2
+      class="text-2xl sm:text-3xl lg:text-4xl font-bold text-[var(--color-custom-text-main)] dark:text-white"
+    >
+      {{ item.title }}
+    </h2>
+
+    <p class="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-xl mx-auto lg:mx-0">
+      {{ item.description }}
+    </p>
+
+    <div class="flex justify-center lg:justify-start gap-4">
+        <button
+            (click)="prev.emit()"
+            mat-icon-button
+            class="pt-3 pr-3 pl-3 pb-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800 transition"
+            aria-label="Anterior"
+        >
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <button
+            (click)="next.emit()"
+            mat-icon-button
+            class="pt-3 pr-3 pl-3 pb-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800 transition"
+            aria-label="Siguiente"
+        >
+            <mat-icon>arrow_forward</mat-icon>
+        </button>
+    </div>
+
+  </div>
+</section>
