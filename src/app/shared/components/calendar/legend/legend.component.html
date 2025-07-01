@@ -1,17 +1,31 @@
 <div
-  class="mt-6 bg-custom-background dark:bg-custom-background-dark rounded-xl shadow-lg p-6 border border-custom-border dark:border-custom-border-dark"
+  class="flex flex-wrap gap-6 p-4 bg-custom-panel dark:bg-custom-panel-dark rounded-lg shadow-sm mb-6"
 >
-  <h3 class="text-lg font-semibold text-custom-text-main dark:text-custom-text-main-dark mb-4">
-    Leyenda de Prioridades
-  </h3>
-  <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-    @for (priority of priorities; track priority.name) {
-      <div class="flex items-center space-x-2">
-        <div class="w-4 h-4 rounded-full" [ngClass]="priority.colorClass"></div>
-        <span class="text-sm text-custom-text-main dark:text-custom-text-main-dark">
-          {{ priority.name }}
-        </span>
-      </div>
-    }
-  </div>
+  <label class="relative flex items-center cursor-pointer group">
+    <input
+      type="checkbox"
+      [checked]="filters().isUrgent"
+      (change)="toggleFilter('isUrgent')"
+      class="w-5 h-5 rounded border-2 border-gray-300 dark:border-gray-600 checked:bg-custom-primary checked:border-custom-primary focus:ring-2 focus:ring-custom-primary/20 transition-all duration-200 ease-in-out cursor-pointer "
+    />
+    <span
+      class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200"
+    >
+      Urgente
+    </span>
+  </label>
+
+  <label class="relative flex items-center cursor-pointer group">
+    <input
+      type="checkbox"
+      [checked]="filters().isImportant"
+      (change)="toggleFilter('isImportant')"
+      class="w-5 h-5 rounded border-2 border-gray-300 dark:border-gray-600 checked:bg-custom-primary checked:border-custom-primary focus:ring-2 focus:ring-custom-primary/20 transition-all duration-200 ease-in-out cursor-pointer"
+    />
+    <span
+      class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200"
+    >
+      Importante
+    </span>
+  </label>
 </div>

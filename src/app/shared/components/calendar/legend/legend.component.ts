@@ -1,24 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, signal, computed, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-interface Priority {
-  name: string;
-  colorClass: string;
+interface TaskFilters {
+  isUrgent: boolean;
+  isImportant: boolean;
 }
 
 @Component({
   selector: 'app-calendar-legend',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './legend.component.html',
   styleUrls: ['./legend.component.css']
 })
 export class CalendarLegendComponent {
-  priorities: Priority[] = [
-    { name: 'Alta', colorClass: 'bg-red-500' },
-    { name: 'Media', colorClass: 'bg-yellow-500' },
-    { name: 'Baja', colorClass: 'bg-green-500' },
-    { name: 'Normal', colorClass: 'bg-blue-500' },
-    { name: 'Sin prioridad', colorClass: 'bg-gray-500' }
-  ];
+  filters = signal<TaskFilters>({
+    isUrgent: true,
+    isImportant: true
+  });
+
+  filtersChanged = output<TaskFilters>();
+
+  toggleFilter(filterType: keyof TaskFilters) {
+    this.filters.update(current => ({
+      ...current,
+      [filterType]: !current[filterType]
+    }));
+    this.filtersChanged.emit(this.filters());
+  }
 }
