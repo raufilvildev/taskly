@@ -7,23 +7,20 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 import { MatSelectModule } from '@angular/material/select';
-import { ITask } from '../../../interfaces/itask';
 import { UsersService } from '../../../services/users.service';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-task-form',
   standalone: true,
   imports: [
-    ReactiveFormsModule, 
-    MatIconModule, 
+    ReactiveFormsModule,
+    MatIconModule,
     MatSnackBarModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
     MatTimepickerModule,
     MatSelectModule,
-    HttpClientModule
   ],
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.css'
@@ -31,7 +28,7 @@ import { HttpClientModule } from '@angular/common/http';
 export class TaskFormComponent {
   private snackBar = inject(MatSnackBar);
   private usersService = inject(UsersService);
-  
+
   @Input() showBackButton: boolean = false;
   @Input() isCourseRelated: boolean = false;
   @Output() back = new EventEmitter<void>();
@@ -86,22 +83,22 @@ export class TaskFormComponent {
   calculateEndTime(): string {
     const timeStart = this.taskForm.get('time_start')?.value;
     const timeEstimated = this.taskForm.get('time_estimated')?.value;
-    
+
     if (!timeStart || !timeEstimated) {
       return '';
     }
-    
+
     // Convertir tiempo de inicio a minutos
     const [startHours, startMinutes] = timeStart.split(':').map(Number);
     const startTotalMinutes = startHours * 60 + startMinutes;
-    
+
     // Sumar el tiempo estimado
     const endTotalMinutes = startTotalMinutes + Number(timeEstimated);
-    
+
     // Convertir de vuelta a formato HH:MM
     const endHours = Math.floor(endTotalMinutes / 60);
     const endMinutes = endTotalMinutes % 60;
-    
+
     return `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}`;
   }
 
@@ -130,27 +127,27 @@ export class TaskFormComponent {
     console.log('Subtareas válidas:', this.subtasks.valid);
     console.log('Número de subtareas:', this.subtasks.length);
     console.log('Errores de subtareas:', this.subtasks.errors);
-    
+
     // Verificar cada subtarea individualmente
     for (let i = 0; i < this.subtasks.length; i++) {
       const subtask = this.subtasks.at(i);
       console.log(`Subtarea ${i}:`, subtask.value, 'Válida:', subtask.valid, 'Errores:', subtask.errors);
     }
-    
+
     if (this.taskForm.valid) {
       const taskData = this.taskForm.value as any;
-      
+
       // Calcular la hora de fin basada en el tiempo de inicio y estimado
       if (taskData.time_start && taskData.time_estimated) {
         taskData.time_end = this.calculateEndTime();
         console.log('Hora de fin calculada:', taskData.time_end);
       }
-      
+
       // Filtrar subtareas vacías antes de enviar
       if (taskData.subtasks) {
         taskData.subtasks = taskData.subtasks.filter((subtask: any) => subtask.title && subtask.title.trim() !== '');
       }
-      
+
       console.log('Datos de tarea a enviar:', taskData);
       this.createTask.emit(taskData);
       this.showSuccessMessage(); // Mostrar alerta de éxito
