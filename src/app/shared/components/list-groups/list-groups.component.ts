@@ -1,57 +1,139 @@
-import { Component, inject, Output, EventEmitter, Input } from '@angular/core';
+import { Component, inject, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { ITask } from '../../../interfaces/itask';
 import { TasksService } from '../../../services/tasks.service';
 import { MatIconModule } from '@angular/material/icon';
+import { TaskFilterComponent } from '../task-filter/task-filter.component';
 
 @Component({
   selector: 'app-list-groups',
   standalone: true,
-  imports: [ MatIconModule ],
+  imports: [MatIconModule, TaskFilterComponent],
   templateUrl: './list-groups.component.html',
   styleUrls: ['./list-groups.component.css']
 })
-export class ListGroupsComponent {
+export class ListGroupsComponent implements OnInit {
   private projectService = inject(TasksService);
-  projects = this.projectService.tasks;
 
   @Output() filteredTasks = new EventEmitter<{ tasks: ITask[], selectedFilter: string | null }>();
+  @Output() navigateToList = new EventEmitter<void>(); // Nuevo evento para navegar a la lista
 
   @Input() isCourse: boolean = false;
+  @Input() course_uuid: string = ''; // Añadir input para course_uuid
+  @Input() showAdditionalFilters: boolean = true; // Controla si se muestran los filtros adicionales
 
-  selectedFilter: string | null = null;
+  selectedTimeFilter: string | null = null; // Cambiado a null para móvil
+  selectedCategoryFilters: string[] = ['personales', 'cursos']; // Filtros de categoría múltiples
+  showCompletedTasks: boolean = false; // Filtro de tareas completadas
+  showPendingTasks: boolean = true; // Filtro de tareas pendientes
+  currentTasks: ITask[] = []; // Tareas cargadas del API
 
-  selectFilter(filter: string) {
-    this.selectedFilter = filter;
-    this.filteredTasks.emit({ tasks: this.getFilteredTasks(), selectedFilter: this.selectedFilter });
+  ngOnInit() {
+    // Solo inicializar con filtro por defecto si estamos en desktop (con filtros adicionales)
+    if (this.showAdditionalFilters) {
+      this.selectedTimeFilter = 'hoy';
+      this.loadTasksByPeriod('today');
+    }
   }
 
-  getFilteredTasks(): ITask[] {
-    const tasks = this.projects();
-    const today = new Date().toISOString().slice(0, 10);
-    if (this.selectedFilter === 'hoy') {
-      return tasks.filter(t => t.due_date === today);
+  selectTimeFilter(filter: string) {
+    this.selectedTimeFilter = filter;
+    
+    // Mapear los filtros del frontend a los del API
+    const periodMap: { [key: string]: 'today' | 'week' | 'month' } = {
+      'hoy': 'today',
+      '7dias': 'week', 
+      '30dias': 'month'
+    };
+
+    if (periodMap[filter]) {
+      this.loadTasksByPeriod(periodMap[filter]);
     }
-    if (this.selectedFilter === '7dias') {
-      const now = new Date();
-      const in7 = new Date();
-      in7.setDate(now.getDate() + 7);
-      return tasks.filter(t => t.due_date && t.due_date >= today && t.due_date <= in7.toISOString().slice(0, 10));
+  }
+
+  onFilterChange(filters: { categoryFilters: string[]; showCompleted: boolean; showPending: boolean }) {
+    this.selectedCategoryFilters = filters.categoryFilters;
+    this.showCompletedTasks = filters.showCompleted;
+    this.showPendingTasks = filters.showPending;
+    this.applyFilters();
+  }
+
+  loadTasksByPeriod(period: 'today' | 'week' | 'month') {
+    // Usar el método correcto según si estamos en un curso o no
+    if (this.isCourse && this.course_uuid) {
+      // Si estamos en un curso, usar getTasksByCourseUuid
+      console.log('🎓 Cargando tareas del curso:', this.course_uuid, 'período:', period);
+      this.projectService.getTasksByCourseUuid(this.course_uuid, period).subscribe({
+        next: (tasks) => {
+          console.log('✅ Tareas del curso cargadas:', tasks.length, 'tareas');
+          this.currentTasks = tasks;
+          this.applyFilters();
+        },
+        error: (error) => {
+          console.error('❌ Error loading tasks by course and period:', error);
+          this.currentTasks = [];
+          this.applyFilters();
+        }
+      });
+    } else {
+      // Si no estamos en un curso, usar getTasksByPeriod
+      console.log('🏠 Cargando tareas generales, período:', period);
+      this.projectService.getTasksByPeriod(period).subscribe({
+        next: (tasks) => {
+          console.log('✅ Tareas generales cargadas:', tasks.length, 'tareas');
+          this.currentTasks = tasks;
+          this.applyFilters();
+        },
+        error: (error) => {
+          console.error('❌ Error loading tasks by period:', error);
+          this.currentTasks = [];
+          this.applyFilters();
+        }
+      });
     }
-    if (this.selectedFilter === '30dias') {
-      const now = new Date();
-      const in30 = new Date();
-      in30.setDate(now.getDate() + 30);
-      return tasks.filter(t => t.due_date && t.due_date >= today && t.due_date <= in30.toISOString().slice(0, 10));
+  }
+
+  applyFilters() {
+    let filteredTasks = [...this.currentTasks];
+
+    // Aplicar filtros de categoría (múltiples)
+    if (this.selectedCategoryFilters.length > 0) {
+      filteredTasks = filteredTasks.filter(task => {
+        const isPersonal = task.category === 'custom';
+        const isCourse = task.category === 'course_related';
+        
+        const matchesPersonal = this.selectedCategoryFilters.includes('personales') && isPersonal;
+        const matchesCourse = this.selectedCategoryFilters.includes('cursos') && isCourse;
+        
+        return matchesPersonal || matchesCourse;
+      });
     }
-    if (this.selectedFilter === 'personales') {
-      return tasks.filter(t => t.category === 'custom');
+
+    // Aplicar filtros de estado de tareas
+    const statusFilters: ((task: ITask) => boolean)[] = [];
+    
+    if (this.showPendingTasks) {
+      statusFilters.push((t: ITask) => !t.is_completed);
     }
-    if (this.selectedFilter === 'cursos') {
-      return tasks.filter(t => t.category !== 'custom');
+    
+    if (this.showCompletedTasks) {
+      statusFilters.push((t: ITask) => t.is_completed);
     }
-    if (this.selectedFilter === 'completadas') {
-      return tasks.filter(t => t.is_completed);
+
+    // Si no hay filtros de estado seleccionados, no mostrar ninguna tarea
+    if (statusFilters.length === 0) {
+      filteredTasks = [];
+    } else {
+      // Aplicar filtros de estado (OR lógico - mostrar tareas que cumplan cualquiera de los filtros)
+      filteredTasks = filteredTasks.filter(task => {
+        const matches = statusFilters.some(filter => filter(task));
+        return matches;
+      });
     }
-    return tasks;
+    
+    // Emitir las tareas filtradas
+    this.filteredTasks.emit({ 
+      tasks: filteredTasks, 
+      selectedFilter: this.selectedTimeFilter + (this.selectedCategoryFilters.length > 0 ? `-${this.selectedCategoryFilters.join('-')}` : '') + (this.showCompletedTasks ? '-completed' : '') + (this.showPendingTasks ? '-pending' : '') 
+    });
   }
 }

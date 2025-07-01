@@ -19,32 +19,106 @@
       </button>
     </div>
     <form [formGroup]="taskForm">
-      <div class="task-actions flex items-center  mb-4">
+      <div class="task-actions flex items-center ">
         <input type="checkbox"
-          class="task-checkbox scale-150"
+          class="task-checkbox scale-175"
           [checked]="taskForm.get('is_completed')?.value"
           (change)="toggleCompletion()" />
-        <div class="divider divider-horizontal"></div>
-        <div class="flex items-center">
-          <input type="date"
-                 class="native-date-input"
-                 [value]="getDateString(taskForm.get('due_date')?.value)"
-                 (change)="onNativeDateChange($event)">
+        <div class="divider divider-horizontal h- [10px] m-0 "></div>
+        <!-- Date picker -->
+        @if (!shouldApplyRestrictions()) {
+          <mat-form-field class="datetime-field">
+            <mat-label>Fecha</mat-label>
+            <input matInput [matDatepicker]="picker" 
+                   (dateChange)="onDateChange($event)"
+                   (click)="picker.open()"
+                   formControlName="due_date"
+                   [readonly]="shouldApplyRestrictions()" />
+            <mat-datepicker-toggle matIconSuffix [for]="picker" 
+                                  [disabled]="shouldApplyRestrictions()">
+              <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        } @else {
+          <div class="datetime-field">
+            <label class="text-sm text-gray-600 dark:text-gray-400 mb-1 block">Fecha</label>
+            <div class="flex items-center gap-2 p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700">
+              <mat-icon class="text-gray-500 dark:text-gray-400">calendar_today</mat-icon>
+              <span class="text-gray-900 dark:text-gray-100">{{ (taskForm.get('due_date')?.value | date:'dd/MM/yyyy') || 'No definida' }}</span>
+            </div>
+          </div>
+        }
+      </div>
+      
+      <!-- Sección de horarios -->
+      <div class="datetime-section">
+        <div class="datetime-grid">
+          <!-- Time picker para hora de inicio -->
+          @if (!shouldApplyRestrictions()) {
+            <mat-form-field class="datetime-field">
+              <mat-label>Inicio</mat-label>
+              <mat-select formControlName="time_start">
+                @for (hour of hoursList; track hour) {
+                  <mat-option [value]="hour">{{ hour }}</mat-option>
+                }
+              </mat-select>
+              <mat-icon matSuffix>schedule</mat-icon>
+            </mat-form-field>
+          } @else {
+            <div class="datetime-field">
+              <label class="text-sm text-gray-600 dark:text-gray-400 mb-1 block">Inicio</label>
+              <div class="flex items-center gap-2 p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700">
+                <mat-icon class="text-gray-500 dark:text-gray-400">schedule</mat-icon>
+                <span class="text-gray-900 dark:text-gray-100">{{ taskForm.get('time_start')?.value || 'No definida' }}</span>
+              </div>
+            </div>
+          }
+          
+          <!-- Tiempo estimado con intervalos de 15 minutos -->
+          @if (!shouldApplyRestrictions()) {
+            <mat-form-field class="datetime-field">
+              <mat-label>Duración</mat-label>
+              <mat-select formControlName="time_estimated">
+                <mat-option value="15">15 min</mat-option>
+                <mat-option value="30">30 min</mat-option>
+                <mat-option value="45">45 min</mat-option>
+                <mat-option value="60">1 hora</mat-option>
+                <mat-option value="90">1 hora 30</mat-option>
+                <mat-option value="120">2 horas</mat-option>
+                <mat-option value="150">2 horas 30</mat-option>
+                <mat-option value="180">3 horas</mat-option>
+                <mat-option value="240">4 horas</mat-option>
+              </mat-select>
+              <mat-icon matSuffix>timer</mat-icon>
+            </mat-form-field>
+          } @else {
+            <div class="datetime-field">
+              <label class="text-sm text-gray-600 dark:text-gray-400 mb-1 block">Duración</label>
+              <div class="flex items-center gap-2 p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700">
+                <mat-icon class="text-gray-500 dark:text-gray-400">timer</mat-icon>
+                <span class="text-gray-900 dark:text-gray-100">{{ getDurationText(taskForm.get('time_estimated')?.value) || 'No definida' }}</span>
+              </div>
+            </div>
+          }
         </div>
       </div>
       
       <!-- Campos de prioridad y urgencia -->
       
       
-      <div class="divider divider-vertical"></div>
+      <div class="divider divider-vertical mt-0 mb-3"></div>
       <div class="task-header">
         <input class="task-title-input font-medium text-lg"
                [class.completed]="taskForm.get('is_completed')?.value"
                formControlName="title"
-               placeholder="Task title" />
+               placeholder="Task title"
+               [readonly]="shouldApplyRestrictions()" />
       </div>
       <div class="full-width">
-        <textarea class="textarea" rows="1" formControlName="description" placeholder="Describe la tarea..."></textarea>
+        <textarea class="textarea" rows="1" formControlName="description" 
+                  placeholder="Describe la tarea..."
+                  [readonly]="shouldApplyRestrictions()"></textarea>
       </div>
       <div class="priority-section mb-4">
         <div class="flex items-center gap-4 mb-3">
@@ -59,42 +133,56 @@
             <span class="text-sm font-medium">Importante</span>
           </label>
         </div>
-        
-        <div class="priority-color-section">
-          <div class="flex items-center gap-2">
-            <span class="text-sm font-medium">Prioridad:</span>
-            @for (color of priorityColors; track color.value) {
-              <button type="button"
-                      class="priority-color-btn px-2 py-1 rounded text-xs font-medium border-2 transition-all"
-                      [class]="color.class"
-                      [class.border-current]="taskForm.get('priority_color')?.value === color.value"
-                      [class.border-transparent]="taskForm.get('priority_color')?.value !== color.value"
-                      (click)="taskForm.get('priority_color')?.setValue(color.value)">
-                {{ color.label }}
-              </button>
-            }
-          </div>
-        </div>
       </div>
       <!-- Subtareas -->
-      @if (selectedTaskSubtasks().length > 0) {
-        <div class="subtasks-section">
-          <h3>Subtareas:</h3>
+      <div class="subtasks-section">
+        <h3>Subtareas:</h3>
+        @if (subtasks.controls.length > 0) {
           <ul class="subtasks-list">
-            @for (subtask of selectedTaskSubtasks(); track subtask.id) {
-              <li class="subtask-item" [class.completed-subtask]="subtask.is_completed">
-                <input type="checkbox"
-                  [checked]="subtask.is_completed"
-                  (change)="toggleSubtask(subtask)"
-                  class="subtask-checkbox">
-                <span class="subtask-name" [class.completed]="subtask.is_completed">
-                  {{subtask.title}}
-                </span>
+            @for (subtask of subtasks.controls; track $index; let i = $index) {
+              <li class="subtask-item" [formGroupName]="i">
+                <input type="text" 
+                       formControlName="title"
+                       class="subtask-name" 
+                       placeholder="Título de la subtarea"
+                       (focus)="onSubtaskFocus($event)"
+                       (blur)="onSubtaskBlur($event)"
+                       [readonly]="shouldApplyRestrictions()" />
+                @if (!shouldApplyRestrictions()) {
+                  <button type="button" 
+                          class="save-subtask-btn text-green-500 hover:text-green-700 text-sm"
+                          (click)="saveSubtask(i)">
+                    Guardar
+                  </button>
+                  <button type="button" 
+                          class="remove-subtask-btn text-red-500 hover:text-red-700 text-sm"
+                          (click)="removeSubtask(i)">
+                    Eliminar
+                  </button>
+                }
               </li>
             }
           </ul>
-        </div>
-      }
+          @if (!shouldApplyRestrictions()) {
+            <button type="button" 
+                    class="add-subtask-btn mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium"
+                    (click)="addSubtask()">
+              + Agregar subtarea
+            </button>
+          }
+        } @else {
+          <p class="no-subtasks-text text-gray-500 dark:text-gray-400 italic text-sm mt-2">
+            No contiene subtareas
+          </p>
+          @if (!shouldApplyRestrictions()) {
+            <button type="button" 
+                    class="add-subtask-btn mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium"
+                    (click)="addSubtask()">
+              + Agregar subtarea
+            </button>
+          }
+        }
+      </div>
       
       <!-- Botónes de guardar y eliminar -->
       <div class="save-changes-section mt-6">
@@ -106,11 +194,13 @@
               Eliminar Tarea
             </button>
           }
-          <button type="button" 
-                  class="save-changes-btn flex-1 py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                  (click)="saveChanges()">
-            Guardar Cambios
-          </button>
+          @if (!shouldApplyRestrictions()) {
+            <button type="button" 
+                    class="save-changes-btn flex-1 py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    (click)="saveChanges()">
+              Guardar Cambios
+            </button>
+          }
         </div>
       </div>
     </form>

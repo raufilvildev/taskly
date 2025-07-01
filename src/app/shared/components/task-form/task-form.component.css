@@ -141,12 +141,116 @@
   background: transparent;
 }
 
+.datetime-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  width: 100%;
+}
+ 
+.datetime-field ::ng-deep .mat-mdc-form-field {
+  color: var(--color-text-main);
+}
+
+.datetime-field ::ng-deep .mat-mdc-form-field-focus-overlay {
+  background-color: transparent;
+}
+
+.datetime-field ::ng-deep .mat-mdc-text-field-wrapper {
+  background-color: var(--color-panel);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.375rem;
+  padding-right: 8px;
+}
+
+.datetime-field ::ng-deep .mat-mdc-floating-label {
+  color: var(--color-text-main);
+}
+
+.datetime-field ::ng-deep .mat-mdc-input-element {
+  color: var(--color-text-main);
+}
+
+.datetime-field ::ng-deep .mat-mdc-form-field-icon-suffix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.datetime-field ::ng-deep .mat-mdc-form-field-icon-suffix mat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilos para modo oscuro */
+:host-context(.dark) .datetime-field ::ng-deep .mat-mdc-text-field-wrapper,
+:host-context(.dark_bg) .datetime-field ::ng-deep .mat-mdc-text-field-wrapper {
+  background-color: transparent;
+  border-color: #374151;
+}
+
+:host-context(.dark) .datetime-field ::ng-deep .mat-mdc-floating-label,
+:host-context(.dark_bg) .datetime-field ::ng-deep .mat-mdc-floating-label {
+  color: #e0e0e0;
+}
+
+:host-context(.dark) .datetime-field ::ng-deep .mat-mdc-input-element,
+:host-context(.dark_bg) .datetime-field ::ng-deep .mat-mdc-input-element {
+  color: #e0e0e0;
+}
+
+:host-context(.dark) .datetime-field ::ng-deep .mat-mdc-form-field-icon-suffix,
+:host-context(.dark_bg) .datetime-field ::ng-deep .mat-mdc-form-field-icon-suffix {
+  color: #e0e0e0;
+}
+
+/* Estilos para el focus */
+.datetime-field ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--focused {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+:host-context(.dark) .datetime-field ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--focused,
+:host-context(.dark_bg) .datetime-field ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--focused {
+  border-color: var(--color-accent-dark);
+}
+
+/* Ocultar la flecha del mat-select de duración */
+.datetime-field ::ng-deep .mat-mdc-select-arrow {
+  display: none;
+}
+
+/* Hacer los iconos más finos y reducir el tamaño del texto */
+.datetime-field ::ng-deep .mat-mdc-form-field-icon-suffix {
+  width: 20px;
+}
+
+.datetime-field ::ng-deep .mat-mdc-floating-label {
+  font-size: 0.8rem;
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 768px) {
+  .datetime-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
+/* Contenedor para la sección de prioridad centrada */
+.priority-section-container {
+  display: flex;
+  justify-content: center;
+}
+
 /* Estilos para la sección de prioridad */
 .priority-section {
-  padding: 1rem;
+  padding: 1rem 2rem;
   background: var(--color-panel);
   border-radius: 0.5rem;
   border: 1px solid var(--color-border, #e5e7eb);
+  min-width: 200px;
 }
 
 :host-context(.dark) .priority-section,
@@ -155,52 +259,15 @@
   border-color: #374151;
 }
 
-.priority-color-section {
-  margin-top: 1rem;
-}
-
-.priority-color-btn {
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.priority-color-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.priority-color-btn.border-current {
-  box-shadow: 0 0 0 2px currentColor;
-}
-
-/* Estilos específicos para colores de prioridad en modo oscuro */
-:host-context(.dark) .priority-color-btn.bg-gray-200,
-:host-context(.dark_bg) .priority-color-btn.bg-gray-200 {
-  background-color: #374151;
-  color: #d1d5db;
-}
-
-:host-context(.dark) .priority-color-btn.bg-yellow-200,
-:host-context(.dark_bg) .priority-color-btn.bg-yellow-200 {
-  background-color: #92400e;
-  color: #fde047;
-}
-
-:host-context(.dark) .priority-color-btn.bg-red-200,
-:host-context(.dark_bg) .priority-color-btn.bg-red-200 {
-  background-color: #991b1b;
-  color: #fca5a5;
-}
-
 /* Estilos para el botón de guardar cambios */
 .save-changes-btn {
-  background: var(--color-primary, #3b82f6);
+  background: var(--color-accent);
   color: white;
   transition: all 0.2s ease;
 }
 
 .save-changes-btn:hover {
-  background: var(--color-primary-hover, #2563eb);
+  background: var(--color-focus);
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -214,12 +281,12 @@
 
 :host-context(.dark) .save-changes-btn,
 :host-context(.dark_bg) .save-changes-btn {
-  background: #60a5fa;
+  background: var(--color-accent-dark);
 }
 
 :host-context(.dark) .save-changes-btn:hover,
 :host-context(.dark_bg) .save-changes-btn:hover {
-  background: #3b82f6;
+  background: var(--color-accent);
 }
 
 /* Estilos para el botón de cancelar */
@@ -271,4 +338,94 @@
 }
 :host-context(.dark) .native-date-input::-webkit-calendar-picker-indicator {
   filter: invert(1);
+}
+
+/* Estilos para el modal de éxito en modo oscuro */
+:host-context(.dark) .modal-success {
+  background: #1f2937;
+  color: #e0e0e0;
+}
+
+:host-context(.dark) .modal-success span {
+  color: #e0e0e0;
+}
+
+/* Estilos específicos para el icono del date-picker */
+.datetime-field ::ng-deep .mat-datepicker-toggle {
+  color: var(--color-text-main);
+}
+
+.datetime-field ::ng-deep .mat-datepicker-toggle mat-icon {
+  color: var(--color-text-main);
+}
+
+/* Estilos para modo oscuro del date-picker */
+:host-context(.dark) .datetime-field ::ng-deep .mat-datepicker-toggle,
+:host-context(.dark_bg) .datetime-field ::ng-deep .mat-datepicker-toggle {
+  color: #e0e0e0;
+}
+
+:host-context(.dark) .datetime-field ::ng-deep .mat-datepicker-toggle mat-icon,
+:host-context(.dark_bg) .datetime-field ::ng-deep .mat-datepicker-toggle mat-icon {
+  color: #e0e0e0;
+}
+
+/* Estilos para campos deshabilitados cuando el usuario es alumno */
+.task-title-input[readonly],
+.textarea[readonly] {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+:host-context(.dark) .task-title-input[readonly],
+:host-context(.dark_bg) .task-title-input[readonly],
+:host-context(.dark) .textarea[readonly],
+:host-context(.dark_bg) .textarea[readonly] {
+  background-color: #374151;
+  color: #9ca3af;
+}
+
+.subtask-name[readonly] {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+:host-context(.dark) .subtask-name[readonly],
+:host-context(.dark_bg) .subtask-name[readonly] {
+  background-color: #374151;
+  color: #9ca3af;
+}
+
+/* Estilos para campos de Material deshabilitados */
+.datetime-field ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--disabled {
+  background-color: #f3f4f6;
+  opacity: 0.7;
+}
+
+:host-context(.dark) .datetime-field ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--disabled,
+:host-context(.dark_bg) .datetime-field ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--disabled {
+  background-color: #374151;
+  opacity: 0.7;
+}
+
+/* Estilos específicos para el icono del time-picker */
+.datetime-field ::ng-deep .mat-timepicker-toggle {
+  color: var(--color-text-main);
+}
+
+.datetime-field ::ng-deep .mat-timepicker-toggle mat-icon {
+  color: var(--color-text-main);
+}
+
+/* Estilos para modo oscuro del time-picker */
+:host-context(.dark) .datetime-field ::ng-deep .mat-timepicker-toggle,
+:host-context(.dark_bg) .datetime-field ::ng-deep .mat-timepicker-toggle {
+  color: #e0e0e0;
+}
+
+:host-context(.dark) .datetime-field ::ng-deep .mat-timepicker-toggle mat-icon,
+:host-context(.dark_bg) .datetime-field ::ng-deep .mat-timepicker-toggle mat-icon {
+  color: #e0e0e0;
 }

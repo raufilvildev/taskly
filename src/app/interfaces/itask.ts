@@ -5,10 +5,10 @@ export interface ITask {
   course_id?: number;
   category: "custom" | "course_related";
   title: string;
-  description?: string;
-  due_date?: string;
-  time_start?: string;
-  time_end?: string;
+  description: string;
+  due_date: string;
+  time_start: string;
+  time_end: string;
   is_urgent: boolean;
   is_important: boolean;
   priority_color: "neutral" | "yellow" | "red";

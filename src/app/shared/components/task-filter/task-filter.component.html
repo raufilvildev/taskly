@@ -1,0 +1,83 @@
+<!-- Vista Desktop -->
+<div class="task-filter-desktop hidden md:block">
+  <div class="flex justify-center my-4">
+    <span class="px-4 text-sm dark:text-white">Filtros adicionales</span>
+  </div>
+  <ul class="menu rounded-box w-full p-0 flex flex-col" style="background: transparent;">
+    <li class="mb-2">
+      <a (click)="toggleCategoryFilter('personales')"
+         [class.selected-project]="selectedCategoryFilters.includes('personales')"
+         [class.active-filter]="selectedCategoryFilters.includes('personales')"
+         class="flex items-center gap-2 py-2 rounded-lg cursor-pointer w-full dark:hover:bg-purple-900 transition-all">
+        <mat-icon>person</mat-icon>
+        Tareas personales
+      </a>
+    </li>
+    <li class="mb-2">
+      <a (click)="toggleCategoryFilter('cursos')"
+         [class.selected-project]="selectedCategoryFilters.includes('cursos')"
+         [class.active-filter]="selectedCategoryFilters.includes('cursos')"
+         class="flex items-center gap-2 py-2 rounded-lg cursor-pointer w-full dark:hover:bg-purple-900 transition-all">
+        <mat-icon>school</mat-icon>
+        Tareas de cursos
+      </a>
+    </li>
+    <li class="mb-2">
+      <a (click)="togglePendingTasks()"
+         [class.selected-project]="showPendingTasks"
+         [class.active-filter]="showPendingTasks"
+         class="flex items-center gap-2 py-2 rounded-lg cursor-pointer w-full dark:hover:bg-purple-900 transition-all">
+         <mat-icon>schedule</mat-icon>
+         Tareas pendientes
+      </a>
+    </li>
+    <li class="mb-2">
+      <a (click)="toggleCompletedTasks()"
+         [class.selected-project]="showCompletedTasks"
+         [class.active-filter]="showCompletedTasks"
+         class="flex items-center gap-2 py-2 rounded-lg cursor-pointer w-full dark:hover:bg-purple-900 transition-all">
+         <mat-icon>check_circle</mat-icon>
+         Tareas completadas
+      </a>
+    </li>
+  </ul>
+</div>
+
+<!-- Vista Móvil - Navbar -->
+<div class="task-filter-mobile md:hidden">
+  <div class="filter-navbar bg-white dark:bg-gray-800 shadow-md border-b border-gray-200 dark:border-gray-700">
+    <div class="flex items-center justify-around px-2 py-2">
+      <!-- Filtro Personales -->
+      <button (click)="toggleCategoryFilter('personales')"
+              [class.active]="selectedCategoryFilters.includes('personales')"
+              class="filter-btn flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-all">
+        <mat-icon class="text-lg">person</mat-icon>
+        <span class="text-xs">Personales</span>
+      </button>
+      
+      <!-- Filtro Cursos -->
+      <button (click)="toggleCategoryFilter('cursos')"
+              [class.active]="selectedCategoryFilters.includes('cursos')"
+              class="filter-btn flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-all">
+        <mat-icon class="text-lg">school</mat-icon>
+        <span class="text-xs">Cursos</span>
+      </button>
+      
+      <!-- Filtro Pendientes -->
+      <button (click)="togglePendingTasks()"
+              [class.active]="showPendingTasks"
+              class="filter-btn flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-all">
+        <mat-icon class="text-lg">schedule</mat-icon>
+        <span class="text-xs">Pendientes</span>
+      </button>
+      
+      <!-- Filtro Completadas -->
+      <button (click)="toggleCompletedTasks()"
+              [class.active]="showCompletedTasks"
+              class="filter-btn flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-all">
+        <mat-icon class="text-lg">check_circle</mat-icon>
+        <span class="text-xs">Completadas</span>
+      </button>
+    </div>
+  </div>
+</div> 
