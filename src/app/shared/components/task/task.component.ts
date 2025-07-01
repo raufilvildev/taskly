@@ -12,10 +12,18 @@ export class TaskComponent {
   @Input() task!: ITask;
   @Input() expanded: boolean = false;
   @Input() isSelected: boolean = false;
-  @Input() getTaskProgress!: (task: ITask) => { completed: number, total: number };
   @Input() formatDueDate!: (date: string | undefined) => string;
   @Output() selectTask = new EventEmitter<ITask>();
   @Output() toggleTask = new EventEmitter<ITask>();
   @Output() toggleSubtask = new EventEmitter<ISubtask>();
   @Output() toggleExpand = new EventEmitter<number>();
+
+  isTaskOverdue(): boolean {
+    if (!this.task.due_date) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Resetear a inicio del día
+    const dueDate = new Date(this.task.due_date);
+    dueDate.setHours(0, 0, 0, 0); // Resetear a inicio del día
+    return dueDate < today && !this.task.is_completed;
+  }
 }

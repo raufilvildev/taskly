@@ -1,5 +1,5 @@
 <div class="task-list">
-  <div class="task-list-header flex justify-between items-center mb-4">
+  <div class="task-list-header flex justify-between items-center">
     @if (showBackButton) {
       <button (click)="back.emit()" class="mr-2" aria-label="Atrás">
         <mat-icon>arrow_back</mat-icon>
@@ -16,15 +16,24 @@
     }
   </div>
 
+  <!-- Filtros adicionales solo en móvil -->
+  @if (showBackButton && !isCourse) {
+    <app-task-filter (filterChange)="onFilterChange($event)"></app-task-filter>
+  }
+<!-- Modal de creación de tarea -->
   @if (showTaskFormModal) {
-    <div class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-      <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg relative">
+    <div class="fixed inset-0 bg-black/75 flex items-center justify-center transition-opacity duration-300 ease-in-out">
+      <div class="task-modal p-8 rounded-lg shadow-lg w-full max-w-lg relative animate-pop-in">
         <button (click)="closeTaskFormModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-xl">&times;</button>
-        <app-task-form></app-task-form>
+        <app-task-form 
+          (close)="closeTaskFormModal()"
+          (createTask)="onCreateTask($event)">
+        </app-task-form>
       </div>
     </div>
   }
 
+<!-- Lista de tareas -->
   @if (tasks.length > 0) {
     <div>
       @for (task of tasks; track task.id) {
@@ -32,7 +41,6 @@
           [task]="task"
           [expanded]="expandedTasks[task.id]"
           [isSelected]="isTaskSelected(task)"
-          [getTaskProgress]="getTaskProgress"
           [formatDueDate]="formatDueDate"
           (selectTask)="selectTask($event)"
           (toggleTask)="toggleTask($event)"
