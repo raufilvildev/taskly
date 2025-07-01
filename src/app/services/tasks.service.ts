@@ -5,11 +5,11 @@ import { Observable } from 'rxjs';
 import { environment } from '../environments/environment.test';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TasksService {
   private readonly API_BASE_URL = `${environment.host}/api/tasks`;
-  
+
   public tasks = signal<ITask[]>([]);
   selectedTask = signal<ITask | null>(null);
 
@@ -30,36 +30,49 @@ export class TasksService {
 
   // GET api/tasks?filter=today|week|month -> getAll (si filter=today, mostrar también tareas pasadas no completadas)
   getTasksByPeriod(period: 'today' | 'week' | 'month'): Observable<ITask[]> {
-    return this.http.get<ITask[]>(`${this.API_BASE_URL}?filter=${period}`);
+    const url = `${this.API_BASE_URL}?filter=${period}`;
+    return this.http.get<ITask[]>(url);
   }
 
   // GET api/tasks/:course_uuid?filter=today|week|month -> getTasksByCourseUuid (si filter=today, mostrar también tareas pasadas no completadas)
-  getTasksByCourseUuid(courseUuid: string, period: 'today' | 'week' | 'month'): Observable<ITask[]> {
-    return this.http.get<ITask[]>(`${this.API_BASE_URL}/${courseUuid}?filter=${period}`);
+  getTasksByCourseUuid(
+    courseUuid: string,
+    period: 'today' | 'week' | 'month'
+  ): Observable<ITask[]> {
+    const url = `${this.API_BASE_URL}/${courseUuid}?filter=${period}`;
+    return this.http.get<ITask[]>(url);
   }
 
   // POST api/tasks -> Se asigna al usuario.
   createTask(taskData: Partial<ITask>): Observable<ITask> {
-    return this.http.post<ITask>(this.API_BASE_URL, taskData);
+    const url = `${this.API_BASE_URL}`;
+    return this.http.post<ITask>(url, taskData);
   }
 
   // POST api/tasks/?course_uuid -> Solo la puede hacer el profesor y se debe asignar tanto al profesor como a sus alumnos.
   createTaskForCourse(courseUuid: string, taskData: Partial<ITask>): Observable<ITask> {
-    return this.http.post<ITask>(`${this.API_BASE_URL}?course_uuid=${courseUuid}`, taskData);
+    const url = `${this.API_BASE_URL}?course_uuid=${courseUuid}`;
+    return this.http.post<ITask>(url, taskData);
   }
 
   // UPDATE api/tasks/:task_uuid -> Actualiza una tarea completa
   updateTask(taskUuid: string, taskData: Partial<ITask>): Observable<ITask> {
-    return this.http.put<ITask>(`${this.API_BASE_URL}/${taskUuid}`, taskData);
+    const url = `${this.API_BASE_URL}/${taskUuid}`;
+    return this.http.put<ITask>(url, taskData);
   }
 
   // PATCH api/tasks/:task_uuid -> Actualiza urgencia e importancia de la tarea
-  updateTaskPropertiesByUuid(taskUuid: string, properties: { is_urgent?: boolean; is_important?: boolean }): Observable<ITask> {
-    return this.http.patch<ITask>(`${this.API_BASE_URL}/${taskUuid}`, properties);
+  updateTaskPropertiesByUuid(
+    taskUuid: string,
+    properties: { is_urgent?: boolean; is_important?: boolean }
+  ): Observable<ITask> {
+    const url = `${this.API_BASE_URL}/${taskUuid}`;
+    return this.http.patch<ITask>(url, properties);
   }
 
   // DELETE api/tasks/:task_uuid
   deleteTask(taskUuid: string): Observable<void> {
-    return this.http.delete<void>(`${this.API_BASE_URL}/${taskUuid}`);
+    const url = `${this.API_BASE_URL}/${taskUuid}`;
+    return this.http.delete<void>(url);
   }
 }
