@@ -341,4 +341,8 @@ export class TaskDetailComponent {
     const mins = Number(minutes);
     return this.durationMap[mins] || `${mins} min`;
   }
+
+  saveSubtask(index: number) {
+    this.sendUpdate();
+  }
 }
