@@ -145,8 +145,6 @@
                        formControlName="title"
                        class="subtask-name" 
                        placeholder="Título de la subtarea"
-                       (focus)="onSubtaskFocus($event)"
-                       (blur)="onSubtaskBlur($event)"
                        [readonly]="shouldApplyRestrictions()" />
                 @if (!shouldApplyRestrictions()) {
                   <button type="button" 
