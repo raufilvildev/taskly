@@ -120,8 +120,8 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
     return this.currentArray[this.currentIndex];
   }
 
-   get isMobile(): boolean {
-    return window.innerWidth <= 768; 
+  get isMobile(): boolean {
+    return window.innerWidth <= 768;
   }
 
   toggleRole() {
@@ -163,53 +163,49 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
     });
   }
 
-   animateSwitch() {
+  animateSwitch() {
     if (!this.containerDiv) return;
 
     const mm = gsap.matchMedia();
 
-    mm.add("(max-width: 768px)", () => {
-        gsap.set(this.containerDiv.nativeElement, { opacity: 0, y: 30 });
+    mm.add('(max-width: 768px)', () => {
+      const el = this.containerDiv.nativeElement;
 
-        const tl = gsap.timeline({
+      gsap.set(el, { opacity: 0, y: 30 });
+
+      gsap.to(el, {
+        opacity: 1,
+        y: 0,
+        ease: 'none',
         scrollTrigger: {
-            trigger: this.containerDiv.nativeElement,
-            start: 'top 80%',
-            toggleActions: 'play none none reset',
-            markers: false,
+          trigger: el,
+          start: 'top 85%',
+          end: 'top 40%',
+          scrub: true,
+          toggleActions: 'play reverse play reverse',
+          markers: false,
         },
-        });
-
-        tl.to(this.containerDiv.nativeElement, { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' });
-
-        return () => {
-        tl.scrollTrigger?.kill();
-        tl.kill();
-        ScrollTrigger.getAll().forEach(st => st.kill());
-        };
+      });
     });
 
-    mm.add("(min-width: 769px)", () => {
-        gsap.set(this.containerDiv.nativeElement, { opacity: 0, y: 50 });
+    mm.add('(min-width: 769px)', () => {
+      const el = this.containerDiv.nativeElement;
 
-        const tl = gsap.timeline({
+      gsap.set(el, { opacity: 0, y: 50 });
+
+      gsap.to(el, {
+        opacity: 1,
+        y: 0,
+        ease: 'none',
         scrollTrigger: {
-            trigger: this.containerDiv.nativeElement,
-            start: 'top 80%',
-            toggleActions: 'play none none reset',
-            markers: false,
+          trigger: el,
+          start: 'top 85%',
+          end: 'top 40%',
+          scrub: true,
+          toggleActions: 'play reverse play reverse',
+          markers: false,
         },
-        });
-
-        tl.to(this.containerDiv.nativeElement, { opacity: 1, y: 0, duration: 1, ease: 'power2.out' });
-
-        return () => {
-        tl.scrollTrigger?.kill();
-        tl.kill();
-        ScrollTrigger.getAll().forEach(st => st.kill());
-        };
+      });
     });
-    }
-
-
+  }
 }

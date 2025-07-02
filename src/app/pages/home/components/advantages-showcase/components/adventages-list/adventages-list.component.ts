@@ -85,7 +85,7 @@ export class AdventagesListComponent implements OnInit, AfterViewInit {
           end: 'top 30%',
           scrub: true,
           toggleActions: 'play none none reset',
-          markers: true,
+          markers: false,
         }
       });
 

@@ -41,7 +41,7 @@ export class FeaturesComponent implements AfterViewInit {
     this.ngZone.runOutsideAngular(() => {
       const mm = gsap.matchMedia();
 
-      // Escritorio: animación desde 10% del ancho visible hasta x=0
+      // Escritorio
       mm.add('(min-width: 769px)', () => {
         if (
           !this.professorWrapper ||
@@ -55,7 +55,7 @@ export class FeaturesComponent implements AfterViewInit {
         const profScrollerEl = this.professorScroller.nativeElement;
         const studScrollerEl = this.studentScroller.nativeElement;
 
-        // Calcula 10% del ancho visible del contenedor para que la animación empiece dentro de la zona visible (no transparente del mask)
+        // Calcula 10% del ancho visible del contenedor 
         const fadeMarginProf = profEl.offsetWidth * 0.1;
         const fadeMarginStud = studEl.offsetWidth * 0.1;
 
@@ -63,8 +63,8 @@ export class FeaturesComponent implements AfterViewInit {
         gsap.set(studScrollerEl, { x: -fadeMarginStud - 150, opacity: 0.5 });
 
         // Ambas animaciones usan el mismo trigger y los mismos valores de start/end para sincronizarse
-        const scrollStart = 'top 80%'; // 20% por arriba del bottom
-        const scrollEnd = 'top 20%';   // 20% por abajo del top
+        const scrollStart = 'top 80%'; 
+        const scrollEnd = 'top 20%';  
 
         const trigger = profEl; // Usamos el mismo trigger para ambos
 
@@ -104,7 +104,7 @@ export class FeaturesComponent implements AfterViewInit {
         };
       });
 
-      // Móvil: animación como la tenías, empieza fuera y termina desplazado según contenido
+      // Móvil
       mm.add('(max-width: 768px)', () => {
         if (
           !this.professorWrapper ||
