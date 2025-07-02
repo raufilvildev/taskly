@@ -1,4 +1,14 @@
-import { Component, signal, ChangeDetectorRef, OnInit, inject, Input, computed, effect } from '@angular/core';
+import {
+  Component,
+  signal,
+  ChangeDetectorRef,
+  OnInit,
+  inject,
+  Input,
+  computed,
+  effect,
+  HostListener,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventApi } from '@fullcalendar/core';
@@ -32,16 +42,15 @@ export class TableComponent implements OnInit {
 
   activeFilters = signal<TaskFilters>({
     isUrgent: true,
-    isImportant: true
+    isImportant: true,
   });
 
   filteredTasks = computed(() => {
     const tasks = this.tasksService.tasks();
     const filters = this.activeFilters();
 
-    return tasks.filter(task =>
-      (filters.isUrgent && task.is_urgent) ||
-      (filters.isImportant && task.is_important)
+    return tasks.filter(
+      (task) => (filters.isUrgent && task.is_urgent) || (filters.isImportant && task.is_important)
     );
   });
 
@@ -57,41 +66,98 @@ export class TableComponent implements OnInit {
   }
 
   private getCalendarOptions(): CalendarOptions {
+    const isMobile = window.innerWidth < 768;
+
     return {
       plugins: [dayGridPlugin, timeGridPlugin],
       locale: esLocale,
+      initialView: isMobile ? 'timeGridDay' : 'dayGridMonth',
       headerToolbar: {
-        left: 'prev,next today',
+        left: isMobile ? 'prev,next' : 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek',
+        right: isMobile ? 'dayGridMonth,timeGridDay' : 'dayGridMonth,timeGridWeek,timeGridDay',
       },
       buttonText: {
-        today: 'Hoy',
-        month: 'Mes',
-        week: 'Semana',
+        today: isMobile ? 'Hoy' : 'Hoy',
+        month: isMobile ? 'M' : 'Mes',
+        week: isMobile ? 'S' : 'Semana',
+        day: isMobile ? 'D' : 'Día',
       },
       views: {
+        dayGridMonth: {
+          titleFormat: { year: 'numeric', month: 'short' },
+          dayHeaderFormat: isMobile ? { weekday: 'narrow' } : { weekday: 'long' },
+          displayEventTime: false,
+          fixedWeekCount: false,
+        },
         timeGridWeek: {
-          dayHeaderFormat: { weekday: 'short', day: 'numeric' },
+          titleFormat: isMobile
+            ? { month: 'short', day: 'numeric' }
+            : { year: 'numeric', month: 'long', day: 'numeric' },
+          dayHeaderFormat: isMobile
+            ? { weekday: 'narrow', day: 'numeric' }
+            : { weekday: 'short', day: 'numeric' },
           slotLabelFormat: {
             hour: '2-digit',
             minute: '2-digit',
             hour12: false,
+            meridiem: false,
           },
+          slotMinTime: '07:00:00',
+          slotMaxTime: '22:00:00',
+          slotDuration: '00:30:00',
+          scrollTime: '08:00:00',
+        },
+        timeGridDay: {
+          titleFormat: isMobile
+            ? { weekday: 'short', day: 'numeric' }
+            : { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' },
+          slotLabelFormat: {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+            meridiem: false,
+          },
+          slotMinTime: '07:00:00',
+          slotMaxTime: '22:00:00',
+          slotDuration: '00:30:00',
+          scrollTime: '08:00:00',
         },
       },
       eventDisplay: 'block',
+      eventTimeFormat: {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        meridiem: false,
+      },
       eventsSet: this.handleEvents.bind(this),
       eventClick: this.handleEventClick.bind(this),
-      slotMinTime: '08:00:00',
-      slotMaxTime: '20:00:00',
       allDaySlot: true,
-      slotDuration: '01:00:00',
+      allDayText: isMobile ? 'Todo día' : 'Todo el día',
       height: 'auto',
       expandRows: true,
       nowIndicator: true,
-      dayHeaderFormat: { weekday: 'long' },
+      handleWindowResize: true,
+      windowResizeDelay: 200,
+      stickyHeaderDates: true,
+      dayMaxEvents: true,
+      showNonCurrentDates: false,
+      firstDay: 1, // Lunes como primer día de la semana
+      weekNumbers: !isMobile, // Ocultar números de semana en móvil
+      weekText: 'S',
+      weekNumberFormat: { week: 'numeric' },
+      businessHours: {
+        daysOfWeek: [1, 2, 3, 4, 5], // Lunes a Viernes
+        startTime: '08:00',
+        endTime: '20:00',
+      },
     };
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.calendarOptions = this.getCalendarOptions();
   }
 
   private loadTasks(): void {
@@ -109,7 +175,7 @@ export class TableComponent implements OnInit {
         isCompleted: task.is_completed,
         category: task.category,
         isUrgent: task.is_urgent,
-        isImportant: task.is_important
+        isImportant: task.is_important,
       },
     }));
 
@@ -120,10 +186,10 @@ export class TableComponent implements OnInit {
   }
 
   private getPriorityColor(task: ITask): string {
-    if (task.is_urgent && task.is_important) return '#ef4444';    // Rojo
-    if (!task.is_urgent && task.is_important) return '#eab308';   // Amarillo
-    if (task.is_urgent && !task.is_important) return '#3b82f6';   // Azul
-    return '#22c55e';   // Verde
+    if (task.is_urgent && task.is_important) return '#ef4444';
+    if (!task.is_urgent && task.is_important) return '#eab308';
+    if (task.is_urgent && !task.is_important) return '#3b82f6';
+    return '#22c55e';
   }
 
   private handleEvents(events: EventApi[]): void {
