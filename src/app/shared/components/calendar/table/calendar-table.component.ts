@@ -41,8 +41,8 @@ export class TableComponent implements OnInit {
   calendarOptions: CalendarOptions;
 
   activeFilters = signal<TaskFilters>({
-    isUrgent: true,
-    isImportant: true,
+    isUrgent: false,
+    isImportant: false,
   });
 
   filteredTasks = computed(() => {
