@@ -79,11 +79,11 @@ export class HeroComponent implements AfterViewInit {
 
       // Media query para escritorio 
       mm.add("(min-width: 769px)", () => {
-        gsap.set('.scroll-header__title', { scale: 1.6, transformOrigin: 'center top' });
+        gsap.set('.scroll-header__title', { scale: 1.4, transformOrigin: 'center top' });
         gsap.set('.scroll-header__content', { opacity: 0, y: 200 });
         gsap.set('.scroll-header__buttons', { opacity: 0, y: 100 });
         gsap.set('.scroll-arrow', { opacity: 1, scale: 1, transformOrigin: 'center center' });
-        gsap.set('.scroll-zoom', {opacity: 0, scale: 0.8, transformOrigin: 'center center' });
+        gsap.set('.scroll-zoom', {opacity: 0, scale: 0.7, transformOrigin: 'center center' });
 
 
         // Timeline scroll para header
@@ -116,7 +116,7 @@ export class HeroComponent implements AfterViewInit {
         // Animación zoom scroll escritorio
         gsap.to('.scroll-zoom', {
           opacity:1,
-          scale: 1.1,
+          scale: 1.2,
           y: 100,
           scrollTrigger: {
             trigger: '.scroll-zoom',

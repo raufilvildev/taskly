@@ -1,4 +1,12 @@
-<div class="flex justify-start pt-24">
+<div
+  #containerDiv
+  class="flex flex-col md:flex-row justify-center pt-18 max-w-[90vw] md:max-w-[73vw] mx-auto gap-6 md:gap-8 items-center pb-10"
+>
+  <h2
+    class="text-2xl md:text-4xl leading-none font-bold items-center text-custom-accent-dark dark:text-white"
+  >
+    Elige tu rol
+  </h2>
   <button
     id="role-switch"
     type="button"
@@ -6,32 +14,42 @@
     aria-label="Seleccionar rol: Profesor o Alumno"
     [attr.aria-checked]="currentType === 'teacher'"
     (click)="toggleRole()"
-    class="relative inline-flex h-17 w-75 items-center justify-center rounded-full transition-colors duration-300"
-    [class.bg-custom-accent]="currentType === 'teacher'"
-    [class.bg-custom-accent-dark]="currentType === 'alumn'"
+    class="relative inline-flex h-14 md:h-17 w-56 md:w-75 items-center justify-center rounded-full transition-colors duration-300"
+    [ngClass]="{
+      'bg-custom-accent-dark': currentType === 'teacher',
+      'bg-custom-accent': currentType === 'alumn',
+      'dark:bg-purple-700': currentType === 'teacher',
+      'dark:bg-purple-800': currentType === 'alumn',
+    }"
   >
     <!-- Texto central -->
-    <span class="text-[var(--color-custom-text-main)] font-semibold text-4xl z-10 select-none">
+    <span
+      class="text-xl md:text-4xl text-[var(--color-custom-text-main)] dark:text-white font-semibold z-10 select-none"
+    >
       {{ currentType === 'teacher' ? 'Profesor' : 'Alumno' }}
     </span>
 
     <!-- Bola que se mueve -->
     <span
       #toggleBall
-      class="absolute left-1 top-1 h-15 w-15 rounded-full bg-white shadow transition-transform duration-300 flex items-center justify-center"
+      class="absolute left-1 top-1 h-12 md:h-15 w-12 md:w-15 rounded-full bg-white shadow transition-transform duration-300 flex items-center justify-center"
       [style.transform]="
-        currentType === 'teacher' ? 'translateX(0)' : 'translateX(387%)'
+        currentType === 'teacher'
+          ? isMobile
+            ? 'translateX(350%)'
+            : 'translateX(387%)'
+          : 'translateX(0)'
       "
     >
       <!-- Flecha direccional dentro de la bola -->
       <svg
-        class="w-6 h-6 text-custom-accent"
+        class="w-5 md:w-6 h-5 md:h-6 text-custom-accent"
         fill="none"
         stroke="currentColor"
         stroke-width="3"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
-        [attr.transform]="currentType === 'teacher' ? 'rotate(0)' : 'rotate(180)'"
+        [attr.transform]="currentType === 'teacher' ? 'rotate(180)' : 'rotate(0)'"
       >
         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
       </svg>
@@ -39,7 +57,6 @@
   </button>
 </div>
 
-<!-- Componente hijo que muestra la ventaja actual -->
 <app-adventages-list
   [item]="selectedItem"
   [type]="currentType"

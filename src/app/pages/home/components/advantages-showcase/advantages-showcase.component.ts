@@ -25,37 +25,37 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
     {
       title: 'Crea cursos fácilmente',
       description:
-        '¿Eres profesor? Diseña y publica tus propios cursos en minutos. Nuestra plataforma te da el control total: estructura módulos, añade lecciones interactivas y comparte tu conocimiento con cientos de estudiantes sin complicaciones.',
+        '¿Eres profesor? Diseña y publica tus propios cursos en minutos. Comparte tu conocimiento con cientos de estudiantes sin complicaciones técnicas ni barreras.',
       image: '/assets/images/ejemplo_1.png',
     },
     {
       title: 'Gestiona tareas sin esfuerzo',
       description:
-        'Asigna tareas, pon fechas límite y da retroalimentación directamente desde la app. Olvídate del caos: organiza tu aula virtual con fluidez y ahorra tiempo en cada clase',
+        'Asigna tareas, establece fechas límite y proporciona retroalimentación directamente desde la app. Centraliza toda la información del curso y automatiza recordatorios para evitar olvidos. Organiza tu aula virtual con fluidez y ahorra tiempo valioso en cada clase, dedicándote a lo que realmente importa: enseñar.',
       image: '/assets/images/tareas-preview.jpg',
     },
     {
       title: 'Calendario que te organiza la vida',
       description:
-        'Todo lo que necesitas, en un solo lugar: entregas, clases, recordatorios y eventos. Visualiza tu semana académica con claridad y nunca más pierdas una fecha importante.',
+        'Todo lo que necesitas, en un solo lugar: entregas, reuniones, recordatorios y eventos académicos. Nuestro calendario inteligente se sincroniza con tus cursos y te ofrece una vista clara y ordenada de tu semana. Nunca más pierdas una fecha importante ni olvides una clase.',
       image: '/assets/images/material-preview.jpg',
     },
     {
       title: 'Conecta con tu comunidad',
       description:
-        '¿Dudas? ¿Ideas? ¿Preguntas? Participa en foros temáticos o chatea en tiempo real con tus compañeros y profesores. Aprende, colabora y crece en comunidad.',
+        '¿Dudas? ¿Ideas? ¿Preguntas? Participa en foros temáticos, comenta publicaciones o chatea en tiempo real con alumnos y colegas. Fomenta el diálogo, el aprendizaje colaborativo y construye una comunidad educativa activa, motivada y conectada más allá del aula.',
       image: '/assets/images/calendario-preview.jpg',
     },
     {
       title: 'Exporta y comparte tus planes',
       description:
-        'Profesores: genera un PDF profesional de tu curso y compártelo fácilmente. Estudiantes: guarda tu cronograma de estudio y llévalo contigo a todas partes, incluso sin conexión.',
+        'Genera un PDF profesional de tu curso con estructura, cronograma y objetivos claros. Compártelo con instituciones, alumnos o guárdalo como respaldo.',
       image: '/assets/images/foro-preview.jpg',
     },
     {
-      title: 'Estudia con enfoque gracias al modo Pomodoro',
+      title: 'Enfocate gracias al modo Pomodoro',
       description:
-        'Evita distracciones y maximiza tu concentración. Activa el modo Pomodoro y estudia con técnica probada: bloques de 25 minutos que disparan tu productividad.',
+        'Evita distracciones y mantén la concentración durante las clases o sesiones de preparación. Activa el modo Pomodoro y trabaja por bloques de 25 minutos con descansos activos. Una técnica probada que aumenta la productividad y mejora la retención del conocimiento.',
       image: '/assets/images/progreso-preview.jpg',
     },
   ];
@@ -64,50 +64,52 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
     {
       title: 'Aprende a tu ritmo',
       description:
-        'Accede a cursos diseñados por expertos y estudia cuando quieras, desde cualquier dispositivo. Tú decides el ritmo y el horario que mejor se adapta a tu vida.',
+        'Accede a cursos diseñados por profesores y expertos, disponibles en todo momento. Ya sea desde tu ordenador, tablet o móvil, tú eliges cuándo y dónde estudiar. Acomoda tu aprendizaje a tu estilo de vida y avanza a tu propio ritmo sin presión.',
       image: '/assets/images/ejemplo_1.png',
     },
     {
       title: 'Organiza tus tareas fácilmente',
       description:
-        'Visualiza todas tus tareas, fechas de entrega y actividades en un solo lugar. Recibe recordatorios y mantén el control de tu progreso académico sin estrés.',
+        'Visualiza todas tus tareas, fechas de entrega y actividades en una interfaz clara y accesible. Recibe alertas automáticas, marca tareas como completadas y controla tu progreso día a día. Simplifica tu vida académica y mantén todo bajo control sin estrés.',
       image: '/assets/images/tareas-preview.jpg',
     },
     {
       title: 'Calendario académico integrado',
       description:
-        'Consulta tu calendario para no perderte ninguna clase, entrega o evento importante. Planifica tu semana y optimiza tu tiempo de estudio.',
+        'Consulta tu calendario personalizado para no perderte clases, entregas o eventos. Todo sincronizado con tus cursos y actualizado en tiempo real. Planifica mejor tu semana, equilibra estudio y descanso, y mejora tu rendimiento académico.',
       image: '/assets/images/material-preview.jpg',
     },
     {
       title: 'Participa en la comunidad',
       description:
-        'Resuelve dudas, comparte ideas y colabora con otros estudiantes y profesores en foros y chats en tiempo real. Aprende y crece junto a tu comunidad educativa.',
+        'Resuelve dudas, comparte ideas, colabora con otros estudiantes y recibe ayuda directa de tus profesores. Los foros temáticos y el chat en tiempo real te permiten mantenerte conectado, aprender de otros y crecer junto a una comunidad comprometida.',
       image: '/assets/images/calendario-preview.jpg',
     },
     {
-      title: 'Descarga y comparte tus apuntes',
+      title: 'Descarga y comparte tus cursos',
       description:
-        'Guarda tus materiales y cronogramas en PDF para consultarlos sin conexión o compartirlos fácilmente con tus compañeros.',
+        'Guarda tus cursos en formato PDF para revisarlos sin conexión cuando lo necesites. Comparte fácilmente con tus compañeros o imprímelos para tenerlo en cualquier lugar.',
       image: '/assets/images/foro-preview.jpg',
     },
     {
-      title: 'Mejora tu concentración con el modo Pomodoro',
+      title: 'Mejora la concentración con el modo Pomodoro',
       description:
-        'Utiliza la técnica Pomodoro para estudiar en bloques de tiempo y aumentar tu productividad. Mantente enfocado y alcanza tus metas académicas.',
+        'Utiliza la técnica Pomodoro para estudiar en bloques de tiempo efectivos y descansos planificados. Esta metodología te ayuda a mantener el enfoque y alcanzar tus metas académicas con mayor eficiencia.',
       image: '/assets/images/progreso-preview.jpg',
     },
   ];
 
-  currentType: AdvantageType = 'teacher';
+  currentType: AdvantageType = 'alumn';
   currentIndex = 0;
 
   @ViewChild('toggleBall', { static: false }) toggleBall!: ElementRef<HTMLSpanElement>;
+  @ViewChild('containerDiv', { static: false }) containerDiv!: ElementRef<HTMLDivElement>;
 
   private ballTimeline?: gsap.core.Timeline;
 
   ngAfterViewInit() {
     this.animateBall();
+    this.animateSwitch();
   }
 
   get currentArray(): AdvantageItem[] {
@@ -116,6 +118,10 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
 
   get selectedItem(): AdvantageItem {
     return this.currentArray[this.currentIndex];
+  }
+
+   get isMobile(): boolean {
+    return window.innerWidth <= 768; 
   }
 
   toggleRole() {
@@ -133,7 +139,8 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
   }
 
   prev() {
-    this.currentIndex = (this.currentIndex - 1 + this.currentArray.length) % this.currentArray.length;
+    this.currentIndex =
+      (this.currentIndex - 1 + this.currentArray.length) % this.currentArray.length;
   }
 
   animateBall(): void {
@@ -143,7 +150,7 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
       scrollTrigger: {
         trigger: this.toggleBall.nativeElement,
         start: 'top 80%',
-        toggleActions: 'play none none none',
+        toggleActions: 'play none none reset',
       },
     });
 
@@ -155,4 +162,54 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
       repeat: 5,
     });
   }
+
+   animateSwitch() {
+    if (!this.containerDiv) return;
+
+    const mm = gsap.matchMedia();
+
+    mm.add("(max-width: 768px)", () => {
+        gsap.set(this.containerDiv.nativeElement, { opacity: 0, y: 30 });
+
+        const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: this.containerDiv.nativeElement,
+            start: 'top 80%',
+            toggleActions: 'play none none reset',
+            markers: false,
+        },
+        });
+
+        tl.to(this.containerDiv.nativeElement, { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' });
+
+        return () => {
+        tl.scrollTrigger?.kill();
+        tl.kill();
+        ScrollTrigger.getAll().forEach(st => st.kill());
+        };
+    });
+
+    mm.add("(min-width: 769px)", () => {
+        gsap.set(this.containerDiv.nativeElement, { opacity: 0, y: 50 });
+
+        const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: this.containerDiv.nativeElement,
+            start: 'top 80%',
+            toggleActions: 'play none none reset',
+            markers: false,
+        },
+        });
+
+        tl.to(this.containerDiv.nativeElement, { opacity: 1, y: 0, duration: 1, ease: 'power2.out' });
+
+        return () => {
+        tl.scrollTrigger?.kill();
+        tl.kill();
+        ScrollTrigger.getAll().forEach(st => st.kill());
+        };
+    });
+    }
+
+
 }

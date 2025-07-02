@@ -1,11 +1,11 @@
-<section class="text-center relative pb-10">
+<section class="text-center relative pb-18 pt-8">
 
   <!-- Carrusel profesores -->
   <div #professorWrapper class="overflow-hidden mb-5 relative tag-mask flex justify-center">
     <div #professorScroller class="scroller flex gap-2 sm:gap-4 w-max will-change-transform px-2 sm:px-0">
       @for (tag of professorTags; track tag) {
         <span
-          class="bg-white border border-custom-accent text-custom-accent px-2 sm:px-4 py-1 sm:py-2 rounded-full font-medium shadow-custom-md whitespace-nowrap text-xs sm:text-base"
+          class="bg-white dark:bg-gray-900 border border-custom-accent text-custom-accent dark:text-custom-accent px-2 sm:px-4 py-1 sm:py-2 rounded-full font-medium shadow-custom-md whitespace-nowrap text-xs sm:text-base"
         >
           {{ tag }}
         </span>
@@ -18,7 +18,7 @@
     <div #studentScroller class="scroller flex gap-2 sm:gap-4 w-max will-change-transform px-2 sm:px-0">
       @for (tag of studentTags; track tag) {
         <span
-          class="bg-custom-accent text-white px-2 sm:px-4 py-1 sm:py-2 rounded-full font-medium shadow-custom-md whitespace-nowrap text-xs sm:text-base"
+          class="bg-custom-accent text-white px-2 sm:px-4 py-1 sm:py-2 rounded-full font-medium shadow-custom-md whitespace-nowrap text-xs sm:text-base dark:bg-purple-800/40 dark:border-purple-400 dark:text-purple-100"
         >
       {{ tag }}
     </span>
