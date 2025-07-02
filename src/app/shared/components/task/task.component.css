@@ -49,6 +49,13 @@
   text-decoration: line-through;
   color: #999;
 }
+.task-title.overdue {
+  color: #dc2626 !important;
+}
+:host-context(.dark) .task-title.overdue,
+:host-context(.dark_bg) .task-title.overdue {
+  color: #f87171 !important;
+}
 .task-description {
   margin: 0.25rem 0 0.25rem 0;
   font-size: 0.875rem;
@@ -109,4 +116,11 @@
 .task-due-date.completed {
   text-decoration: line-through;
   color: #bbb;
+}
+.task-due-date.overdue {
+  color: #dc2626 !important;
+}
+:host-context(.dark) .task-due-date.overdue,
+:host-context(.dark_bg) .task-due-date.overdue {
+  color: #f87171 !important;
 }

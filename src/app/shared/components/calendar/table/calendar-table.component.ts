@@ -1,4 +1,4 @@
-import { Component, signal, ChangeDetectorRef, OnInit, inject, Input } from '@angular/core';
+import { Component, signal, ChangeDetectorRef, OnInit, inject, Input, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventApi } from '@fullcalendar/core';
@@ -7,6 +7,12 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import esLocale from '@fullcalendar/core/locales/es';
 import { TasksService } from '../../../../services/tasks.service';
 import { CalendarLegendComponent } from '../legend/legend.component';
+import { ITask } from '../../../../interfaces/itask';
+
+interface TaskFilters {
+  isUrgent: boolean;
+  isImportant: boolean;
+}
 
 @Component({
   selector: 'app-calendar-table',
@@ -24,8 +30,26 @@ export class TableComponent implements OnInit {
   currentEvents = signal<EventApi[]>([]);
   calendarOptions: CalendarOptions;
 
+  activeFilters = signal<TaskFilters>({
+    isUrgent: true,
+    isImportant: true
+  });
+
+  filteredTasks = computed(() => {
+    const tasks = this.tasksService.tasks();
+    const filters = this.activeFilters();
+
+    return tasks.filter(task =>
+      (filters.isUrgent && task.is_urgent) ||
+      (filters.isImportant && task.is_important)
+    );
+  });
+
   constructor() {
     this.calendarOptions = this.getCalendarOptions();
+    effect(() => {
+      this.loadTasks();
+    });
   }
 
   ngOnInit(): void {
@@ -71,20 +95,21 @@ export class TableComponent implements OnInit {
   }
 
   private loadTasks(): void {
-    const tasks = this.tasksService.tasks();
+    const tasks = this.filteredTasks();
     const events = tasks.map((task) => ({
       id: task.uuid,
       title: task.title,
       date: task.due_date,
       allDay: true,
-      backgroundColor: this.getPriorityColor(task.priority_color),
-      borderColor: this.getPriorityColor(task.priority_color),
+      backgroundColor: this.getPriorityColor(task),
+      borderColor: this.getPriorityColor(task),
       textColor: '#ffffff',
       extendedProps: {
         description: task.description,
         isCompleted: task.is_completed,
         category: task.category,
-        priority: task.priority_color,
+        isUrgent: task.is_urgent,
+        isImportant: task.is_important
       },
     }));
 
@@ -94,19 +119,11 @@ export class TableComponent implements OnInit {
     };
   }
 
-  private getPriorityColor(priority: string): string {
-    switch (priority) {
-      case 'red':
-        return '#ef4444';
-      case 'yellow':
-        return '#eab308';
-      case 'green':
-        return '#22c55e';
-      case 'blue':
-        return '#3b82f6';
-      default:
-        return '#6b7280';
-    }
+  private getPriorityColor(task: ITask): string {
+    if (task.is_urgent && task.is_important) return '#ef4444';    // Rojo
+    if (!task.is_urgent && task.is_important) return '#eab308';   // Amarillo
+    if (task.is_urgent && !task.is_important) return '#3b82f6';   // Azul
+    return '#22c55e';   // Verde
   }
 
   private handleEvents(events: EventApi[]): void {
@@ -122,5 +139,9 @@ export class TableComponent implements OnInit {
     if (selectedTask) {
       this.tasksService.setSelectedTask(selectedTask);
     }
+  }
+
+  onFiltersChanged(filters: TaskFilters) {
+    this.activeFilters.set(filters);
   }
 }

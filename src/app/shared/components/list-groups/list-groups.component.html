@@ -2,59 +2,29 @@
   <div class="flex justify-center my-4">
     <span class="px-2 font-semibold text-base-content/60">Tareas por tiempo</span>
   </div>
-  <ul class="menu rounded-box w-full p-0 flex flex-col justify-between h-full" style="background: transparent;">
-    <li class="mb-2">
-      <a (click)="selectFilter('hoy')"
-         [class.selected-project]="selectedFilter === 'hoy'"
-         class="flex items-center gap-2 py-2 rounded-lg cursor-pointer w-full dark:hover:bg-purple-900">
-        <mat-icon>today</mat-icon>
-        Hoy
-      </a>
-    </li>
-    <li class="mb-2">
-      <a (click)="selectFilter('7dias')"
-         [class.selected-project]="selectedFilter === '7dias'"
-         class="flex items-center gap-2 py-2 rounded-lg cursor-pointer w-full dark:hover:bg-purple-900">
-        <mat-icon>date_range</mat-icon>
-        Siguientes 7 días
-      </a>
-    </li>
-    <li class="mb-2">
-      <a (click)="selectFilter('30dias')"
-         [class.selected-project]="selectedFilter === '30dias'"
-         class="flex items-center gap-2 py-2 rounded-lg cursor-pointer w-full dark:hover:bg-purple-900">
-        <mat-icon>calendar_month</mat-icon>
-        Siguientes 30 días
-      </a>
-    </li>
-    @if (!isCourse) {
-      <div class="flex justify-center my-4">
-        <span class="px-2 font-semibold text-base-content/60">Tareas por categoría</span>
-      </div>
-      <li class="mb-2">
-        <a (click)="selectFilter('personales')"
-           [class.selected-project]="selectedFilter === 'personales'"
-           class="flex items-center gap-2 py-2 rounded-lg cursor-pointer w-full dark:hover:bg-purple-900">
-          <mat-icon>person</mat-icon>
-          Tareas personales
-        </a>
-      </li>
-      <li class="mb-2">
-        <a (click)="selectFilter('cursos')"
-           [class.selected-project]="selectedFilter === 'cursos'"
-           class="flex items-center gap-2 py-2 rounded-lg cursor-pointer w-full dark:hover:bg-purple-900">
-          <mat-icon>school</mat-icon>
-          Tarea de cursos
-        </a>
-      </li>
-    }
-    <li class="mt-auto">
-      <a (click)="selectFilter('completadas')"
-         [class.selected-project]="selectedFilter === 'completadas'"
-         class="flex items-center gap-2 py-2 rounded-lg cursor-pointer w-full dark:hover:bg-purple-900">
-         <mat-icon>check_circle</mat-icon>
-         Tareas completadas
-      </a>
-    </li>
-  </ul>
+  <div class="flex flex-col gap-2">
+    <a (click)="selectTimeFilter('hoy')"
+       [class.selected-project]="selectedTimeFilter === 'hoy'"
+       class="flex items-center gap-2 py-2 px-4 rounded-lg cursor-pointer w-full dark:hover:bg-purple-900">
+      <mat-icon>today</mat-icon>
+      Hoy
+    </a>
+    <a (click)="selectTimeFilter('7dias')"
+       [class.selected-project]="selectedTimeFilter === '7dias'"
+       class="flex items-center gap-2 py-2 px-4 rounded-lg cursor-pointer w-full dark:hover:bg-purple-900">
+      <mat-icon>date_range</mat-icon>
+      Siguientes 7 días
+    </a>
+    <a (click)="selectTimeFilter('30dias')"
+       [class.selected-project]="selectedTimeFilter === '30dias'"
+       class="flex items-center gap-2 py-2 px-4 rounded-lg cursor-pointer w-full dark:hover:bg-purple-900">
+      <mat-icon>calendar_month</mat-icon>
+      Siguientes 30 días
+    </a>
+  </div>
+  
+  <!-- Componente de filtros adicionales -->
+  @if (!isCourse && showAdditionalFilters) {
+    <app-task-filter (filterChange)="onFilterChange($event)"></app-task-filter>
+  }
 </div>

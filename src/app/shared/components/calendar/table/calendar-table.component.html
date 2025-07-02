@@ -5,23 +5,23 @@
       class="bg-custom-background dark:bg-custom-background-dark rounded-2xl shadow-xl border border-custom-border dark:border-custom-border-dark overflow-hidden"
     >
       <div class="p-4 md:p-6 lg:p-8 w-full">
-        <full-calendar [options]="calendarOptions" class="w-full h-full">
-          <ng-template #eventContent let-arg>
-            <div class="flex items-center space-x-2 p-1">
-              <div
-                class="w-2 h-2 rounded-full"
-                [style.background-color]="arg.event.backgroundColor"
-              ></div>
-              <span class="text-sm font-medium truncate">
-                {{ arg.event.title }}
-              </span>
-            </div>
-          </ng-template>
-        </full-calendar>
+        <div class="calendar-container">
+          <app-calendar-legend (filtersChanged)="onFiltersChanged($event)" />
+          <full-calendar [options]="calendarOptions" class="w-full h-full">
+            <ng-template #eventContent let-arg>
+              <div class="flex items-center space-x-2 p-1">
+                <div
+                  class="w-2 h-2 rounded-full"
+                  [style.background-color]="arg.event.backgroundColor"
+                ></div>
+                <span class="text-sm font-medium truncate">
+                  {{ arg.event.title }}
+                </span>
+              </div>
+            </ng-template>
+          </full-calendar>
+        </div>
       </div>
     </div>
-
-    <!-- Legend -->
-    <app-calendar-legend></app-calendar-legend>
   </div>
 </div>

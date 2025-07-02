@@ -8,14 +8,13 @@ import {
 } from '@angular/forms';
 import { UsersService } from '../../../services/users.service';
 import { AuthorizationService } from '../../../services/authorization.service';
-import { IGetByTokenUser } from '../../../interfaces/iuser.interface';
+import { IGetByTokenUser, IUser } from '../../../interfaces/iuser.interface';
 import { constants } from '../../../shared/utils/constants/constants.config';
 import { initUser } from '../../../shared/utils/initializers';
 import { UserFieldsetComponent } from './components/user-fieldset/user-fieldset.component';
 import dayjs from 'dayjs';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { NgClass, NgStyle } from '@angular/common';
 import { environment } from '../../../environments/environment.test';
 
 @Component({
@@ -149,5 +148,14 @@ export class DashboardSettingsComponent {
     const newValue = currentValue === 1 ? 0 : 1;
     this.userSettingsForm.get('notify_by_email')?.setValue(newValue);
     this.updateUser();
+  }
+
+  getTranslatedRole(role: IUser['role']): string {
+    const roleTranslations: { [key: string]: string } = {
+      teacher: 'Profesor',
+      student: 'Estudiante',
+      general: 'General',
+    };
+    return roleTranslations[role] || role;
   }
 }

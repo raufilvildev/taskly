@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import './app/styles/fullcalendar-theme.css';
 @plugin "daisyui";
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
