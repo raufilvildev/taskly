@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { ISubtask, ITask } from '../../../interfaces/itask';
+import { ISubtask, ITask } from '../../../interfaces/itask.interface';
 
 @Component({
   selector: 'app-task',

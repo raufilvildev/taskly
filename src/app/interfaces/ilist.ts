@@ -1,4 +1,4 @@
-import { ITask } from "./itask";
+import { ITask } from "./itask.interface";
 
 export interface Ilist {
 id: number;

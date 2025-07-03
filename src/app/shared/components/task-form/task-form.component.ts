@@ -8,6 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { UsersService } from '../../../services/users.service';
+import { ITask, ISubtask } from '../../../interfaces/itask.interface';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-task-form',
@@ -33,7 +35,7 @@ export class TaskFormComponent {
   @Input() isCourseRelated: boolean = false;
   @Output() back = new EventEmitter<void>();
   @Output() close = new EventEmitter<void>();
-  @Output() createTask = new EventEmitter<any>();
+  @Output() createTask = new EventEmitter<ITask>();
 
   // Computed para verificar si el usuario es alumno
   get isStudent(): boolean {

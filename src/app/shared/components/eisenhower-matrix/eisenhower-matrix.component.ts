@@ -1,5 +1,5 @@
 import { Component, Input, computed, inject, signal } from '@angular/core';
-import { ITask } from '../../../interfaces/itask';
+import { ITask } from '../../../interfaces/itask.interface';
 import { CommonModule } from '@angular/common';
 import { EisenhowerTaskComponent } from './components/eisenhower-task/eisenhower-task.component';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';

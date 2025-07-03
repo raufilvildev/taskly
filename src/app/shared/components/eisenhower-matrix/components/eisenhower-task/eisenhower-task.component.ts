@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ITask } from '../../../../../interfaces/itask';
+import { ITask } from '../../../../../interfaces/itask.interface';
 import { CommonModule } from '@angular/common';
 
 @Component({

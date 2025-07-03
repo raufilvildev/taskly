@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { TableComponent } from '../../../shared/components/calendar/table/calendar-table.component';
 import { TasksComponent } from '../../../shared/components/tasks/tasks.component';
-import { ITask } from '../../../interfaces/itask';
+import { ITask } from '../../../interfaces/itask.interface';
 import { RouterLink } from '@angular/router';
 import { DashboardHomeCalendarComponent } from './components/dashboard-home-calendar/dashboard-home-calendar.component';
 import { UsersService } from '../../../services/users.service';

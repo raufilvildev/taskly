@@ -3,7 +3,7 @@ import { AngularSplitModule } from 'angular-split';
 import { ListGroupsComponent } from '../list-groups/list-groups.component';
 import { TaskListComponent } from '../task-list/task-list.component';
 import { TaskDetailComponent } from '../task-detail/task-detail.component';
-import { ITask } from '../../../interfaces/itask';
+import { ITask } from '../../../interfaces/itask.interface';
 import { TasksService } from '../../../services/tasks.service';
 
 @Component({
@@ -31,7 +31,7 @@ export class TasksComponent {
   selectedCategoryFilters: string[] = ['personales', 'cursos'];
   showCompletedTasks: boolean = false;
   showPendingTasks: boolean = true;
-  
+
   // Variable para mantener las tareas filtradas por período
   periodFilteredTasks: ITask[] = [];
 
@@ -44,7 +44,7 @@ export class TasksComponent {
     // Guardar las tareas filtradas por período
     this.periodFilteredTasks = event.tasks;
     this.selectedFilter = event.selectedFilter;
-    
+
     // Aplicar filtros adicionales si estamos en móvil
     if (this.isMobile) {
       this.currentView = 'list';
@@ -59,7 +59,7 @@ export class TasksComponent {
     this.selectedCategoryFilters = filters.categoryFilters;
     this.showCompletedTasks = filters.showCompleted;
     this.showPendingTasks = filters.showPending;
-    
+
     // Aplicar filtros adicionales a las tareas actuales
     this.applyAdditionalFilters();
   }
@@ -67,27 +67,27 @@ export class TasksComponent {
   applyAdditionalFilters() {
     // Usar las tareas ya filtradas por período, no todas las tareas
     let filteredTasks = [...this.periodFilteredTasks];
-    
+
     // Aplicar filtros de categoría (múltiples)
     if (this.selectedCategoryFilters.length > 0) {
       filteredTasks = filteredTasks.filter((task: ITask) => {
         const isPersonal = task.category === 'custom';
         const isCourse = task.category === 'course_related';
-        
+
         const matchesPersonal = this.selectedCategoryFilters.includes('personales') && isPersonal;
         const matchesCourse = this.selectedCategoryFilters.includes('cursos') && isCourse;
-        
+
         return matchesPersonal || matchesCourse;
       });
     }
 
     // Aplicar filtros de estado de tareas
     const statusFilters: ((task: ITask) => boolean)[] = [];
-    
+
     if (this.showPendingTasks) {
       statusFilters.push((t: ITask) => !t.is_completed);
     }
-    
+
     if (this.showCompletedTasks) {
       statusFilters.push((t: ITask) => t.is_completed);
     }
@@ -101,23 +101,23 @@ export class TasksComponent {
         return statusFilters.some(filter => filter(task));
       });
     }
-    
+
     // Actualizar las tareas mostradas
     this.tasks = filteredTasks;
   }
 
-  goToGroups() { 
-    this.currentView = 'groups'; 
+  goToGroups() {
+    this.currentView = 'groups';
     // Limpiar las tareas cuando volvemos a groups en móvil
     if (this.isMobile) {
       this.tasks = [];
       this.selectedFilter = null;
     }
   }
-  goToList() { 
-    this.currentView = 'list'; 
+  goToList() {
+    this.currentView = 'list';
   }
-  goToDetail() { 
-    this.currentView = 'detail'; 
+  goToDetail() {
+    this.currentView = 'detail';
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { ITask } from '../interfaces/itask';
+import { ITask } from '../interfaces/itask.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment.test';

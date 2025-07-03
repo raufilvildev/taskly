@@ -17,7 +17,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import esLocale from '@fullcalendar/core/locales/es';
 import { TasksService } from '../../../../services/tasks.service';
 import { CalendarLegendComponent } from '../legend/legend.component';
-import { ITask } from '../../../../interfaces/itask';
+import { ITask } from '../../../../interfaces/itask.interface';
 
 interface TaskFilters {
   isUrgent: boolean;

@@ -1,5 +1,5 @@
 import { Component, inject, Output, EventEmitter, Input, OnInit } from '@angular/core';
-import { ITask } from '../../../interfaces/itask';
+import { ITask } from '../../../interfaces/itask.interface';
 import { TasksService } from '../../../services/tasks.service';
 import { MatIconModule } from '@angular/material/icon';
 import { TaskFilterComponent } from '../task-filter/task-filter.component';
@@ -37,11 +37,11 @@ export class ListGroupsComponent implements OnInit {
 
   selectTimeFilter(filter: string) {
     this.selectedTimeFilter = filter;
-    
+
     // Mapear los filtros del frontend a los del API
     const periodMap: { [key: string]: 'today' | 'week' | 'month' } = {
       'hoy': 'today',
-      '7dias': 'week', 
+      '7dias': 'week',
       '30dias': 'month'
     };
 
@@ -100,21 +100,21 @@ export class ListGroupsComponent implements OnInit {
       filteredTasks = filteredTasks.filter(task => {
         const isPersonal = task.category === 'custom';
         const isCourse = task.category === 'course_related';
-        
+
         const matchesPersonal = this.selectedCategoryFilters.includes('personales') && isPersonal;
         const matchesCourse = this.selectedCategoryFilters.includes('cursos') && isCourse;
-        
+
         return matchesPersonal || matchesCourse;
       });
     }
 
     // Aplicar filtros de estado de tareas
     const statusFilters: ((task: ITask) => boolean)[] = [];
-    
+
     if (this.showPendingTasks) {
       statusFilters.push((t: ITask) => !t.is_completed);
     }
-    
+
     if (this.showCompletedTasks) {
       statusFilters.push((t: ITask) => t.is_completed);
     }
@@ -129,11 +129,11 @@ export class ListGroupsComponent implements OnInit {
         return matches;
       });
     }
-    
+
     // Emitir las tareas filtradas
-    this.filteredTasks.emit({ 
-      tasks: filteredTasks, 
-      selectedFilter: this.selectedTimeFilter + (this.selectedCategoryFilters.length > 0 ? `-${this.selectedCategoryFilters.join('-')}` : '') + (this.showCompletedTasks ? '-completed' : '') + (this.showPendingTasks ? '-pending' : '') 
+    this.filteredTasks.emit({
+      tasks: filteredTasks,
+      selectedFilter: this.selectedTimeFilter + (this.selectedCategoryFilters.length > 0 ? `-${this.selectedCategoryFilters.join('-')}` : '') + (this.showCompletedTasks ? '-completed' : '') + (this.showPendingTasks ? '-pending' : '')
     });
   }
 }

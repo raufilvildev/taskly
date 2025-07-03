@@ -1,7 +1,7 @@
 import { Component, inject, computed, effect, Input, Output, EventEmitter, ViewChild, TemplateRef } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { TasksService } from '../../../services/tasks.service';
-import { ISubtask, ITask } from '../../../interfaces/itask';
+import { ISubtask, ITask } from '../../../interfaces/itask.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -35,7 +35,7 @@ export class TaskDetailComponent {
   @Output() saveTask = new EventEmitter<ITask>();
   @Output() deleteTask = new EventEmitter<ITask>();
   @ViewChild('deleteDialogTemplate') deleteDialogTemplate!: TemplateRef<any>;
-  
+
   private projectService = inject(TasksService);
   private usersService = inject(UsersService);
   private route = inject(ActivatedRoute);
@@ -95,7 +95,7 @@ export class TaskDetailComponent {
         // Limpiar el FormArray de subtareas
         const subtasksArray = this.taskForm.get('subtasks') as FormArray;
         subtasksArray.clear();
-        
+
         // Agregar las subtareas existentes al FormArray
         if (task.subtasks) {
           task.subtasks.forEach(subtask => {
@@ -105,7 +105,7 @@ export class TaskDetailComponent {
             }));
           });
         }
-        
+
         let cleanTimeStart = '';
         if (typeof task.time_start === 'string') {
           const parts = task.time_start.split(':');
@@ -140,7 +140,7 @@ export class TaskDetailComponent {
         task.is_completed = val.is_completed;
         task.is_urgent = val.is_urgent;
         task.is_important = val.is_important;
-        
+
         // Actualizar subtareas
         if (val.subtasks) {
           task.subtasks = val.subtasks.map((subtaskForm: any) => ({
@@ -176,22 +176,22 @@ export class TaskDetailComponent {
     if (!time_start || !time_end) {
       return '';
     }
-    
+
     // Convertir tiempos a minutos
     const [startHours, startMinutes] = time_start.split(':').map(Number);
     const [endHours, endMinutes] = time_end.split(':').map(Number);
-    
+
     const startTotalMinutes = startHours * 60 + startMinutes;
     const endTotalMinutes = endHours * 60 + endMinutes;
-    
+
     // Calcular diferencia en minutos
     const differenceMinutes = endTotalMinutes - startTotalMinutes;
-    
+
     const options = [15, 30, 45, 60, 90, 120, 150, 180, 240];
     const closestOption = options.reduce((prev, curr) => {
       return Math.abs(curr - differenceMinutes) < Math.abs(prev - differenceMinutes) ? curr : prev;
     });
-    
+
     return closestOption.toString();
   }
 
@@ -337,7 +337,7 @@ export class TaskDetailComponent {
 
   getDurationText(minutes: string | number): string {
     if (!minutes) return '';
-    
+
     const mins = Number(minutes);
     return this.durationMap[mins] || `${mins} min`;
   }

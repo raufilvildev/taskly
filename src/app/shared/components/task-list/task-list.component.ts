@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/core';
 import { TaskComponent } from "../task/task.component";
-import { ISubtask, ITask } from '../../../interfaces/itask';
+import { ISubtask, ITask } from '../../../interfaces/itask.interface';
 import { TasksService } from '../../../services/tasks.service';
 import { inject } from '@angular/core';
 import { TaskFormComponent } from '../task-form/task-form.component';
