@@ -74,13 +74,6 @@ export class TaskFormComponent {
     this.close.emit(); // Cerrar el modal después de mostrar la alerta
   }
 
-  onDateChange(event: any) {
-    const value = event.value;
-    const dueDateControl = this.taskForm.get('due_date');
-    dueDateControl?.setValue(value);
-    dueDateControl?.markAsTouched();
-  }
-
   /**
    * Calcula la hora de finalización basada en la hora de inicio y la duración estimada
    * @returns string en formato HH:mm o null si los datos son inválidos
@@ -187,13 +180,33 @@ export class TaskFormComponent {
     if (this.taskForm.valid) {
       const taskData = this.taskForm.value as any;
 
-      // Calcular la hora de fin basada en el tiempo de inicio y estimado
-      if (taskData.time_start && taskData.time_estimated) {
-        const endTime = this.calculateEndTime();
-        if (endTime) {
-          taskData.time_end = endTime;
-          console.log('Hora de fin calculada:', taskData.time_end);
-        }
+      // Convertir due_date a formato SQL (aaaa-mm-dd) en una sola línea
+      if (taskData.due_date instanceof Date) {
+        taskData.due_date = `${taskData.due_date.getFullYear()}-${(taskData.due_date.getMonth() + 1).toString().padStart(2, '0')}-${taskData.due_date.getDate().toString().padStart(2, '0')}`;
+      } else if (typeof taskData.due_date === 'string' && taskData.due_date.length > 10) {
+        // Si es un string largo tipo ISO
+        taskData.due_date = taskData.due_date.split('T')[0];
+      }
+
+      // Convertir time_start a formato hh:mm:ss
+      if (taskData.time_start instanceof Date) {
+        taskData.time_start = `${taskData.time_start.getHours().toString().padStart(2, '0')}:${taskData.time_start.getMinutes().toString().padStart(2, '0')}:${taskData.time_start.getSeconds().toString().padStart(2, '0')}`;
+      } else if (typeof taskData.time_start === 'string' && /^\d{2}:\d{2}$/.test(taskData.time_start)) {
+        taskData.time_start = taskData.time_start + ':00';
+      }
+
+      // Calcular time_end
+      if (
+        typeof taskData.time_start === 'string' &&
+        /^\d{2}:\d{2}:\d{2}$/.test(taskData.time_start) &&
+        taskData.time_estimated
+      ) {
+        const [h, m, s] = taskData.time_start.split(':').map(Number);
+        const date = new Date();
+        date.setHours(h, m, s || 0, 0);
+        date.setMinutes(date.getMinutes() + Number(taskData.time_estimated));
+        taskData.time_end = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
+        delete taskData.time_estimated;
       }
 
       // Filtrar subtareas vacías antes de enviar
