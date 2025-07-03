@@ -81,27 +81,46 @@ export class TaskFormComponent {
     dueDateControl?.markAsTouched();
   }
 
-  // Método para calcular la hora de fin basada en el tiempo de inicio y estimado
-  calculateEndTime(): string {
+  /**
+   * Calcula la hora de finalización basada en la hora de inicio y la duración estimada
+   * @returns string en formato HH:mm o null si los datos son inválidos
+   */
+  calculateEndTime(): string | null {
     const timeStart = this.taskForm.get('time_start')?.value;
     const timeEstimated = this.taskForm.get('time_estimated')?.value;
 
-    if (!timeStart || !timeEstimated) {
-      return '';
+    if (!timeStart || !timeEstimated || !/^\d{2}:\d{2}$/.test(timeStart) || isNaN(Number(timeEstimated))) {
+      return null;
     }
 
-    // Convertir tiempo de inicio a minutos
-    const [startHours, startMinutes] = timeStart.split(':').map(Number);
-    const startTotalMinutes = startHours * 60 + startMinutes;
+    try {
+      // Crear una fecha base para los cálculos
+      const today = new Date();
+      const [startHours, startMinutes] = timeStart.split(':').map(Number);
 
-    // Sumar el tiempo estimado
-    const endTotalMinutes = startTotalMinutes + Number(timeEstimated);
+      // Validar el formato de hora
+      if (startHours < 0 || startHours > 23 || startMinutes < 0 || startMinutes > 59) {
+        return null;
+      }
 
-    // Convertir de vuelta a formato HH:MM
-    const endHours = Math.floor(endTotalMinutes / 60);
-    const endMinutes = endTotalMinutes % 60;
+      // Convertir tiempo estimado de minutos a milisegundos
+      const estimatedMs = Number(timeEstimated) * 60 * 1000;
 
-    return `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}`;
+      // Crear fecha con la hora de inicio
+      const startDate = new Date(today.setHours(startHours, startMinutes, 0, 0));
+
+      // Calcular hora de fin
+      const endDate = new Date(startDate.getTime() + estimatedMs);
+
+      // Formatear la hora de salida
+      const endHours = endDate.getHours().toString().padStart(2, '0');
+      const endMinutes = endDate.getMinutes().toString().padStart(2, '0');
+
+      return `${endHours}:${endMinutes}`;
+    } catch (error) {
+      console.error('Error calculando la hora de fin:', error);
+      return null;
+    }
   }
 
   get subtasks() {
@@ -141,8 +160,11 @@ export class TaskFormComponent {
 
       // Calcular la hora de fin basada en el tiempo de inicio y estimado
       if (taskData.time_start && taskData.time_estimated) {
-        taskData.time_end = this.calculateEndTime();
-        console.log('Hora de fin calculada:', taskData.time_end);
+        const endTime = this.calculateEndTime();
+        if (endTime) {
+          taskData.time_end = endTime;
+          console.log('Hora de fin calculada:', taskData.time_end);
+        }
       }
 
       // Filtrar subtareas vacías antes de enviar
