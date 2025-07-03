@@ -74,13 +74,6 @@ export class TaskFormComponent {
     this.close.emit(); // Cerrar el modal después de mostrar la alerta
   }
 
-  onDateChange(event: any) {
-    const value = event.value;
-    const dueDateControl = this.taskForm.get('due_date');
-    dueDateControl?.setValue(value);
-    dueDateControl?.markAsTouched();
-  }
-
   /**
    * Calcula la hora de finalización basada en la hora de inicio y la duración estimada
    * @returns string en formato HH:mm o null si los datos son inválidos

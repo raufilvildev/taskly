@@ -36,9 +36,8 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
       <div class="relative">
         <input matInput [matDatepicker]="picker"
+               formControlName="due_date"
                class="w-full bg-custom-background dark:bg-custom-input-background-dark text-custom-text-main dark:text-custom-text-main-dark border border-custom-border dark:border-custom-border-dark rounded p-2 pr-8 focus:border-custom-accent focus:outline-none"
-               [value]="taskForm.get('due_date')?.value || ''"
-               (dateChange)="onDateChange($event)"
                (click)="picker.open()"
                [readonly]="shouldApplyRestrictions"
                placeholder="Fecha"
