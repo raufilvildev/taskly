@@ -25,7 +25,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
     MatSelectModule,
   ],
   templateUrl: './task-form.component.html',
-  styleUrl: './task-form.component.css'
+  styleUrl: './task-form.component.css',
 })
 export class TaskFormComponent {
   private snackBar = inject(MatSnackBar);
@@ -56,7 +56,7 @@ export class TaskFormComponent {
     is_urgent: new FormControl(false),
     is_important: new FormControl(false),
     is_completed: new FormControl(false),
-    subtasks: new FormArray([])
+    subtasks: new FormArray([]),
   });
 
   closeForm() {
@@ -69,7 +69,7 @@ export class TaskFormComponent {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
-      panelClass: ['success-snackbar']
+      panelClass: ['success-snackbar'],
     });
     this.close.emit(); // Cerrar el modal después de mostrar la alerta
   }
@@ -89,7 +89,12 @@ export class TaskFormComponent {
     const timeStart = this.taskForm.get('time_start')?.value;
     const timeEstimated = this.taskForm.get('time_estimated')?.value;
 
-    if (!timeStart || !timeEstimated || !/^\d{2}:\d{2}$/.test(timeStart) || isNaN(Number(timeEstimated))) {
+    if (
+      !timeStart ||
+      !timeEstimated ||
+      !/^\d{2}:\d{2}$/.test(timeStart) ||
+      isNaN(Number(timeEstimated))
+    ) {
       return null;
     }
 
@@ -128,10 +133,12 @@ export class TaskFormComponent {
   }
 
   addSubtask() {
-    this.subtasks.push(new FormGroup({
-      title: new FormControl(''),
-      is_completed: new FormControl(false)
-    }));
+    this.subtasks.push(
+      new FormGroup({
+        title: new FormControl(''),
+        is_completed: new FormControl(false),
+      })
+    );
   }
 
   removeSubtask(index: number) {
@@ -142,9 +149,24 @@ export class TaskFormComponent {
     console.log('Formulario válido:', this.taskForm.valid);
     console.log('Errores del formulario:', this.taskForm.errors);
     console.log('Estado de los campos:');
-    console.log('Title:', this.taskForm.get('title')?.value, 'Válido:', this.taskForm.get('title')?.valid);
-    console.log('Description:', this.taskForm.get('description')?.value, 'Válido:', this.taskForm.get('description')?.valid);
-    console.log('Due date:', this.taskForm.get('due_date')?.value, 'Válido:', this.taskForm.get('due_date')?.valid);
+    console.log(
+      'Title:',
+      this.taskForm.get('title')?.value,
+      'Válido:',
+      this.taskForm.get('title')?.valid
+    );
+    console.log(
+      'Description:',
+      this.taskForm.get('description')?.value,
+      'Válido:',
+      this.taskForm.get('description')?.valid
+    );
+    console.log(
+      'Due date:',
+      this.taskForm.get('due_date')?.value,
+      'Válido:',
+      this.taskForm.get('due_date')?.valid
+    );
     console.log('Subtareas válidas:', this.subtasks.valid);
     console.log('Número de subtareas:', this.subtasks.length);
     console.log('Errores de subtareas:', this.subtasks.errors);
@@ -152,7 +174,14 @@ export class TaskFormComponent {
     // Verificar cada subtarea individualmente
     for (let i = 0; i < this.subtasks.length; i++) {
       const subtask = this.subtasks.at(i);
-      console.log(`Subtarea ${i}:`, subtask.value, 'Válida:', subtask.valid, 'Errores:', subtask.errors);
+      console.log(
+        `Subtarea ${i}:`,
+        subtask.value,
+        'Válida:',
+        subtask.valid,
+        'Errores:',
+        subtask.errors
+      );
     }
 
     if (this.taskForm.valid) {
@@ -169,7 +198,9 @@ export class TaskFormComponent {
 
       // Filtrar subtareas vacías antes de enviar
       if (taskData.subtasks) {
-        taskData.subtasks = taskData.subtasks.filter((subtask: any) => subtask.title && subtask.title.trim() !== '');
+        taskData.subtasks = taskData.subtasks.filter(
+          (subtask: any) => subtask.title && subtask.title.trim() !== ''
+        );
       }
 
       console.log('Datos de tarea a enviar:', taskData);
