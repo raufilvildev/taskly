@@ -104,9 +104,7 @@
   background: rgba(0,0,0,0.85) !important;
 }
 
-.task-modal {
-  background-color: var(--color-panel);
-}
+
 
 /* Reducir z-index del task-detail cuando el modal esté abierto */
 :host(.modal-open) ::ng-deep .task-detail {
@@ -138,11 +136,7 @@
   animation: pop-in 0.3s ease-out forwards;
 }
 
-:host-context(.dark) .task-modal,
-:host-context(.dark_bg) .task-modal {
-  background-color: #1f2937 !important;
-  color: #e0e0e0;
-}
+
 
 :host-context(.dark) .bg-white.p-8.rounded-lg.shadow-lg.w-full.max-w-lg.relative,
 .dark .bg-white.p-8.rounded-lg.shadow-lg.w-full.max-w-lg.relative {
