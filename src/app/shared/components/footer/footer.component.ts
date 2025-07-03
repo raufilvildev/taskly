@@ -11,4 +11,13 @@ import { constants } from '../../utils/constants/constants.config';
 export class FooterComponent {
   appName = constants.appName;
   currentYear = new Date().getFullYear();
+  isDarkMode = false;
+
+  ngOnInit(): void {
+    this.isDarkMode = document.documentElement.classList.contains('dark');
+    const observer = new MutationObserver(() => {
+      this.isDarkMode = document.documentElement.classList.contains('dark');
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  }
 }
