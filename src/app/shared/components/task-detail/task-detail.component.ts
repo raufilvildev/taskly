@@ -200,20 +200,59 @@ export class TaskDetailComponent {
     const task = this.selectedTask();
     if (!task) return;
     const formValue = this.taskForm.value;
-    // Calcular time_end
-    let time_end = '';
-    if (formValue.time_start && formValue.time_estimated) {
-      const [h, m] = formValue.time_start.split(':').map(Number);
-      const total = h * 60 + m + Number(formValue.time_estimated);
-      const endH = Math.floor(total / 60).toString().padStart(2, '0');
-      const endM = (total % 60).toString().padStart(2, '0');
-      time_end = `${endH}:${endM}`;
+
+    // Normalizar due_date a formato aaaa-mm-dd
+    let due_date = formValue.due_date;
+    if (due_date instanceof Date) {
+      due_date = `${due_date.getFullYear()}-${(due_date.getMonth() + 1).toString().padStart(2, '0')}-${due_date.getDate().toString().padStart(2, '0')}`;
+    } else if (typeof due_date === 'string' && due_date.length > 10) {
+      due_date = due_date.split('T')[0];
     }
+
+    // Normalizar time_start a hh:mm:ss
+    let time_start = formValue.time_start;
+    if (time_start instanceof Date) {
+      time_start = `${time_start.getHours().toString().padStart(2, '0')}:${time_start.getMinutes().toString().padStart(2, '0')}:${time_start.getSeconds().toString().padStart(2, '0')}`;
+    } else if (typeof time_start === 'string' && /^\d{2}:\d{2}$/.test(time_start)) {
+      time_start = time_start + ':00';
+    }
+
+    // Calcular time_end a hh:mm:ss
+    let time_end = '';
+    if (
+      typeof time_start === 'string' &&
+      /^\d{2}:\d{2}:\d{2}$/.test(time_start) &&
+      formValue.time_estimated
+    ) {
+      const [h, m, s] = time_start.split(':').map(Number);
+      const date = new Date();
+      date.setHours(h, m, s || 0, 0);
+      date.setMinutes(date.getMinutes() + Number(formValue.time_estimated));
+      time_end = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
+    }
+
+    // Enviar subtareas como objetos con title e is_completed
+    let subtasks: { title: string; is_completed: boolean }[] = [];
+    if (formValue.subtasks) {
+      subtasks = formValue.subtasks
+        .filter((subtask: any) => subtask.title && subtask.title.trim() !== '')
+        .map((subtask: any) => ({ title: subtask.title, is_completed: !!subtask.is_completed }));
+    }
+
     const updateData = {
-      ...formValue,
+      title: formValue.title,
+      description: formValue.description,
+      due_date,
+      time_start,
       time_end,
-      subtasks: formValue.subtasks
+      is_completed: formValue.is_completed,
+      is_urgent: formValue.is_urgent,
+      is_important: formValue.is_important,
+      subtasks: subtasks as any // Forzar el tipo para evitar error de tipado
     };
+
+    console.log('Datos de tarea a enviar (PUT):', updateData);
+
     this.projectService.updateTask(task.uuid, updateData).subscribe({
       next: (updated) => {
         // Opcional: feedback visual
@@ -242,16 +281,6 @@ export class TaskDetailComponent {
     this.sendUpdate();
   }
 
-  // Convierte un valor a string 'yyyy-MM-dd' para el input type="date"
-  getDateString(date: any): string {
-    if (!date) return '';
-    if (typeof date === 'string') return date.substring(0, 10);
-    // Si es Date
-    const d = new Date(date);
-    const month = (d.getMonth() + 1).toString().padStart(2, '0');
-    const day = d.getDate().toString().padStart(2, '0');
-    return `${d.getFullYear()}-${month}-${day}`;
-  }
 
   // Maneja el cambio del input nativo de fecha
   onNativeDateChange(event: any) {
