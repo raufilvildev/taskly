@@ -75,4 +75,10 @@ export class TasksService {
     const url = `${this.API_BASE_URL}/${taskUuid}`;
     return this.http.delete<void>(url);
   }
+
+  // GET api/tasks -> Obtiene todas las tareas sin filtros
+  getAllTasks(): Observable<ITask[]> {
+    const url = `${this.API_BASE_URL}`;
+    return this.http.get<ITask[]>(url);
+  }
 }
