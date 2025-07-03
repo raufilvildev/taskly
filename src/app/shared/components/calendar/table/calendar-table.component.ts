@@ -47,6 +47,7 @@ export class TableComponent implements OnInit {
 
   filteredTasks = computed(() => {
     const tasks = this.tasksService.tasks();
+    console.log(tasks);
     const filters = this.activeFilters();
 
     return tasks.filter(
