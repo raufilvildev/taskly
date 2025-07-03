@@ -26,7 +26,7 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
       title: 'Crea cursos fácilmente',
       description:
         '¿Eres profesor? Diseña y publica tus propios cursos en minutos. Comparte tu conocimiento con cientos de estudiantes sin complicaciones técnicas ni barreras.',
-      image: '/assets/images/ejemplo_1.png',
+      image: 'crear-curso.png',
     },
     {
       title: 'Gestiona tareas sin esfuerzo',
@@ -38,7 +38,7 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
       title: 'Calendario que te organiza la vida',
       description:
         'Todo lo que necesitas, en un solo lugar: entregas, reuniones, recordatorios y eventos académicos. Nuestro calendario inteligente se sincroniza con tus cursos y te ofrece una vista clara y ordenada de tu semana. Nunca más pierdas una fecha importante ni olvides una clase.',
-      image: '/assets/images/material-preview.jpg',
+      image: 'calendario-preview.png',
     },
     {
       title: 'Conecta con tu comunidad',
@@ -56,7 +56,7 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
       title: 'Enfocate gracias al modo Pomodoro',
       description:
         'Evita distracciones y mantén la concentración durante las clases o sesiones de preparación. Activa el modo Pomodoro y trabaja por bloques de 25 minutos con descansos activos. Una técnica probada que aumenta la productividad y mejora la retención del conocimiento.',
-      image: '/assets/images/progreso-preview.jpg',
+      image: 'pomodoro-preview.png',
     },
   ];
 
@@ -77,7 +77,7 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
       title: 'Calendario académico integrado',
       description:
         'Consulta tu calendario personalizado para no perderte clases, entregas o eventos. Todo sincronizado con tus cursos y actualizado en tiempo real. Planifica mejor tu semana, equilibra estudio y descanso, y mejora tu rendimiento académico.',
-      image: '/assets/images/material-preview.jpg',
+      image: 'calendario-preview.png',
     },
     {
       title: 'Participa en la comunidad',
@@ -95,7 +95,7 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
       title: 'Mejora la concentración con el modo Pomodoro',
       description:
         'Utiliza la técnica Pomodoro para estudiar en bloques de tiempo efectivos y descansos planificados. Esta metodología te ayuda a mantener el enfoque y alcanzar tus metas académicas con mayor eficiencia.',
-      image: '/assets/images/progreso-preview.jpg',
+      image: 'pomodoro-preview.png',
     },
   ];
 
