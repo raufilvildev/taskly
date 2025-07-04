@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { UsersService } from '../../../services/users.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-detail',
@@ -39,6 +40,7 @@ export class TaskDetailComponent {
   private projectService = inject(TasksService);
   private usersService = inject(UsersService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   selectedTask = computed(() => this.projectService.selectedTask());
   taskForm: FormGroup;
   private fb = inject(FormBuilder);
@@ -245,19 +247,24 @@ export class TaskDetailComponent {
       due_date,
       time_start,
       time_end,
-      is_completed: formValue.is_completed,
-      is_urgent: formValue.is_urgent,
-      is_important: formValue.is_important,
-      subtasks: subtasks as any // Forzar el tipo para evitar error de tipado
+      is_completed: formValue.is_completed ? 1 : 0,
+      is_urgent: formValue.is_urgent ? 1 : 0,
+      is_important: formValue.is_important ? 1 : 0,
+      subtasks: subtasks as any, // Forzar el tipo para evitar error de tipado
+      category: task.category // Enviar el campo category tal cual viene del backend
     };
 
-    console.log('Datos de tarea a enviar (PUT):', updateData);
+    const url = `/api/tasks/${task.uuid}`;
+    console.log('PUT a:', url, 'con datos:', updateData);
 
-    this.projectService.updateTask(task.uuid, updateData).subscribe({
+    this.projectService.updateTask(task.uuid, updateData as any).subscribe({
       next: (updated) => {
-        // Opcional: feedback visual
+        console.log('Respuesta del backend (PUT):', updated);
+        // Recargar la página tras actualizar
+        window.location.reload();
       },
       error: (err) => {
+        console.error('Error al hacer PUT:', err);
         // Opcional: feedback de error
       }
     });
@@ -278,7 +285,7 @@ export class TaskDetailComponent {
 
   toggleSubtask(subtask: ISubtask) {
     subtask.is_completed = !subtask.is_completed;
-    this.sendUpdate();
+    // this.sendUpdate(); // Comentado: solo guardar al marcar completado general o guardar manual
   }
 
 
@@ -292,15 +299,15 @@ export class TaskDetailComponent {
   onDateChange(event: any) {
     const value = event.value;
     this.taskForm.get('due_date')?.setValue(value);
-    this.sendUpdate();
+    // this.sendUpdate(); // Comentado: solo guardar al marcar completado general o guardar manual
   }
 
   onTimeStartChange() {
-    this.sendUpdate();
+    // this.sendUpdate(); // Comentado: solo guardar al marcar completado general o guardar manual
   }
 
   onTimeEstimatedChange() {
-    this.sendUpdate();
+    // this.sendUpdate(); // Comentado: solo guardar al marcar completado general o guardar manual
   }
 
   clearSelectedTask(): void {
@@ -334,24 +341,20 @@ export class TaskDetailComponent {
   performDeleteTask() {
     const task = this.selectedTask();
     console.log('performDeleteTask llamado, task:', task);
-    
     if (task) {
       console.log('UUID de la tarea a eliminar:', task.uuid);
       console.log('Llamando al servicio deleteTask...');
-      
-      // Llamar al servicio para eliminar la tarea
       this.projectService.deleteTask(task.uuid).subscribe({
         next: () => {
           console.log('Tarea eliminada exitosamente');
-          // Emitir el evento para actualizar la UI
           this.deleteTask.emit(task);
-          // Cerrar el modal y limpiar la tarea seleccionada
           this.closeDeleteDialog();
           this.clearSelectedTask();
+          // Recargar la página tras eliminar
+          window.location.reload();
         },
         error: (error) => {
           console.error('Error al eliminar la tarea:', error);
-          // Aquí podrías mostrar un mensaje de error al usuario
         }
       });
     } else {
@@ -362,8 +365,13 @@ export class TaskDetailComponent {
   saveChanges() {
     const task = this.selectedTask();
     if (task) {
-      this.saveTask.emit(task);
-      this.sendUpdate();
+      if (this.taskForm.valid) {
+        this.saveTask.emit(task);
+        this.sendUpdate();
+      } else {
+        this.taskForm.markAllAsTouched();
+        console.warn('El formulario no es válido, revisa los campos obligatorios.');
+      }
     }
   }
 
@@ -397,6 +405,6 @@ export class TaskDetailComponent {
   }
 
   saveSubtask(index: number) {
-    this.sendUpdate();
+    // this.sendUpdate(); // Comentado: solo guardar al marcar completado general o guardar manual
   }
 }
