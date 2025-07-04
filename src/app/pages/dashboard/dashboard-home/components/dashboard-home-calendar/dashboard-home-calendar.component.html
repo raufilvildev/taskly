@@ -5,7 +5,7 @@
     <ng-template #eventContent let-arg>
       <div class="flex items-center justify-center">
         <div class="w-2 h-2 rounded-full p-0"
-             [style.background-color]="arg.event.backgroundColor">
+             [style.background-color]="getPriorityColorFn(arg.event.extendedProps.task)">
         </div>
       </div>
     </ng-template>

@@ -1,7 +1,9 @@
 <div class="flex flex-col min-h-screen text-gray-800 dark:text-white p-6">
   <div class="flex justify-between items-center mb-6">
     <h1 class="text-2xl lg:text-3xl font-semibold lg:text-left text-center">
-      Bienvenid&#64; a Taskly {{ user.first_name.charAt(0).toUpperCase() + user.first_name.slice(1) }} <!-- Fuerzo mayúscula nombre -->
+      Bienvenid&#64; a Taskly
+      {{ user.first_name.charAt(0).toUpperCase() + user.first_name.slice(1) }}
+      <!-- Fuerzo mayúscula nombre -->
     </h1>
   </div>
 
@@ -49,37 +51,44 @@
       </div>
     </div>
 
-
     <div class="w-full md:w-[350px] shrink-0 flex flex-col gap-6 order-2">
       <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-md p-6 flex flex-col flex-1">
-        <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-8">Tareas pendientes</h2>
+        <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-8">Tareas para hoy</h2>
         <div class="space-y-4 flex-1 overflow-auto">
           <div class="today-tasks-list">
-          @if (todayTasksSorted.length > 0) {
-         <ul>
-          @for (task of todayTasksSorted; track task.uuid) {
-        <li class="flex items-center space-x-2">
-          <span
-        class="w-3 h-3 rounded-full inline-block"
-        [style.background-color]="task.priority_color"
-        aria-hidden="true">
-          </span>
-          <span>{{task.title}}</span>
-        </li>
-          }
-        </ul>
-          } @else {
-        <p class="italic text-gray-400">No hay tareas para hoy</p>
-          }
-        </div>
+            @if (tasks.length > 0) {
+              <ul>
+                @for (task of sortedTasks; track task.id) {
+                  <li class="flex items-center space-x-2">
+                    <span
+                      class="w-3 h-3 rounded-full inline-block"
+                      [style.background-color]="getPriorityColor(task)"
+                      aria-hidden="true"
+                    ></span>
+                    <span
+                      [style.color]="getPriorityColor(task)"
+                      >{{ task.title }}</span
+                    >
+                    </li>
+                    <span class="text-sm text-gray-400 italic dark:text-gray-400 pl-4">
+                      ({{ getTimeRemaining(task.time_end) }})
+                    </span>
+                }
+              </ul>
+            } @else {
+              <p class="italic text-gray-400">No hay tareas para hoy</p>
+            }
+          </div>
         </div>
       </div>
 
-      <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-md p-6 flex flex-col flex-1 max-h-[400px]">
+      <div
+        class="bg-white dark:bg-zinc-900 rounded-2xl shadow-md p-6 flex flex-col flex-1 max-h-[400px]"
+      >
         <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-8">Calendario</h2>
         <a class="w-full block cursor-pointer h-full" [routerLink]="['/dashboard/calendar']">
           <div class="w-full h-full">
-        <app-dashboard-home-calendar class="w-full h-full"></app-dashboard-home-calendar>
+            <app-dashboard-home-calendar [getPriorityColorFn]="getPriorityColor" [tasks]="tasks" class="w-full h-full"></app-dashboard-home-calendar>
           </div>
         </a>
       </div>
