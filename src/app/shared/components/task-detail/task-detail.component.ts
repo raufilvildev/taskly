@@ -247,11 +247,11 @@ export class TaskDetailComponent {
       due_date,
       time_start,
       time_end,
-      is_completed: formValue.is_completed ? 1 : 0,
-      is_urgent: formValue.is_urgent ? 1 : 0,
-      is_important: formValue.is_important ? 1 : 0,
-      subtasks: subtasks as any, // Forzar el tipo para evitar error de tipado
-      category: task.category // Enviar el campo category tal cual viene del backend
+      is_completed: !!formValue.is_completed,
+      is_urgent: !!formValue.is_urgent,
+      is_important: !!formValue.is_important,
+      subtasks: subtasks as any,
+      category: task.category
     };
 
     const url = `/api/tasks/${task.uuid}`;
