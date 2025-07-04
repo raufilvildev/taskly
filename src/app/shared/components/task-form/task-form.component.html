@@ -114,12 +114,13 @@
         }
       </div>
 
-      @if (subtasks.controls.length > 0) {
+      @if (subtasks.length > 0) {
         <ul class="space-y-2">
-          @for (subtask of subtasks.controls; track $index; let i = $index) {
-            <li class="flex items-center gap-2" [formGroupName]="i">
+          @for (subtask of subtasks; track $index; let i = $index) {
+            <li class="flex items-center gap-2">
               <input type="text"
-                     formControlName="title"
+                     [value]="subtask"
+                     (blur)="onSubtaskBlur(i, $event)"
                      class="flex-1 bg-transparent text-custom-text-main dark:text-custom-text-main-dark border border-custom-border dark:border-custom-border-dark rounded p-1 text-sm focus:border-custom-accent focus:outline-none"
                      placeholder="Nueva subtarea"
                      [readonly]="shouldApplyRestrictions" />

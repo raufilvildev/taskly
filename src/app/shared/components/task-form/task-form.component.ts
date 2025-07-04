@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -16,6 +16,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
   standalone: true,
   imports: [
     ReactiveFormsModule,
+    FormsModule,
     MatIconModule,
     MatSnackBarModule,
     MatDatepickerModule,
@@ -55,9 +56,10 @@ export class TaskFormComponent {
     time_estimated: new FormControl(''),
     is_urgent: new FormControl(false),
     is_important: new FormControl(false),
-    is_completed: new FormControl(false),
-    subtasks: new FormArray([]),
   });
+
+  // Array simple para las subtareas
+  subtasks: string[] = [];
 
   closeForm() {
     console.log('Cerrando formulario');
@@ -121,21 +123,23 @@ export class TaskFormComponent {
     }
   }
 
-  get subtasks() {
-    return this.taskForm.get('subtasks') as FormArray;
-  }
-
   addSubtask() {
-    this.subtasks.push(
-      new FormGroup({
-        title: new FormControl(''),
-        is_completed: new FormControl(false),
-      })
-    );
+    this.subtasks.push('');
   }
 
   removeSubtask(index: number) {
-    this.subtasks.removeAt(index);
+    this.subtasks.splice(index, 1);
+  }
+
+  onSubtaskBlur(index: number, event: Event) {
+    const target = event.target as HTMLInputElement;
+    const value = target.value.trim();
+    
+    if (value === '') {
+      this.subtasks.splice(index, 1);
+    } else {
+      this.subtasks[index] = value;
+    }
   }
 
   onSubmit() {
@@ -160,22 +164,7 @@ export class TaskFormComponent {
       'Válido:',
       this.taskForm.get('due_date')?.valid
     );
-    console.log('Subtareas válidas:', this.subtasks.valid);
-    console.log('Número de subtareas:', this.subtasks.length);
-    console.log('Errores de subtareas:', this.subtasks.errors);
-
-    // Verificar cada subtarea individualmente
-    for (let i = 0; i < this.subtasks.length; i++) {
-      const subtask = this.subtasks.at(i);
-      console.log(
-        `Subtarea ${i}:`,
-        subtask.value,
-        'Válida:',
-        subtask.valid,
-        'Errores:',
-        subtask.errors
-      );
-    }
+    console.log('Subtareas:', this.subtasks);
 
     if (this.taskForm.valid) {
       const taskData = this.taskForm.value as any;
@@ -209,12 +198,8 @@ export class TaskFormComponent {
         delete taskData.time_estimated;
       }
 
-      // Filtrar subtareas vacías antes de enviar
-      if (taskData.subtasks) {
-        taskData.subtasks = taskData.subtasks.filter(
-          (subtask: any) => subtask.title && subtask.title.trim() !== ''
-        );
-      }
+      // Filtrar subtareas vacías y agregar al objeto de datos
+      taskData.subtasks = this.subtasks.filter(subtask => subtask && subtask.trim() !== '');
 
       console.log('Datos de tarea a enviar:', taskData);
       this.createTask.emit(taskData);
