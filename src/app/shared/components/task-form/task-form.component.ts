@@ -97,6 +97,8 @@ export class TaskFormComponent implements OnInit {
       panelClass: ['success-snackbar'],
     });
     this.close.emit(); // Cerrar el modal después de mostrar la alerta
+    // Recargar la página tras crear la tarea
+    window.location.reload();
   }
 
   /**
