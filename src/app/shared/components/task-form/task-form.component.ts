@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -8,8 +8,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { UsersService } from '../../../services/users.service';
+import { CoursesService } from '../../../services/courses.service';
 import { ITask, ISubtask } from '../../../interfaces/itask.interface';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-form',
@@ -28,15 +30,22 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.css',
 })
-export class TaskFormComponent {
+export class TaskFormComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
   private usersService = inject(UsersService);
+  private coursesService = inject(CoursesService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   @Input() showBackButton: boolean = false;
   @Input() isCourseRelated: boolean = false;
+  @Input() course_uuid?: string;
   @Output() back = new EventEmitter<void>();
   @Output() close = new EventEmitter<void>();
   @Output() createTask = new EventEmitter<ITask>();
+
+  course_id?: number;
+  course_uuid_final?: string;
 
   // Computed para verificar si el usuario es alumno
   get isStudent(): boolean {
@@ -60,6 +69,20 @@ export class TaskFormComponent {
 
   // Array simple para las subtareas
   subtasks: string[] = [];
+
+  ngOnInit() {
+    let uuid = this.course_uuid;
+    if (!uuid) {
+      // Extraer el último segmento de la URL como UUID
+      const urlSegments = this.router.url.split('/').filter(Boolean);
+      uuid = urlSegments[urlSegments.length - 1];
+      console.log('UUID extraído de la URL:', uuid);
+    }
+    if (uuid) {
+      this.course_uuid_final = uuid;
+      // Si quieres seguir mostrando el log de la llamada al servicio, puedes dejarlo, pero ya no es necesario para el envío
+    }
+  }
 
   closeForm() {
     console.log('Cerrando formulario');
@@ -200,7 +223,10 @@ export class TaskFormComponent {
 
       // Filtrar subtareas vacías y agregar al objeto de datos
       taskData.subtasks = this.subtasks.filter(subtask => subtask && subtask.trim() !== '');
-
+      // Enviar course_uuid_final si está disponible
+      if (this.course_uuid_final) {
+        taskData.course_uuid = this.course_uuid_final;
+      }
       console.log('Datos de tarea a enviar:', taskData);
       this.createTask.emit(taskData);
       this.showSuccessMessage(); // Mostrar alerta de éxito
