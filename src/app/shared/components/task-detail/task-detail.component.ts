@@ -310,7 +310,11 @@ export class TaskDetailComponent {
   // Computed para verificar si se puede eliminar la tarea
   canDeleteTask = computed(() => {
     const task = this.selectedTask();
-    return task && task.category === 'custom';
+    console.log('canDeleteTask - task:', task);
+    console.log('canDeleteTask - category:', task?.category);
+    const canDelete = task && task.category === 'custom';
+    console.log('canDeleteTask - resultado:', canDelete);
+    return canDelete;
   });
 
   openDeleteConfirmation() {
@@ -322,15 +326,36 @@ export class TaskDetailComponent {
   }
 
   confirmDelete() {
+    console.log('confirmDelete llamado');
     this.performDeleteTask();
-    this.showDeleteModal = false;
+    // El modal se cerrará automáticamente en el callback de éxito
   }
 
   performDeleteTask() {
     const task = this.selectedTask();
+    console.log('performDeleteTask llamado, task:', task);
+    
     if (task) {
-      // Emitir el evento con la tarea a eliminar
-      this.deleteTask.emit(task);
+      console.log('UUID de la tarea a eliminar:', task.uuid);
+      console.log('Llamando al servicio deleteTask...');
+      
+      // Llamar al servicio para eliminar la tarea
+      this.projectService.deleteTask(task.uuid).subscribe({
+        next: () => {
+          console.log('Tarea eliminada exitosamente');
+          // Emitir el evento para actualizar la UI
+          this.deleteTask.emit(task);
+          // Cerrar el modal y limpiar la tarea seleccionada
+          this.closeDeleteDialog();
+          this.clearSelectedTask();
+        },
+        error: (error) => {
+          console.error('Error al eliminar la tarea:', error);
+          // Aquí podrías mostrar un mensaje de error al usuario
+        }
+      });
+    } else {
+      console.log('No hay tarea seleccionada para eliminar');
     }
   }
 
