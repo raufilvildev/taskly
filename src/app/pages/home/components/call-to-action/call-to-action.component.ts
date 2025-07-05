@@ -1,35 +1,59 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { RouterLink } from '@angular/router';
 
 gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-call-to-action',
-  imports: [RouterLink],
+  standalone: true,
   templateUrl: './call-to-action.component.html',
-  styleUrl: './call-to-action.component.css'
+  styleUrls: ['./call-to-action.component.css'],
 })
-export class CallToActionComponent implements AfterViewInit {
+export class CallToActionComponent implements AfterViewInit, OnDestroy {
   @ViewChild('ctaSection') ctaSection!: ElementRef<HTMLElement>;
 
+  private mm!: gsap.MatchMedia;
+
   ngAfterViewInit() {
-    const el = this.ctaSection.nativeElement;
+    this.mm = gsap.matchMedia();
 
-    gsap.set(el, { opacity: 0, y: 50 });
-
-    gsap.to(el, {
-      opacity: 1,
-      y: 0,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 85%',
-        end: 'top 60%',
-        scrub: true,
-        markers: false,
-      },
+    this.mm.add('(max-width: 768px)', () => {
+      const el = this.ctaSection.nativeElement;
+      gsap.set(el, { opacity: 0, y: 30 });
+      return gsap.to(el, {
+        opacity: 1,
+        y: 0,
+        ease: 'power1.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          end: 'top 60%',
+          scrub: true,
+          markers: false,
+        },
+      });
     });
+
+    this.mm.add('(min-width: 769px)', () => {
+      const el = this.ctaSection.nativeElement;
+      gsap.set(el, { opacity: 0, y: 50 });
+      return gsap.to(el, {
+        opacity: 1,
+        y: 0,
+        ease: 'power1.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          end: 'top 60%',
+          scrub: true,
+          markers: false,
+        },
+      });
+    });
+  }
+
+  ngOnDestroy() {
+    this.mm && this.mm.revert();
   }
 }
