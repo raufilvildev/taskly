@@ -150,7 +150,7 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
       scrollTrigger: {
         trigger: this.toggleBall.nativeElement,
         start: 'top 80%',
-        toggleActions: 'play none none reset',
+        toggleActions: 'play none none none',
       },
     });
 
