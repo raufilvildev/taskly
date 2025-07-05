@@ -1,33 +1,43 @@
-import { AfterViewInit, Component, NgZone } from '@angular/core';
+import { AfterViewInit, Component, NgZone, OnInit, OnDestroy, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { Subscription } from 'rxjs';
+import { ThemeService } from '../../../../services/theme.service';
+
+
+gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-hero',
   imports: [RouterLink],
   templateUrl: './hero.component.html',
-  styleUrl: './hero.component.css',
+  styleUrls: ['./hero.component.css'], // corregido: styleUrls en plural
 })
-export class HeroComponent implements AfterViewInit {
-  constructor(private ngZone: NgZone) {}
+export class HeroComponent implements OnInit, AfterViewInit, OnDestroy {
+  isDarkMode = false;
+  private sub?: Subscription;
+  private ngZone = inject(NgZone);
+  private themeService = inject(ThemeService);
+
+  ngOnInit(): void {
+    this.sub = this.themeService.isDarkMode$.subscribe(value => {
+      this.isDarkMode = value;
+    });
+  }
 
   ngAfterViewInit(): void {
-    gsap.registerPlugin(ScrollTrigger);
-
     this.ngZone.runOutsideAngular(() => {
       const mm = gsap.matchMedia();
 
       // Media query para móviles (max-width 768px)
       mm.add("(max-width: 768px)", () => {
-        // Set inicial de elementos
         gsap.set('.scroll-header__title', { scale: 1.3, transformOrigin: 'center top', y: 100 });
         gsap.set('.scroll-header__content', { opacity: 0, y: 100 });
         gsap.set('.scroll-header__buttons', { opacity: 0, y: 80 });
-        gsap.set('.scroll-arrow', { opacity: 1, scale: 1, transformOrigin: 'center center', y:100 });
-        gsap.set('.scroll-zoom', { opacity: 0, scale: 0.8, transformOrigin: 'center center', y:30 });
+        gsap.set('.scroll-arrow', { opacity: 1, scale: 1, transformOrigin: 'center center', y: 100 });
+        gsap.set('.scroll-zoom', { opacity: 0, scale: 0.8, transformOrigin: 'center center', y: 30 });
 
-        // Timeline scroll para header
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: '.scroll-header',
@@ -42,8 +52,7 @@ export class HeroComponent implements AfterViewInit {
           .to('.scroll-header__content', { opacity: 1, y: 0, ease: 'power2.out' }, 0.4)
           .to('.scroll-header__buttons', { opacity: 1, y: 0, ease: 'power2.out' }, 0.5);
 
-        // Animación flecha móvil
-          gsap.to('.scroll-arrow', {
+        gsap.to('.scroll-arrow', {
           opacity: 0,
           scale: 0.5,
           scrollTrigger: {
@@ -54,39 +63,35 @@ export class HeroComponent implements AfterViewInit {
           },
         });
 
-        // Animación zoom scroll móvil
         gsap.to('.scroll-zoom', {
           opacity: 1,
           scale: 1,
           y: 0,
           scrollTrigger: {
             trigger: '.scroll-zoom',
-            start: 'top center',       
-            end: '+=80',           
+            start: 'top center',
+            end: '+=80',
             scrub: true,
-            pin: true,             
+            pin: true,
             markers: false,
           },
         });
 
         return () => {
-          tl.scrollTrigger?.kill();         // Elimina el ScrollTrigger ligado al timeline (si existe)
-          tl.kill();                       // Elimina el timeline y sus animaciones
-          ScrollTrigger.getAll().forEach(st => st.kill());  // Elimina todos los ScrollTriggers activos (animaciones independientes)
+          tl.scrollTrigger?.kill();
+          tl.kill();
+          ScrollTrigger.getAll().forEach(st => st.kill());
         };
-
       });
 
-      // Media query para escritorio 
+      // Media query para escritorio (min-width 769px)
       mm.add("(min-width: 769px)", () => {
         gsap.set('.scroll-header__title', { scale: 1.4, transformOrigin: 'center top' });
         gsap.set('.scroll-header__content', { opacity: 0, y: 200 });
         gsap.set('.scroll-header__buttons', { opacity: 0, y: 100 });
         gsap.set('.scroll-arrow', { opacity: 1, scale: 1, transformOrigin: 'center center' });
-        gsap.set('.scroll-zoom', {opacity: 0, scale: 0.7, transformOrigin: 'center center' });
+        gsap.set('.scroll-zoom', { opacity: 0, scale: 0.7, transformOrigin: 'center center' });
 
-
-        // Timeline scroll para header
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: '.scroll-header',
@@ -101,7 +106,6 @@ export class HeroComponent implements AfterViewInit {
           .to('.scroll-header__content', { opacity: 1, y: 0, ease: 'power2.out' }, 0.5)
           .to('.scroll-header__buttons', { opacity: 1, y: 0, ease: 'power2.out' }, 0.6);
 
-        // Animación flecha escritorio
         gsap.to('.scroll-arrow', {
           opacity: 0,
           scale: 0.5,
@@ -113,9 +117,8 @@ export class HeroComponent implements AfterViewInit {
           },
         });
 
-        // Animación zoom scroll escritorio
         gsap.to('.scroll-zoom', {
-          opacity:1,
+          opacity: 1,
           scale: 1.2,
           y: 100,
           scrollTrigger: {
@@ -128,12 +131,15 @@ export class HeroComponent implements AfterViewInit {
         });
 
         return () => {
-          tl.scrollTrigger?.kill();       // Elimina ScrollTrigger del timeline (si existe)
-          tl.kill();                     // Elimina el timeline y animaciones
-          ScrollTrigger.getAll().forEach(st => st.kill());  // Elimina todos los ScrollTriggers activos
+          tl.scrollTrigger?.kill();
+          tl.kill();
+          ScrollTrigger.getAll().forEach(st => st.kill());
         };
-
       });
     });
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 }

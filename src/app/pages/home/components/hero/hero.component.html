@@ -4,7 +4,7 @@
   </h1>
 
   <img 
-    src="arrow.gif"
+    [src]="isDarkMode ? 'arrow.gif' : 'arrow-dark.gif'"
     alt="Scroll down"
     class="scroll-arrow absolute left-1/2 bottom-32 w-12 sm:w-16 -translate-x-1/2 opacity-100 transition-opacity duration-300"
   />
@@ -32,7 +32,7 @@
 <div class="w-full px-4 sm:px-0 pb-24 sm:pb-36 mb-24 flex justify-center">
   <div class="scroll-zoom">
     <img 
-      src="dashboard.jpg" 
+      [src]="isDarkMode ? 'dashboard_dark.png' : 'dashboard.png'"
       alt=""
       class="w-full max-w-[90vw] md:max-w-[90vw] lg:w-full h-[25vh] md:h-[35vh] lg:h-[70vh] object-cover object-top rounded-3xl shadow-lg border-2 border-[var(--color-custom-accent)]"
     />
