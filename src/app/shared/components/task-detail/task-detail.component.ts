@@ -102,7 +102,7 @@ export class TaskDetailComponent {
   });
 
   // Subtareas como array simple fuera del FormGroup
-  subtasks: { title: string; is_completed: boolean }[] = [];
+  subtasks: { uuid?: string; title: string; is_completed: boolean }[] = [];
 
   constructor() {
     this.taskForm = this.fb.group({
