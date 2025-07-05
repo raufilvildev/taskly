@@ -1,5 +1,5 @@
 import { Component, inject, computed, effect, Input, Output, EventEmitter, ViewChild, TemplateRef } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { TasksService } from '../../../services/tasks.service';
 import { ISubtask, ITask } from '../../../interfaces/itask.interface';
 import { MatIconModule } from '@angular/material/icon';
@@ -70,12 +70,39 @@ export class TaskDetailComponent {
     if (this.isStudent() && this.isCourseRelatedTask()) {
       return true;
     }
-    // Los profesores solo pueden editar tareas si están en contexto de curso
-    if (this.usersService.currentUser?.role === 'teacher' && !this.isCourse) {
-      return true;
+    // El profesor solo puede editar tareas de curso si está en contexto de curso
+    if (this.usersService.currentUser?.role === 'teacher') {
+      const task = this.selectedTask();
+      if (this.isCourse) {
+        // En contexto de curso, solo puede editar tareas de curso
+        return !(task && task.category === 'course_related');
+      } else {
+        // Fuera de curso, solo puede editar custom
+        return !(task && task.category === 'custom');
+      }
     }
     return false;
   });
+
+  // Computed para verificar si se puede eliminar la tarea
+  canDeleteTask = computed(() => {
+    const task = this.selectedTask();
+    if (!task) return false;
+    if (this.usersService.currentUser?.role === 'teacher') {
+      if (this.isCourse) {
+        // En contexto de curso, solo puede eliminar tareas de curso
+        return task.category === 'course_related';
+      } else {
+        // Fuera de curso, solo puede eliminar custom
+        return task.category === 'custom';
+      }
+    }
+    // El alumno solo puede eliminar custom
+    return task.category === 'custom';
+  });
+
+  // Subtareas como array simple fuera del FormGroup
+  subtasks: { title: string; is_completed: boolean }[] = [];
 
   constructor() {
     this.taskForm = this.fb.group({
@@ -86,28 +113,19 @@ export class TaskDetailComponent {
       time_estimated: [''],
       is_completed: [false],
       is_urgent: [false],
-      is_important: [false],
-      subtasks: this.fb.array([])
+      is_important: [false]
     });
 
     // Sincroniza el formulario con la tarea seleccionada
     effect(() => {
       const task = this.selectedTask();
+      console.log('DEBUG - task recibido en effect:', task);
       if (task) {
-        // Limpiar el FormArray de subtareas
-        const subtasksArray = this.taskForm.get('subtasks') as FormArray;
-        subtasksArray.clear();
-
-        // Agregar las subtareas existentes al FormArray
-        if (task.subtasks) {
-          task.subtasks.forEach(subtask => {
-            subtasksArray.push(this.fb.group({
-              title: [subtask.title],
-              is_completed: [subtask.is_completed]
-            }));
-          });
-        }
-
+        // Inicializar subtasks como array simple
+        this.subtasks = (task.subtasks || []).map(subtask => ({
+          title: subtask.title,
+          is_completed: !!subtask.is_completed
+        }));
         let cleanTimeStart = '';
         if (typeof task.time_start === 'string') {
           const parts = task.time_start.split(':');
@@ -115,7 +133,6 @@ export class TaskDetailComponent {
             cleanTimeStart = parts[0].padStart(2, '0') + ':' + parts[1].padStart(2, '0');
           }
         }
-        // Forzar el valor también directamente en el control, además de patchValue
         this.taskForm.patchValue({
           title: task.title,
           description: task.description,
@@ -142,35 +159,27 @@ export class TaskDetailComponent {
         task.is_completed = val.is_completed;
         task.is_urgent = val.is_urgent;
         task.is_important = val.is_important;
-
-        // Actualizar subtareas
-        if (val.subtasks) {
-          task.subtasks = val.subtasks.map((subtaskForm: any) => ({
-            id: Math.random().toString(36).substr(2, 9), // ID temporal
-            title: subtaskForm.title,
-            is_completed: subtaskForm.is_completed
-          }));
-        }
+        // Las subtasks se gestionan aparte
       }
     });
   }
 
-  // Getter para acceder al FormArray de subtareas
-  get subtasks() {
-    return this.taskForm.get('subtasks') as FormArray;
-  }
-
-  // Método para agregar una nueva subtarea
+  // Métodos para subtasks como array simple
   addSubtask() {
-    this.subtasks.push(this.fb.group({
-      title: [''],
-      is_completed: [false]
-    }));
+    this.subtasks.push({ title: '', is_completed: false });
   }
 
-  // Método para eliminar una subtarea
   removeSubtask(index: number) {
-    this.subtasks.removeAt(index);
+    this.subtasks.splice(index, 1);
+  }
+
+  toggleSubtaskCompleted(index: number) {
+    this.subtasks[index].is_completed = !this.subtasks[index].is_completed;
+  }
+
+  updateSubtaskTitle(index: number, event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.subtasks[index].title = value;
   }
 
   // Método para calcular el tiempo estimado basado en time_start y time_end
@@ -233,14 +242,18 @@ export class TaskDetailComponent {
       time_end = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
     }
 
-    // Enviar subtareas como objetos con title e is_completed
-    let subtasks: { title: string; is_completed: boolean }[] = [];
-    if (formValue.subtasks) {
-      subtasks = formValue.subtasks
-        .filter((subtask: any) => subtask.title && subtask.title.trim() !== '')
-        .map((subtask: any) => ({ title: subtask.title, is_completed: !!subtask.is_completed }));
-    }
-
+    // Filtrar subtasks vacías y agregar uuid si existe
+    const subtasks = (task.subtasks || [])
+      .map((st, i) => {
+        const edited = this.subtasks[i];
+        if (!edited || !edited.title || edited.title.trim() === '') return null;
+        return {
+          uuid: st.uuid, // uuid original si existe
+          title: edited.title,
+          is_completed: edited.is_completed
+        };
+      })
+      .filter(st => st !== null);
     const updateData = {
       title: formValue.title,
       description: formValue.description,
@@ -250,7 +263,7 @@ export class TaskDetailComponent {
       is_completed: !!formValue.is_completed,
       is_urgent: !!formValue.is_urgent,
       is_important: !!formValue.is_important,
-      subtasks: subtasks as any,
+      subtasks,
       category: task.category
     };
 
@@ -313,16 +326,6 @@ export class TaskDetailComponent {
   clearSelectedTask(): void {
     this.projectService.setSelectedTask(null);
   }
-
-  // Computed para verificar si se puede eliminar la tarea
-  canDeleteTask = computed(() => {
-    const task = this.selectedTask();
-    console.log('canDeleteTask - task:', task);
-    console.log('canDeleteTask - category:', task?.category);
-    const canDelete = task && task.category === 'custom';
-    console.log('canDeleteTask - resultado:', canDelete);
-    return canDelete;
-  });
 
   openDeleteConfirmation() {
     this.showDeleteModal = true;
