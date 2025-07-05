@@ -60,7 +60,7 @@
           @if (!shouldApplyRestrictions()) {
             <mat-form-field class="datetime-field">
               <mat-label>Inicio</mat-label>
-              <mat-select formControlName="time_start">
+              <mat-select  class="text_hour" formControlName="time_start">
                 @for (hour of hoursList; track hour) {
                   <mat-option [value]="hour">{{ hour }}</mat-option>
                 }
@@ -81,7 +81,7 @@
           @if (!shouldApplyRestrictions()) {
             <mat-form-field class="datetime-field">
               <mat-label>Duración</mat-label>
-              <mat-select formControlName="time_estimated">
+              <mat-select class="text_hour" formControlName="time_estimated">
                 <mat-option value="15">15 min</mat-option>
                 <mat-option value="30">30 min</mat-option>
                 <mat-option value="45">45 min</mat-option>
