@@ -38,7 +38,7 @@ export class TaskDetailComponent {
   @ViewChild('deleteDialogTemplate') deleteDialogTemplate!: TemplateRef<any>;
 
   private projectService = inject(TasksService);
-  private usersService = inject(UsersService);
+  public usersService = inject(UsersService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   selectedTask = computed(() => this.projectService.selectedTask());
