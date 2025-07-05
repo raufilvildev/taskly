@@ -49,9 +49,9 @@ export class TasksService {
     return this.http.post<ITask>(url, taskData);
   }
 
-  // POST api/tasks/?course_uuid -> Solo la puede hacer el profesor y se debe asignar tanto al profesor como a sus alumnos.
-  createTaskForCourse(courseUuid: string, taskData: Partial<ITask>): Observable<ITask> {
-    const url = `${this.API_BASE_URL}?course_uuid=${courseUuid}`;
+  // POST api/tasks/:course_uuid -> Solo la puede hacer el profesor y se debe asignar tanto al profesor como a sus alumnos.
+  createTaskByProf(courseUuid: string, taskData: Partial<ITask>): Observable<ITask> {
+    const url = `${this.API_BASE_URL}/${courseUuid}`;
     return this.http.post<ITask>(url, taskData);
   }
 

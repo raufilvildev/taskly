@@ -42,7 +42,7 @@ export class TaskFormComponent implements OnInit {
   @Input() course_uuid?: string;
   @Output() back = new EventEmitter<void>();
   @Output() close = new EventEmitter<void>();
-  @Output() createTask = new EventEmitter<ITask>();
+  @Output() createTask = new EventEmitter<{ task: any, course_uuid?: string }>();
 
   course_id?: number;
   course_uuid_final?: string;
@@ -97,8 +97,7 @@ export class TaskFormComponent implements OnInit {
       panelClass: ['success-snackbar'],
     });
     this.close.emit(); // Cerrar el modal después de mostrar la alerta
-    // Recargar la página tras crear la tarea
-    window.location.reload();
+    // window.location.reload(); // Recargar la página tras crear la tarea (comentado para pruebas)
   }
 
   /**
@@ -225,12 +224,13 @@ export class TaskFormComponent implements OnInit {
 
       // Filtrar subtareas vacías y agregar al objeto de datos
       taskData.subtasks = this.subtasks.filter(subtask => subtask && subtask.trim() !== '');
-      // Enviar course_uuid_final si está disponible
+      // No enviar course_uuid en el body, sino como argumento aparte
       if (this.course_uuid_final) {
-        taskData.course_uuid = this.course_uuid_final;
+        // Emitir el uuid como segundo argumento
+        this.createTask.emit({ task: taskData, course_uuid: this.course_uuid_final });
+      } else {
+        this.createTask.emit({ task: taskData });
       }
-      console.log('Datos de tarea a enviar:', taskData);
-      this.createTask.emit(taskData);
       this.showSuccessMessage(); // Mostrar alerta de éxito
     } else {
       this.taskForm.markAllAsTouched();

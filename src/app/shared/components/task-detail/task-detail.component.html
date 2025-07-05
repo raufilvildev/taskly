@@ -137,22 +137,23 @@
       <!-- Subtareas -->
       <div class="subtasks-section">
         <h3>Subtareas:</h3>
-        @if (subtasks.controls.length > 0) {
+        @if (subtasks.length > 0) {
           <ul class="subtasks-list">
-            @for (subtask of subtasks.controls; track $index; let i = $index) {
-              <li class="subtask-item" [formGroupName]="i">
-                <input type="text" 
-                       formControlName="title"
-                       class="subtask-name" 
+            @for (subtask of subtasks; track $index; let i = $index) {
+              <li class="subtask-item">
+                <input type="checkbox"
+                       class="subtask-checkbox mr-2 align-middle"
+                       [checked]="subtask.is_completed"
+                       (change)="toggleSubtaskCompleted(i)"
+                       [disabled]="shouldApplyRestrictions()" />
+                <input type="text"
+                       class="subtask-name"
+                       [value]="subtask.title"
+                       (input)="updateSubtaskTitle(i, $event)"
                        placeholder="Título de la subtarea"
                        [readonly]="shouldApplyRestrictions()" />
                 @if (!shouldApplyRestrictions()) {
-                  <button type="button" 
-                          class="save-subtask-btn text-green-500 hover:text-green-700 text-sm"
-                          (click)="saveSubtask(i)">
-                    Guardar
-                  </button>
-                  <button type="button" 
+                  <button type="button"
                           class="remove-subtask-btn text-red-500 hover:text-red-700 text-sm"
                           (click)="removeSubtask(i)">
                     Eliminar
@@ -162,7 +163,7 @@
             }
           </ul>
           @if (!shouldApplyRestrictions()) {
-            <button type="button" 
+            <button type="button"
                     class="add-subtask-btn mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium"
                     (click)="addSubtask()">
               + Agregar subtarea
@@ -173,7 +174,7 @@
             No contiene subtareas
           </p>
           @if (!shouldApplyRestrictions()) {
-            <button type="button" 
+            <button type="button"
                     class="add-subtask-btn mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium"
                     (click)="addSubtask()">
               + Agregar subtarea

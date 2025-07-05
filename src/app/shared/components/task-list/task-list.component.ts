@@ -89,30 +89,50 @@ export class TaskListComponent {
     this.filterChange.emit(filters);
   }
 
-  onCreateTask(taskData: any) {
+  onCreateTask(event: { task: any, course_uuid?: string }) {
+    const { task, course_uuid } = event;
     // Asignar la categoría según el contexto
     if (this.isCourse) {
-      taskData.category = 'course_related';
+      task.category = 'course_related';
     } else {
-      taskData.category = 'custom';
+      task.category = 'custom';
     }
-    // Crear la tarea usando el servicio
-    this.projectService.createTask(taskData).subscribe({
-      next: (newTask) => {
-        console.log('Tarea creada exitosamente:', newTask);
-        this.closeTaskFormModal();
-        // Resetear el formulario
-        this.showTaskFormModal = false;
-      },
-      error: (error) => {
-        console.error('Error al crear la tarea:', error);
-        this.snackBar.open('No hemos podido registrar su tarea', 'Cerrar', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['error-snackbar']
-        });
-      }
-    });
+    // Validar que el course_uuid sea válido y no sea 'tasks'
+    const isValidCourseUuid = course_uuid && course_uuid !== 'tasks' && course_uuid !== '';
+    if (isValidCourseUuid) {
+      this.projectService.createTaskByProf(course_uuid!, task).subscribe({
+        next: (newTask) => {
+          console.log('Tarea de curso creada exitosamente:', newTask);
+          this.closeTaskFormModal();
+          this.showTaskFormModal = false;
+        },
+        error: (error) => {
+          console.error('Error al crear la tarea de curso:', error);
+          this.snackBar.open('No hemos podido registrar su tarea', 'Cerrar', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['error-snackbar']
+          });
+        }
+      });
+    } else {
+      this.projectService.createTask(task).subscribe({
+        next: (newTask) => {
+          console.log('Tarea creada exitosamente:', newTask);
+          this.closeTaskFormModal();
+          this.showTaskFormModal = false;
+        },
+        error: (error) => {
+          console.error('Error al crear la tarea:', error);
+          this.snackBar.open('No hemos podido registrar su tarea', 'Cerrar', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['error-snackbar']
+          });
+        }
+      });
+    }
   }
 }
