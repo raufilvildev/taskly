@@ -166,7 +166,7 @@ export class TaskDetailComponent {
 
   // Métodos para subtasks como array simple
   addSubtask() {
-    this.subtasks.push({ title: '', is_completed: false });
+    this.subtasks.push({ uuid: '', title: '', is_completed: false });
   }
 
   removeSubtask(index: number) {
@@ -242,18 +242,25 @@ export class TaskDetailComponent {
       time_end = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
     }
 
-    // Filtrar subtasks vacías y agregar uuid si existe
-    const subtasks = (task.subtasks || [])
-      .map((st, i) => {
-        const edited = this.subtasks[i];
-        if (!edited || !edited.title || edited.title.trim() === '') return null;
-        return {
-          uuid: st.uuid, // uuid original si existe
+    // Filtrar subtasks vacías y agregar uuid si existe (uuid vacío para nuevas)
+    const subtasks = this.subtasks
+      .filter(st => st.title && st.title.trim() !== '')
+      .map((edited, i) => {
+        // Buscar uuid original si existe
+        let uuid = '';
+        if (task.subtasks && task.subtasks[i] && task.subtasks[i].uuid) {
+          uuid = task.subtasks[i].uuid;
+        } else if (edited.uuid) {
+          uuid = edited.uuid;
+        }
+        // Si es nueva, uuid será ""
+        const subtaskObj: any = {
           title: edited.title,
           is_completed: edited.is_completed
         };
-      })
-      .filter(st => st !== null);
+        if (uuid) subtaskObj.uuid = uuid;
+        return subtaskObj;
+      });
     const updateData = {
       title: formValue.title,
       description: formValue.description,
@@ -273,8 +280,7 @@ export class TaskDetailComponent {
     this.projectService.updateTask(task.uuid, updateData as any).subscribe({
       next: (updated) => {
         console.log('Respuesta del backend (PUT):', updated);
-        // Recargar la página tras actualizar
-        window.location.reload();
+        window.location.reload(); // Recargar la página tras actualizar
       },
       error: (err) => {
         console.error('Error al hacer PUT:', err);
