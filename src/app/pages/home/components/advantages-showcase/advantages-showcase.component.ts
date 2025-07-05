@@ -32,7 +32,7 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
       title: 'Gestiona tareas sin esfuerzo',
       description:
         'Asigna tareas, establece fechas límite y proporciona retroalimentación directamente desde la app. Centraliza toda la información del curso y automatiza recordatorios para evitar olvidos. Organiza tu aula virtual con fluidez y ahorra tiempo valioso en cada clase, dedicándote a lo que realmente importa: enseñar.',
-      image: '/assets/images/tareas-preview.jpg',
+      image: 'tareas-profesores.png',
     },
     {
       title: 'Calendario que te organiza la vida',
@@ -44,18 +44,18 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
       title: 'Conecta con tu comunidad',
       description:
         '¿Dudas? ¿Ideas? ¿Preguntas? Participa en foros temáticos, comenta publicaciones o chatea en tiempo real con alumnos y colegas. Fomenta el diálogo, el aprendizaje colaborativo y construye una comunidad educativa activa, motivada y conectada más allá del aula.',
-      image: '/assets/images/calendario-preview.jpg',
+      image: 'foro-profesor.png',
     },
     {
       title: 'Exporta y comparte tus planes',
       description:
         'Genera un PDF profesional de tu curso con estructura, cronograma y objetivos claros. Compártelo con instituciones, alumnos o guárdalo como respaldo.',
-      image: '/assets/images/foro-preview.jpg',
+      image: 'pdf-curso.png',
     },
     {
-      title: 'Enfocate gracias al modo Pomodoro',
+      title: 'Prioriza con la matriz de Eisenhower',
       description:
-        'Evita distracciones y mantén la concentración durante las clases o sesiones de preparación. Activa el modo Pomodoro y trabaja por bloques de 25 minutos con descansos activos. Una técnica probada que aumenta la productividad y mejora la retención del conocimiento.',
+        'Organiza tus tareas según su urgencia e importancia con la matriz de Eisenhower. Decide qué hacer, qué programar, qué delegar y qué eliminar para aprovechar mejor tu tiempo y evitar el estrés académico.',
       image: 'pomodoro-preview.png',
     },
   ];
@@ -65,13 +65,13 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
       title: 'Aprende a tu ritmo',
       description:
         'Accede a cursos diseñados por profesores y expertos, disponibles en todo momento. Ya sea desde tu ordenador, tablet o móvil, tú eliges cuándo y dónde estudiar. Acomoda tu aprendizaje a tu estilo de vida y avanza a tu propio ritmo sin presión.',
-      image: '/assets/images/ejemplo_1.png',
+      image: 'cursos-alumno.png',
     },
     {
       title: 'Organiza tus tareas fácilmente',
       description:
         'Visualiza todas tus tareas, fechas de entrega y actividades en una interfaz clara y accesible. Recibe alertas automáticas, marca tareas como completadas y controla tu progreso día a día. Simplifica tu vida académica y mantén todo bajo control sin estrés.',
-      image: '/assets/images/tareas-preview.jpg',
+      image: 'tareas-alumnos.png',
     },
     {
       title: 'Calendario académico integrado',
@@ -83,18 +83,18 @@ export class AdvantagesShowcaseComponent implements AfterViewInit {
       title: 'Participa en la comunidad',
       description:
         'Resuelve dudas, comparte ideas, colabora con otros estudiantes y recibe ayuda directa de tus profesores. Los foros temáticos y el chat en tiempo real te permiten mantenerte conectado, aprender de otros y crecer junto a una comunidad comprometida.',
-      image: '/assets/images/calendario-preview.jpg',
+      image: 'foro-profesor.png',
     },
     {
       title: 'Descarga y comparte tus cursos',
       description:
         'Guarda tus cursos en formato PDF para revisarlos sin conexión cuando lo necesites. Comparte fácilmente con tus compañeros o imprímelos para tenerlo en cualquier lugar.',
-      image: '/assets/images/foro-preview.jpg',
+      image: 'pdf-curso.png',
     },
     {
-      title: 'Mejora la concentración con el modo Pomodoro',
+      title: 'Organiza tu estudio con la matriz de Eisenhower',
       description:
-        'Utiliza la técnica Pomodoro para estudiar en bloques de tiempo efectivos y descansos planificados. Esta metodología te ayuda a mantener el enfoque y alcanzar tus metas académicas con mayor eficiencia.',
+        'Aprende a priorizar tus tareas según su urgencia e importancia. Esta metodología te permite planificar mejor tus sesiones de estudio, reducir el estrés y enfocarte en lo realmente importante.',
       image: 'pomodoro-preview.png',
     },
   ];

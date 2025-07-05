@@ -10,10 +10,10 @@
         <img
             [src]="item.image"
             alt="Vista previa"
-            class="w-full h-full object-cover transition-all duration-300 rounded-[3rem] z-0"
+            class="w-[95%] h-full object-cover transition-all duration-300 rounded-[2rem] lg:rounded-[3rem]  z-0 mx-auto"
         />
         <img
-            [src]="isDarkMode ? 'iphone-bg-dark.png' : 'iphone-bg.png'"
+            src="iphone-bg.png"
             class="absolute inset-0 w-full h-full z-20 pointer-events-none"
             style="mix-blend-mode: normal; opacity: 1;"
         />

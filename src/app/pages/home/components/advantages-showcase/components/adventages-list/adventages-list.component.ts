@@ -18,7 +18,7 @@ interface AdvantageItem {
   imports: [CommonModule, MatIcon],
   templateUrl: './adventages-list.component.html',
 })
-export class AdventagesListComponent implements OnInit, AfterViewInit {
+export class AdventagesListComponent implements AfterViewInit {
   @Input() item!: AdvantageItem;
   @Input() type!: 'teacher' | 'alumn';
   @Output() next = new EventEmitter<void>();
@@ -27,16 +27,6 @@ export class AdventagesListComponent implements OnInit, AfterViewInit {
   @ViewChild('advantagesList', { static: false }) advantagesList!: ElementRef<HTMLElement>;
 
   private mm!: gsap.MatchMedia;
-
-  isDarkMode = false;
-
-  ngOnInit(): void {
-    this.isDarkMode = document.documentElement.classList.contains('dark');
-    const observer = new MutationObserver(() => {
-      this.isDarkMode = document.documentElement.classList.contains('dark');
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-  }
 
   ngAfterViewInit(): void {
     this.animateAdvantagesList();
