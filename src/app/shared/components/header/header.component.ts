@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { constants } from '../../utils/constants/constants.config';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { LightDarkButtonComponent } from '../buttons/light-dark-button/light-dark-button.component';
+import { ThemeService } from '../../../services/theme.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +16,9 @@ export class HeaderComponent {
   appName = constants.appName;
   isMobileMenuOpen = false;
   isDarkMode = false;
-  
+  private themeService = inject(ThemeService);
+  private sub?: Subscription;
+
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
@@ -37,10 +41,8 @@ export class HeaderComponent {
     },
   ];
   ngOnInit(): void {
-    this.isDarkMode = document.documentElement.classList.contains('dark');
-    const observer = new MutationObserver(() => {
-      this.isDarkMode = document.documentElement.classList.contains('dark');
+   this.sub = this.themeService.isDarkMode$.subscribe(value => {
+      this.isDarkMode = value;
     });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   }
 }

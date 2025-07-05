@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { constants } from '../../utils/constants/constants.config';
+import { ThemeService } from '../../../services/theme.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-footer',
@@ -12,12 +14,12 @@ export class FooterComponent {
   appName = constants.appName;
   currentYear = new Date().getFullYear();
   isDarkMode = false;
+  private themeService = inject(ThemeService);
+  private sub?: Subscription;
 
   ngOnInit(): void {
-    this.isDarkMode = document.documentElement.classList.contains('dark');
-    const observer = new MutationObserver(() => {
-      this.isDarkMode = document.documentElement.classList.contains('dark');
+this.sub = this.themeService.isDarkMode$.subscribe(value => {
+      this.isDarkMode = value;
     });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   }
 }
