@@ -26,7 +26,7 @@
                 />
                 <div class="p-4 flex flex-col gap-2">
                   <div class="flex flex-col">
-                    <h3 class="text-sm font-bold truncate">{{ course.title }}</h3>
+                    <h3 class="text-sm font-bold break-words leading-snug text-center">{{ course.title }}</h3>
                   </div>
                 </div>
               </div>
@@ -88,7 +88,7 @@
         <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-8">Calendario</h2>
         <a class="w-full block cursor-pointer h-full" [routerLink]="['/dashboard/calendar']">
           <div class="w-full h-full">
-            <app-dashboard-home-calendar [getPriorityColorFn]="getPriorityColor" [tasks]="tasks" class="w-full h-full"></app-dashboard-home-calendar>
+            <app-dashboard-home-calendar [getPriorityColorFn]="getPriorityColor" [tasks]="calendarTasks" class="w-full h-full"></app-dashboard-home-calendar>
           </div>
         </a>
       </div>

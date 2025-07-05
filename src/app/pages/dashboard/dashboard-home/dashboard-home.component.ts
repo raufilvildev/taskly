@@ -25,6 +25,7 @@ import { CommonModule } from '@angular/common';
 })
 export class DashboardHomeComponent {
   tasks: ITask[] = [];
+  calendarTasks: ITask[] = [];
 
   usersService = inject(UsersService);
   coursesService = inject(CoursesService);
@@ -47,8 +48,8 @@ async ngOnInit() {
   try {
     this.user = await this.usersService.getByToken();
     this.tasks = await firstValueFrom(this.taskService.getTasksByPeriod('today'));
+    this.calendarTasks = await firstValueFrom(this.taskService.getTasksByPeriod('month'));
     await this.updateGrid();
-    console.log (this.tasks)
   } catch (error) {
     console.error('Error al cargar dashboard-home:', error);
   }
