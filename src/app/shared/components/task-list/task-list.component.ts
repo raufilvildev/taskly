@@ -56,15 +56,54 @@ export class TaskListComponent {
   }
 
   toggleTask(task: ITask) {
-    task.is_completed = !task.is_completed;
-    if (task.is_completed) {
-      // Marcar todas las subtareas como completadas si la tarea se completa
+    const nuevoEstado = !task.is_completed;
+    task.is_completed = nuevoEstado;
+    if (nuevoEstado) {
       task.subtasks.forEach(subtask => {
         if (!subtask.is_completed) {
           subtask.is_completed = true;
         }
       });
     }
+    // Sincronizar el objeto global para que task-detail y task-list estén siempre actualizados
+    this.projectService.setSelectedTask({ ...task });
+    // Enviar el PUT con todos los datos, pero usando el tipo correcto para subtasks
+    const updateData: Partial<ITask> = {
+      title: task.title,
+      description: task.description,
+      due_date: task.due_date,
+      time_start: task.time_start,
+      time_end: task.time_end,
+      is_completed: task.is_completed,
+      is_urgent: task.is_urgent,
+      is_important: task.is_important,
+      subtasks: task.subtasks, // Enviamos el array completo, aunque el backend solo use uuid, title, is_completed
+      category: task.category
+    };
+    this.projectService.updateTask(task.uuid, updateData).subscribe({
+      next: () => {
+        this.snackBar.open(
+          task.is_completed ? 'Tarea marcada como completada' : 'Tarea marcada como pendiente',
+          'Cerrar',
+          {
+            duration: 2000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['success-snackbar']
+          }
+        );
+      },
+      error: () => {
+        this.snackBar.open('No se pudo actualizar la tarea', 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar']
+        });
+        task.is_completed = !nuevoEstado;
+        this.projectService.setSelectedTask({ ...task });
+      }
+    });
   }
 
   toggleSubtask(subtask: ISubtask) {

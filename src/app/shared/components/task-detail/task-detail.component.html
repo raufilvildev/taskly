@@ -20,11 +20,13 @@
     </div>
     <form [formGroup]="taskForm">
       <div class="task-actions flex items-center ">
-        <input type="checkbox"
-          class="task-checkbox scale-175"
-          [checked]="taskForm.get('is_completed')?.value"
-          (change)="toggleCompletion()" />
-        <div class="divider divider-horizontal h- [10px] m-0 "></div>
+        @if (!(usersService.currentUser?.role === 'teacher' && selectedTask()?.category === 'course_related')) {
+          <input type="checkbox"
+            class="task-checkbox scale-175"
+            [checked]="taskForm.get('is_completed')?.value"
+            (change)="toggleCompletion()" />
+          <div class="divider divider-horizontal h- [10px] m-0 "></div>
+        }
         <!-- Date picker -->
         @if (!shouldApplyRestrictions()) {
           <mat-form-field class="datetime-field">
@@ -58,7 +60,7 @@
           @if (!shouldApplyRestrictions()) {
             <mat-form-field class="datetime-field">
               <mat-label>Inicio</mat-label>
-              <mat-select formControlName="time_start">
+              <mat-select  class="text_hour" formControlName="time_start">
                 @for (hour of hoursList; track hour) {
                   <mat-option [value]="hour">{{ hour }}</mat-option>
                 }
@@ -79,7 +81,7 @@
           @if (!shouldApplyRestrictions()) {
             <mat-form-field class="datetime-field">
               <mat-label>Duración</mat-label>
-              <mat-select formControlName="time_estimated">
+              <mat-select class="text_hour" formControlName="time_estimated">
                 <mat-option value="15">15 min</mat-option>
                 <mat-option value="30">30 min</mat-option>
                 <mat-option value="45">45 min</mat-option>
@@ -104,7 +106,7 @@
         </div>
       </div>
       
-      <!-- Campos de prioridad y urgencia -->
+      <!-- Titulo y descripción -->
       
       
       <div class="divider divider-vertical mt-0 mb-3"></div>
@@ -120,20 +122,24 @@
                   placeholder="Describe la tarea..."
                   [readonly]="shouldApplyRestrictions()"></textarea>
       </div>
-      <div class="priority-section mb-4">
-        <div class="flex items-center gap-4 mb-3">
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" 
-                   formControlName="is_urgent">
-            <span class="text-sm font-medium">Urgente</span>
-          </label>
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" 
-                   formControlName="is_important">
-            <span class="text-sm font-medium">Importante</span>
-          </label>
+
+      <!-- Campos de prioridad y urgencia -->
+      @if (!(usersService.currentUser?.role === 'teacher' && selectedTask()?.category === 'course_related')) {
+        <div class="priority-section mb-4">
+          <div class="flex items-center gap-4 mb-3">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" 
+                     formControlName="is_urgent">
+              <span class="text-sm font-medium">Urgente</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" 
+                     formControlName="is_important">
+              <span class="text-sm font-medium">Importante</span>
+            </label>
+          </div>
         </div>
-      </div>
+      }
       <!-- Subtareas -->
       <div class="subtasks-section">
         <h3>Subtareas:</h3>
@@ -145,14 +151,14 @@
                        class="subtask-checkbox mr-2 align-middle"
                        [checked]="subtask.is_completed"
                        (change)="toggleSubtaskCompleted(i)"
-                       [disabled]="shouldApplyRestrictions()" />
+                       [disabled]="shouldApplyRestrictions() && !(isStudent() && isCourseRelatedTask())" />
                 <input type="text"
                        class="subtask-name"
                        [value]="subtask.title"
                        (input)="updateSubtaskTitle(i, $event)"
                        placeholder="Título de la subtarea"
-                       [readonly]="shouldApplyRestrictions()" />
-                @if (!shouldApplyRestrictions()) {
+                       [readonly]="shouldApplyRestrictions() || (isStudent() && isCourseRelatedTask())" />
+                @if (!shouldApplyRestrictions() && !(isStudent() && isCourseRelatedTask())) {
                   <button type="button"
                           class="remove-subtask-btn text-red-500 hover:text-red-700 text-sm"
                           (click)="removeSubtask(i)">
@@ -193,7 +199,7 @@
               Eliminar Tarea
             </button>
           }
-          @if (!shouldApplyRestrictions()) {
+          @if (!shouldApplyRestrictions() || (isStudent() && isCourseRelatedTask())) {
             <button type="button" 
                     class="save-changes-btn flex-1 py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     (click)="saveChanges()">
