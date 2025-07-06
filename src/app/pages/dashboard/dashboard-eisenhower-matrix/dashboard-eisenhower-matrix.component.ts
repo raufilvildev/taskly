@@ -12,5 +12,11 @@ import { CommonModule } from '@angular/common';
 })
 export class DashboardEisenhowerMatrixComponent {
   private tasksService = inject(TasksService);
-  tasks = this.tasksService.tasks;
+
+  ngOnInit(): void {
+    // Cargar todas las tareas
+    this.tasksService.getAllTasks().subscribe(tasks => {
+      this.tasksService.tasks.set(tasks);
+    });
+  }
 }

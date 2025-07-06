@@ -10,17 +10,22 @@ import { TableComponent } from '../../../../../shared/components/calendar/table/
   templateUrl: './course-calendar.component.html',
   styleUrl: './course-calendar.component.css',
 })
-export class CourseCalendarComponent {
+export class CourseCalendarComponent  {
   dashboardLayoutService = inject(DashboardLayoutService);
   tasksService = inject(TasksService);
 
   @Input() course_uuid = '';
 
+  ngOnInit(): void {
+    // Cargar las tareas del curso
+    this.tasksService.getTasksByCourseUuid(this.course_uuid, 'month').subscribe(tasks => {
+      this.tasksService.tasks.set(tasks);
+    });
+  }
+
   get isAsideCollapsed() {
     return this.dashboardLayoutService.isAsideCollapsed;
   }
 
-  get hasSelectedTask() {
-    return computed(() => this.tasksService.selectedTask() !== null);
-  }
+  hasSelectedTask = computed(() => this.tasksService.selectedTask() !== null);
 }
