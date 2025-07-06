@@ -18,16 +18,16 @@ export class EisenhowerMatrixComponent {
   tasks = computed(() => this.tasksService.tasks());
 
   urgentImportant = computed(() =>
-    this.tasks().filter((task) => task.is_urgent && task.is_important)
+    this.tasks().filter((task) => !task.is_completed && task.is_urgent && task.is_important)
   );
   notUrgentImportant = computed(() =>
-    this.tasks().filter((task) => !task.is_urgent && task.is_important)
+    this.tasks().filter((task) => !task.is_completed && !task.is_urgent && task.is_important)
   );
   urgentNotImportant = computed(() =>
-    this.tasks().filter((task) => task.is_urgent && !task.is_important)
+    this.tasks().filter((task) => !task.is_completed && task.is_urgent && !task.is_important)
   );
   notUrgentNotImportant = computed(() =>
-    this.tasks().filter((task) => !task.is_urgent && !task.is_important)
+    this.tasks().filter((task) => !task.is_completed && !task.is_urgent && !task.is_important)
   );
 
   quadrants = [
