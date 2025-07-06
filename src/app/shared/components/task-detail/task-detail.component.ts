@@ -336,26 +336,20 @@ export class TaskDetailComponent {
 
   performDeleteTask() {
     const task = this.selectedTask();
-    console.log('performDeleteTask llamado, task:', task);
-    if (task) {
-      console.log('UUID de la tarea a eliminar:', task.uuid);
-      console.log('Llamando al servicio deleteTask...');
-      this.projectService.deleteTask(task.uuid).subscribe({
-        next: () => {
-          console.log('Tarea eliminada exitosamente');
-          this.deleteTask.emit(task);
-          this.closeDeleteDialog();
-          this.clearSelectedTask();
-          // Recargar la página tras eliminar
-          window.location.reload();
-        },
-        error: (error) => {
-          console.error('Error al eliminar la tarea:', error);
+    if (!task) return;
+
+    this.projectService.deleteTask(task.uuid).subscribe({
+      error: (error) => {
+        console.error('Error al eliminar la tarea:', error);
+      },
+      complete: () => {
+        this.closeDeleteDialog();
+        this.clearSelectedTask();
+        if (this.showBackButton) {
+          this.back.emit();
         }
-      });
-    } else {
-      console.log('No hay tarea seleccionada para eliminar');
-    }
+      }
+    });
   }
 
   saveChanges() {
