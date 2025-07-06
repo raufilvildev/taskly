@@ -16,8 +16,8 @@ interface TaskFilters {
 })
 export class CalendarLegendComponent {
   filters = signal<TaskFilters>({
-    isUrgent: true,
-    isImportant: true
+    isUrgent: false,
+    isImportant: false
   });
 
   filtersChanged = output<TaskFilters>();

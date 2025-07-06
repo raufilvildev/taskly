@@ -18,7 +18,5 @@ export class DashboardCalendarComponent {
     return this.dashboardLayoutService.isAsideCollapsed;
   }
 
-  get hasSelectedTask() {
-    return computed(() => this.tasksService.selectedTask() !== null);
-  }
+  hasSelectedTask = computed(() => this.tasksService.selectedTask() !== null);
 }

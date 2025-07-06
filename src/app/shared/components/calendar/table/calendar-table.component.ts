@@ -4,7 +4,6 @@ import {
   ChangeDetectorRef,
   OnInit,
   inject,
-  Input,
   computed,
   effect,
   HostListener,
@@ -18,6 +17,7 @@ import esLocale from '@fullcalendar/core/locales/es';
 import { TasksService } from '../../../../services/tasks.service';
 import { CalendarLegendComponent } from '../legend/legend.component';
 import { ITask } from '../../../../interfaces/itask.interface';
+import { DashboardLayoutService } from '../../../../services/dashboard-layout.service';
 
 interface TaskFilters {
   isUrgent: boolean;
@@ -34,15 +34,14 @@ interface TaskFilters {
 export class TableComponent implements OnInit {
   private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly tasksService = inject(TasksService);
-
-  @Input() course_uuid = '';
+  private readonly dashboardLayoutService = inject(DashboardLayoutService);
 
   currentEvents = signal<EventApi[]>([]);
   calendarOptions: CalendarOptions;
 
   activeFilters = signal<TaskFilters>({
-    isUrgent: false,
-    isImportant: false,
+    isUrgent: true,
+    isImportant: true,
   });
 
   filteredTasks = computed(() => {
@@ -63,7 +62,11 @@ export class TableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadTasks();
+    // Cargar todas las tareas al inicializar
+    this.tasksService.getAllTasks().subscribe(tasks => {
+      this.tasksService.tasks.set(tasks);
+      // loadTasks se llamará automáticamente por el effect cuando el signal se actualice
+    });
   }
 
   private getCalendarOptions(): CalendarOptions {
@@ -198,17 +201,16 @@ export class TableComponent implements OnInit {
     this.changeDetector.detectChanges();
   }
 
-  private handleEventClick(info: any): void {
-    const eventId = info.event.id;
-    const tasks = this.tasksService.tasks();
-    const selectedTask = tasks.find((task) => task.uuid === eventId);
-
-    if (selectedTask) {
-      this.tasksService.setSelectedTask(selectedTask);
+  private handleEventClick(arg: any): void {
+    const taskId = arg.event.id;
+    const task = this.tasksService.tasks().find(t => t.uuid === taskId);
+    if (task) {
+      this.tasksService.setSelectedTask(task);
+      this.dashboardLayoutService.isAsideCollapsed.set(true);
     }
   }
 
-  onFiltersChanged(filters: TaskFilters) {
+  onFiltersChanged(filters: TaskFilters): void {
     this.activeFilters.set(filters);
   }
 }
