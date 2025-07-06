@@ -41,11 +41,6 @@
       <ul class="subtasks-list">
         @for (subtask of task.subtasks; track subtask.id) {
           <li class="subtask-item" [class.completed-subtask]="subtask.is_completed">
-            <input type="checkbox"
-              [checked]="subtask.is_completed"
-              (change)="toggleSubtask.emit(subtask)"
-              (click)="$event.stopPropagation()"
-              class="subtask-checkbox" />
             <span class="subtask-name" [class.completed]="subtask.is_completed">
               {{subtask.title}}
             </span>
