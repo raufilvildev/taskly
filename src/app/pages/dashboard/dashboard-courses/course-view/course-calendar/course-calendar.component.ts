@@ -1,8 +1,9 @@
-import { Component, computed, inject, Input } from '@angular/core';
+import { Component, computed, inject, Input, signal } from '@angular/core';
 import { TasksService } from '../../../../../services/tasks.service';
 import { DashboardLayoutService } from '../../../../../services/dashboard-layout.service';
 import { TaskDetailComponent } from '../../../../../shared/components/task-detail/task-detail.component';
 import { TableComponent } from '../../../../../shared/components/calendar/table/calendar-table.component';
+import { ITask } from '../../../../../interfaces/itask.interface';
 
 @Component({
   selector: 'app-course-calendar',
@@ -10,16 +11,17 @@ import { TableComponent } from '../../../../../shared/components/calendar/table/
   templateUrl: './course-calendar.component.html',
   styleUrl: './course-calendar.component.css',
 })
-export class CourseCalendarComponent  {
+export class CourseCalendarComponent {
   dashboardLayoutService = inject(DashboardLayoutService);
   tasksService = inject(TasksService);
 
   @Input() course_uuid = '';
+  tasks = signal<ITask[]>([]);
 
   ngOnInit(): void {
     // Cargar las tareas del curso
     this.tasksService.getTasksByCourseUuid(this.course_uuid, 'month').subscribe(tasks => {
-      this.tasksService.tasks.set(tasks);
+      this.tasks.set(tasks);
     });
   }
 

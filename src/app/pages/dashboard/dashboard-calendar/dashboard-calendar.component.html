@@ -1,6 +1,8 @@
 <main class="flex h-full w-full">
-  <section class="max-w-5xl h-full"><app-calendar-table></app-calendar-table></section>
-  @if (hasSelectedTask() && isAsideCollapsed()) {
+  <section class="flex-1">
+    <app-calendar-table [tasks]="tasks()"></app-calendar-table>
+  </section>
+  @if (isAsideCollapsed()) {
     <section class="w-1/3"><app-task-detail></app-task-detail></section>
   }
 </main>

@@ -7,6 +7,7 @@ import {
   computed,
   effect,
   HostListener,
+  Input,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -14,7 +15,6 @@ import { CalendarOptions, EventApi } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import esLocale from '@fullcalendar/core/locales/es';
-import { TasksService } from '../../../../services/tasks.service';
 import { CalendarLegendComponent } from '../legend/legend.component';
 import { ITask } from '../../../../interfaces/itask.interface';
 import { DashboardLayoutService } from '../../../../services/dashboard-layout.service';
@@ -33,9 +33,13 @@ interface TaskFilters {
 })
 export class TableComponent implements OnInit {
   private readonly changeDetector = inject(ChangeDetectorRef);
-  private readonly tasksService = inject(TasksService);
   private readonly dashboardLayoutService = inject(DashboardLayoutService);
 
+  @Input() set tasks(value: ITask[]) {
+    this._tasks.set(value);
+  }
+
+  private _tasks = signal<ITask[]>([]);
   currentEvents = signal<EventApi[]>([]);
   calendarOptions: CalendarOptions;
 
@@ -45,7 +49,7 @@ export class TableComponent implements OnInit {
   });
 
   filteredTasks = computed(() => {
-    const tasks = this.tasksService.tasks();
+    const tasks = this._tasks();
     const filters = this.activeFilters();
 
     // Si no hay filtros activos, mostrar todas las tareas
@@ -67,11 +71,7 @@ export class TableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Cargar todas las tareas al inicializar
-    this.tasksService.getAllTasks().subscribe(tasks => {
-      this.tasksService.tasks.set(tasks);
-      // loadTasks se llamará automáticamente por el effect cuando el signal se actualice
-    });
+    // Ya no necesitamos cargar tareas aquí, vendrán por el Input
   }
 
   private getCalendarOptions(): CalendarOptions {
@@ -208,9 +208,8 @@ export class TableComponent implements OnInit {
 
   private handleEventClick(arg: any): void {
     const taskId = arg.event.id;
-    const task = this.tasksService.tasks().find(t => t.uuid === taskId);
+    const task = this._tasks().find(t => t.uuid === taskId);
     if (task) {
-      this.tasksService.setSelectedTask(task);
       this.dashboardLayoutService.isAsideCollapsed.set(true);
     }
   }
