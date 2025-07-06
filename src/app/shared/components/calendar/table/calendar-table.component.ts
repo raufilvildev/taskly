@@ -8,6 +8,8 @@ import {
   effect,
   HostListener,
   Input,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -31,13 +33,15 @@ interface TaskFilters {
   styleUrl: './calendar-table.component.css',
   standalone: true,
 })
-export class TableComponent implements OnInit {
+export class TableComponent {
   private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly dashboardLayoutService = inject(DashboardLayoutService);
 
   @Input() set tasks(value: ITask[]) {
     this._tasks.set(value);
   }
+
+  @Output() taskSelected = new EventEmitter<ITask>();
 
   private _tasks = signal<ITask[]>([]);
   currentEvents = signal<EventApi[]>([]);
@@ -68,10 +72,6 @@ export class TableComponent implements OnInit {
     effect(() => {
       this.loadTasks();
     });
-  }
-
-  ngOnInit(): void {
-    // Ya no necesitamos cargar tareas aquí, vendrán por el Input
   }
 
   private getCalendarOptions(): CalendarOptions {
@@ -208,8 +208,9 @@ export class TableComponent implements OnInit {
 
   private handleEventClick(arg: any): void {
     const taskId = arg.event.id;
-    const task = this._tasks().find(t => t.uuid === taskId);
+    const task = this._tasks().find((t) => t.uuid === taskId);
     if (task) {
+      this.taskSelected.emit(task);
       this.dashboardLayoutService.isAsideCollapsed.set(true);
     }
   }

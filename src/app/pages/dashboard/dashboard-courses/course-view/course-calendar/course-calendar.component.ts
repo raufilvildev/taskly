@@ -25,6 +25,10 @@ export class CourseCalendarComponent {
     });
   }
 
+  onTaskSelected(task: ITask): void {
+    this.tasksService.setSelectedTask(task);
+  }
+
   get isAsideCollapsed() {
     return this.dashboardLayoutService.isAsideCollapsed;
   }

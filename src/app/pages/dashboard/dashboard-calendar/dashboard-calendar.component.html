@@ -1,6 +1,9 @@
 <main class="flex h-full w-full">
   <section class="flex-1">
-    <app-calendar-table [tasks]="tasks()"></app-calendar-table>
+    <app-calendar-table
+      [tasks]="tasks()"
+      (taskSelected)="onTaskSelected($event)">
+    </app-calendar-table>
   </section>
   @if (isAsideCollapsed()) {
     <section class="w-1/3"><app-task-detail></app-task-detail></section>
