@@ -87,6 +87,9 @@ export class TaskFormComponent implements OnInit {
   closeForm() {
     console.log('Cerrando formulario');
     this.close.emit();
+    setTimeout(() => {
+      window.location.reload();
+    }, 3000);
   }
 
   showSuccessMessage() {
@@ -96,8 +99,7 @@ export class TaskFormComponent implements OnInit {
       verticalPosition: 'top',
       panelClass: ['success-snackbar'],
     });
-    this.close.emit(); // Cerrar el modal después de mostrar la alerta
-    // window.location.reload(); // Recargar la página tras crear la tarea (comentado para pruebas)
+    this.closeForm(); // Usar closeForm para cerrar y recargar
   }
 
   /**

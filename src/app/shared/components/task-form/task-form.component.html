@@ -54,18 +54,25 @@
                formControlName="time_start"
                class="w-full bg-custom-background dark:bg-custom-input-background-dark text-custom-text-main dark:text-custom-text-main-dark border border-custom-border dark:border-custom-border-dark rounded p-2 pr-8 focus:border-custom-accent focus:outline-none"
                [readonly]="shouldApplyRestrictions"
-               placeholder="Hora inicio" />
+               placeholder="Hora inicio"
+               required />
         <mat-timepicker-toggle class="absolute right-2 top-1/2 -translate-y-1/2 text-custom-text-secondary"
                               [for]="startPicker"
                               [disabled]="shouldApplyRestrictions">
         </mat-timepicker-toggle>
         <mat-timepicker #startPicker/>
+        @if (taskForm.get('time_start')?.touched && taskForm.get('time_start')?.invalid) {
+          <div class="text-custom-error text-xs mt-1">
+            La hora de inicio es obligatoria.
+          </div>
+        }
       </div>
 
       <div class="relative">
         <select formControlName="time_estimated"
                 class="w-full bg-custom-background dark:bg-custom-input-background-dark text-custom-text-main dark:text-custom-text-main-dark border border-custom-border dark:border-custom-border-dark rounded p-2 pr-8 focus:border-custom-accent focus:outline-none appearance-none"
-                [disabled]="shouldApplyRestrictions">
+                [disabled]="shouldApplyRestrictions"
+                required>
           <option value="">Duración</option>
           <option value="15">15 min</option>
           <option value="30">30 min</option>
@@ -80,6 +87,11 @@
         <mat-icon class="absolute right-2 top-1/2 -translate-y-1/2 text-custom-text-secondary pointer-events-none">
           schedule
         </mat-icon>
+        @if (taskForm.get('time_estimated')?.touched && taskForm.get('time_estimated')?.invalid) {
+          <div class="text-custom-error text-xs mt-1">
+            La duración es obligatoria.
+          </div>
+        }
       </div>
     </div>
 
