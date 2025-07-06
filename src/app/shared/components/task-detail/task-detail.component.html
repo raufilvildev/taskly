@@ -20,7 +20,7 @@
     </div>
     <form [formGroup]="taskForm">
       <div class="task-actions flex items-center ">
-        @if (!(usersService.currentUser?.role === 'teacher' && selectedTask()?.category === 'course_related')) {
+        @if (!(usersService.currentUser.role === 'teacher' && selectedTask()?.category === 'course_related')) {
           <input type="checkbox"
             class="task-checkbox scale-175"
             [checked]="taskForm.get('is_completed')?.value"
@@ -31,12 +31,12 @@
         @if (!shouldApplyRestrictions()) {
           <mat-form-field class="datetime-field">
             <mat-label>Fecha</mat-label>
-            <input matInput [matDatepicker]="picker" 
+            <input matInput [matDatepicker]="picker"
                    (dateChange)="onDateChange($event)"
                    (click)="picker.open()"
                    formControlName="due_date"
                    [readonly]="shouldApplyRestrictions()" />
-            <mat-datepicker-toggle matIconSuffix [for]="picker" 
+            <mat-datepicker-toggle matIconSuffix [for]="picker"
                                   [disabled]="shouldApplyRestrictions()">
               <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
             </mat-datepicker-toggle>
@@ -52,7 +52,7 @@
           </div>
         }
       </div>
-      
+
       <!-- Sección de horarios -->
       <div class="datetime-section">
         <div class="datetime-grid">
@@ -76,7 +76,7 @@
               </div>
             </div>
           }
-          
+
           <!-- Tiempo estimado con intervalos de 15 minutos -->
           @if (!shouldApplyRestrictions()) {
             <mat-form-field class="datetime-field">
@@ -105,10 +105,10 @@
           }
         </div>
       </div>
-      
+
       <!-- Titulo y descripción -->
-      
-      
+
+
       <div class="divider divider-vertical mt-0 mb-3"></div>
       <div class="task-header">
         <input class="task-title-input font-medium text-lg"
@@ -118,22 +118,22 @@
                [readonly]="shouldApplyRestrictions()" />
       </div>
       <div class="full-width">
-        <textarea class="textarea" rows="1" formControlName="description" 
+        <textarea class="textarea" rows="1" formControlName="description"
                   placeholder="Describe la tarea..."
                   [readonly]="shouldApplyRestrictions()"></textarea>
       </div>
 
       <!-- Campos de prioridad y urgencia -->
-      @if (!(usersService.currentUser?.role === 'teacher' && selectedTask()?.category === 'course_related')) {
+      @if (!(usersService.currentUser.role === 'teacher' && selectedTask()?.category === 'course_related')) {
         <div class="priority-section mb-4">
           <div class="flex items-center gap-4 mb-3">
             <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" 
+              <input type="checkbox"
                      formControlName="is_urgent">
               <span class="text-sm font-medium">Urgente</span>
             </label>
             <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" 
+              <input type="checkbox"
                      formControlName="is_important">
               <span class="text-sm font-medium">Importante</span>
             </label>
@@ -188,19 +188,19 @@
           }
         }
       </div>
-      
+
       <!-- Botónes de guardar y eliminar -->
       <div class="save-changes-section mt-6">
         <div class="flex gap-3">
           @if (canDeleteTask()) {
-            <button type="button" 
+            <button type="button"
                     class="delete-task-btn flex-1 py-2 px-4 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                     (click)="openDeleteConfirmation()">
               Eliminar Tarea
             </button>
           }
           @if (!shouldApplyRestrictions() || (isStudent() && isCourseRelatedTask())) {
-            <button type="button" 
+            <button type="button"
                     class="save-changes-btn flex-1 py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     (click)="saveChanges()">
               Guardar Cambios
@@ -225,12 +225,12 @@
         ¿Estás seguro de que quieres eliminar esta tarea? Esta acción no se puede deshacer.
       </p>
       <div class="flex gap-3 justify-end">
-        <button type="button" 
+        <button type="button"
                 class="px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-colors"
                 (click)="closeDeleteDialog()">
           Cancelar
         </button>
-        <button type="button" 
+        <button type="button"
                 class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
                 (click)="confirmDelete()">
           Eliminar
