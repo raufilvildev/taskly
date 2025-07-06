@@ -37,10 +37,14 @@ export class TasksService {
   // GET api/tasks/:course_uuid?filter=today|week|month -> getTasksByCourseUuid (si filter=today, mostrar también tareas pasadas no completadas)
   getTasksByCourseUuid(
     courseUuid: string,
-    period: 'today' | 'week' | 'month'
+    period?: 'today' | 'week' | 'month'
   ): Observable<ITask[]> {
-    const url = `${this.API_BASE_URL}/${courseUuid}?filter=${period}`;
-    return this.http.get<ITask[]>(url);
+    const url = period
+      ? `${this.API_BASE_URL}/${courseUuid}?filter=${period}`
+      : `${this.API_BASE_URL}/${courseUuid}`;
+    const data = this.http.get<ITask[]>(url);
+    console.log(data);
+    return data;
   }
 
   // POST api/tasks -> Se asigna al usuario.

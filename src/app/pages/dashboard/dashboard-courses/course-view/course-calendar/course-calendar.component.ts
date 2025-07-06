@@ -19,14 +19,24 @@ export class CourseCalendarComponent {
   tasks = signal<ITask[]>([]);
 
   ngOnInit(): void {
-    // Cargar las tareas del curso
-    this.tasksService.getTasksByCourseUuid(this.course_uuid, 'month').subscribe(tasks => {
+    // Initial load of tasks
+    this.loadTasks();
+  }
+
+  loadTasks(): void {
+    // Get all tasks without filter
+    this.tasksService.getTasksByCourseUuid(this.course_uuid).subscribe(tasks => {
       this.tasks.set(tasks);
     });
   }
 
   onTaskSelected(task: ITask): void {
     this.tasksService.setSelectedTask(task);
+  }
+
+  onMonthChanged(): void {
+    // Reload tasks when month changes
+    this.loadTasks();
   }
 
   get isAsideCollapsed() {

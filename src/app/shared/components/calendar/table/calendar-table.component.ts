@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, EventApi } from '@fullcalendar/core';
+import { CalendarOptions, EventApi, DatesSetArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import esLocale from '@fullcalendar/core/locales/es';
@@ -42,6 +42,7 @@ export class TableComponent {
   }
 
   @Output() taskSelected = new EventEmitter<ITask>();
+  @Output() monthChanged = new EventEmitter<void>();
 
   private _tasks = signal<ITask[]>([]);
   currentEvents = signal<EventApi[]>([]);
@@ -161,6 +162,7 @@ export class TableComponent {
         startTime: '08:00',
         endTime: '20:00',
       },
+      datesSet: this.handleDatesSet.bind(this),
     };
   }
 
@@ -217,5 +219,11 @@ export class TableComponent {
 
   onFiltersChanged(filters: TaskFilters): void {
     this.activeFilters.set(filters);
+  }
+
+  private handleDatesSet(arg: DatesSetArg): void {
+    if (arg.view.type === 'dayGridMonth') {
+      this.monthChanged.emit();
+    }
   }
 }
