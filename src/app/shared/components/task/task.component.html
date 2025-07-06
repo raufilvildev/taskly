@@ -3,11 +3,13 @@
      [class.completed-task]="task.is_completed"
      (click)="selectTask.emit(task)">
   <div class="task-header flex items-center gap-2">
-    <input type="checkbox"
-      [checked]="task.is_completed"
-      (change)="toggleTask.emit(task)"
-      (click)="$event.stopPropagation()"
-      class="task-checkbox" >
+    @if (!hideCompletedCheckbox) {
+      <input type="checkbox"
+        [checked]="task.is_completed"
+        (change)="toggleTask.emit(task)"
+        (click)="$event.stopPropagation()"
+        class="task-checkbox" >
+    }
     <div class="flex flex-1 items-center min-w-0 justify-between">
       <h4 class="task-title truncate" 
           [class.completed]="task.is_completed"
