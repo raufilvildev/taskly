@@ -1,4 +1,4 @@
-import { Component, signal, computed, output } from '@angular/core';
+import { Component, signal, computed, output, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -14,13 +14,22 @@ interface TaskFilters {
   templateUrl: './legend.component.html',
   styleUrls: ['./legend.component.css']
 })
-export class CalendarLegendComponent {
+export class CalendarLegendComponent implements OnInit {
+  @Input() initialFilters: TaskFilters = {
+    isUrgent: false,
+    isImportant: false
+  };
+
   filters = signal<TaskFilters>({
     isUrgent: false,
     isImportant: false
   });
 
   filtersChanged = output<TaskFilters>();
+
+  ngOnInit() {
+    this.filters.set(this.initialFilters);
+  }
 
   toggleFilter(filterType: keyof TaskFilters) {
     this.filters.update(current => ({

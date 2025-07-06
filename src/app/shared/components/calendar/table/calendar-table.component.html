@@ -4,7 +4,10 @@
     <div
       class="bg-custom-background dark:bg-custom-background-dark rounded-2xl shadow-xl border border-custom-border dark:border-custom-border-dark overflow-hidden p-4 md:p-6 lg:p-8 w-full h-full"
     >
-      <app-calendar-legend (filtersChanged)="onFiltersChanged($event)" />
+      <app-calendar-legend
+        [initialFilters]="activeFilters()"
+        (filtersChanged)="onFiltersChanged($event)"
+      />
       <full-calendar [options]="calendarOptions" class="w-full h-full">
         <ng-template #eventContent let-arg>
           <div class="flex items-center space-x-2 p-1">
