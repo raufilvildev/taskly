@@ -1,4 +1,14 @@
-import { Component, inject, computed, effect, Input, Output, EventEmitter, ViewChild, TemplateRef } from '@angular/core';
+import {
+  Component,
+  inject,
+  computed,
+  effect,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  TemplateRef,
+} from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { TasksService } from '../../../services/tasks.service';
 import { ISubtask, ITask } from '../../../interfaces/itask.interface';
@@ -24,10 +34,10 @@ import { Router } from '@angular/router';
     MatInputModule,
     MatTimepickerModule,
     MatSelectModule,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './task-detail.component.html',
-  styleUrls: ['./task-detail.component.css']
+  styleUrls: ['./task-detail.component.css'],
 })
 export class TaskDetailComponent {
   @Input() isCourse: boolean = false;
@@ -48,7 +58,9 @@ export class TaskDetailComponent {
 
   // Lista de horas en intervalos de 15 minutos para el desplegable
   hoursList: string[] = Array.from({ length: 24 * 4 }, (_, i) => {
-    const hour = Math.floor(i / 4).toString().padStart(2, '0');
+    const hour = Math.floor(i / 4)
+      .toString()
+      .padStart(2, '0');
     const min = ((i % 4) * 15).toString().padStart(2, '0');
     return `${hour}:${min}`;
   });
@@ -113,16 +125,16 @@ export class TaskDetailComponent {
       time_estimated: [''],
       is_completed: [false],
       is_urgent: [false],
-      is_important: [false]
+      is_important: [false],
     });
 
     // Sincroniza el formulario con la tarea seleccionada
     effect(() => {
       const task = this.selectedTask();
       if (task) {
-        this.subtasks = (task.subtasks || []).map(subtask => ({
+        this.subtasks = (task.subtasks || []).map((subtask) => ({
           title: subtask.title,
-          is_completed: !!subtask.is_completed
+          is_completed: !!subtask.is_completed,
         }));
         let cleanTimeStart = '';
         if (typeof task.time_start === 'string') {
@@ -131,16 +143,19 @@ export class TaskDetailComponent {
             cleanTimeStart = parts[0].padStart(2, '0') + ':' + parts[1].padStart(2, '0');
           }
         }
-        this.taskForm.patchValue({
-          title: task.title,
-          description: task.description,
-          due_date: task.due_date ? new Date(task.due_date) : null,
-          time_start: cleanTimeStart,
-          time_estimated: this.calculateTimeEstimated(task.time_start, task.time_end),
-          is_completed: task.is_completed,
-          is_urgent: task.is_urgent,
-          is_important: task.is_important
-        }, { emitEvent: false });
+        this.taskForm.patchValue(
+          {
+            title: task.title,
+            description: task.description,
+            due_date: task.due_date ? new Date(task.due_date) : null,
+            time_start: cleanTimeStart,
+            time_estimated: this.calculateTimeEstimated(task.time_start, task.time_end),
+            is_completed: task.is_completed,
+            is_urgent: task.is_urgent,
+            is_important: task.is_important,
+          },
+          { emitEvent: false }
+        );
         this.taskForm.get('time_start')?.setValue(cleanTimeStart, { emitEvent: false });
         this.taskForm.get('time_start')?.updateValueAndValidity();
       }
@@ -227,7 +242,7 @@ export class TaskDetailComponent {
 
     // Filtrar subtasks vacías y agregar uuid si existe (uuid vacío para nuevas)
     const subtasks = this.subtasks
-      .filter(st => st.title && st.title.trim() !== '')
+      .filter((st) => st.title && st.title.trim() !== '')
       .map((edited, i) => {
         // Buscar uuid original si existe
         let uuid = '';
@@ -239,7 +254,7 @@ export class TaskDetailComponent {
         // Si es nueva, uuid será ""
         const subtaskObj: any = {
           title: edited.title,
-          is_completed: edited.is_completed
+          is_completed: edited.is_completed,
         };
         if (uuid) subtaskObj.uuid = uuid;
         return subtaskObj;
@@ -254,7 +269,7 @@ export class TaskDetailComponent {
       is_urgent: !!formValue.is_urgent,
       is_important: !!formValue.is_important,
       subtasks,
-      category: task.category
+      category: task.category,
     };
 
     const url = `/api/tasks/${task.uuid}`;
@@ -268,7 +283,7 @@ export class TaskDetailComponent {
       error: (err) => {
         console.error('Error al hacer PUT:', err);
         // Opcional: feedback de error
-      }
+      },
     });
   }
 
@@ -278,7 +293,7 @@ export class TaskDetailComponent {
       this.selectedTask()!.is_completed = completed;
       // Marcar/desmarcar todas las subtareas también
       if (this.selectedTask()!.subtasks) {
-        this.selectedTask()!.subtasks.forEach(subtask => subtask.is_completed = completed);
+        this.selectedTask()!.subtasks.forEach((subtask) => (subtask.is_completed = completed));
       }
       this.taskForm.patchValue({ is_completed: completed }, { emitEvent: false });
       this.sendUpdate();
@@ -289,7 +304,6 @@ export class TaskDetailComponent {
     subtask.is_completed = !subtask.is_completed;
     // this.sendUpdate(); // Comentado: solo guardar al marcar completado general o guardar manual
   }
-
 
   // Maneja el cambio del input nativo de fecha
   onNativeDateChange(event: any) {
@@ -332,20 +346,22 @@ export class TaskDetailComponent {
 
   performDeleteTask() {
     const task = this.selectedTask();
-    if (!task) return;
-
-    this.projectService.deleteTask(task.uuid).subscribe({
-      error: (error) => {
-        console.error('Error al eliminar la tarea:', error);
-      },
-      complete: () => {
-        this.closeDeleteDialog();
-        this.clearSelectedTask();
-        if (this.showBackButton) {
-          this.back.emit();
-        }
-      }
-    });
+    if (task) {
+      this.projectService.deleteTask(task.uuid).subscribe({
+        next: () => {
+          this.deleteTask.emit(task);
+          this.closeDeleteDialog();
+          this.clearSelectedTask();
+          // Recargar la página tras eliminar
+          window.location.reload();
+        },
+        error: (error) => {
+          console.error('Error al eliminar la tarea:', error);
+        },
+      });
+    } else {
+      console.log('No hay tarea seleccionada para eliminar');
+    }
   }
 
   saveChanges() {
@@ -380,7 +396,7 @@ export class TaskDetailComponent {
     120: '2 horas',
     150: '2 horas 30',
     180: '3 horas',
-    240: '4 horas'
+    240: '4 horas',
   };
 
   getDurationText(minutes: string | number): string {
