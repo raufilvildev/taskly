@@ -46,9 +46,14 @@ export class TableComponent implements OnInit {
 
   filteredTasks = computed(() => {
     const tasks = this.tasksService.tasks();
-    console.log(tasks);
     const filters = this.activeFilters();
 
+    // Si no hay filtros activos, mostrar todas las tareas
+    if (!filters.isUrgent && !filters.isImportant) {
+      return tasks;
+    }
+
+    // Si hay filtros activos, mostrar solo las tareas que cumplan con los filtros
     return tasks.filter(
       (task) => (filters.isUrgent && task.is_urgent) || (filters.isImportant && task.is_important)
     );
