@@ -1,4 +1,4 @@
-import { Component, Input, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { ITask } from '../../../interfaces/itask.interface';
 import { CommonModule } from '@angular/common';
 import { EisenhowerTaskComponent } from './components/eisenhower-task/eisenhower-task.component';
@@ -8,22 +8,14 @@ import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-eisenhower-matrix',
-  imports: [
-    CommonModule,
-    EisenhowerTaskComponent,
-    DragDropModule,
-    MatIconModule,
-  ],
+  imports: [CommonModule, EisenhowerTaskComponent, DragDropModule, MatIconModule],
   templateUrl: './eisenhower-matrix.component.html',
   styleUrl: './eisenhower-matrix.component.css',
 })
 export class EisenhowerMatrixComponent {
   private tasksService = inject(TasksService);
 
-  tasks = signal<ITask[]>([]);
-  @Input({ required: true }) set setTasks(tasks: ITask[]) {
-    this.tasks.set(tasks);
-  }
+  tasks = computed(() => this.tasksService.tasks());
 
   urgentImportant = computed(() =>
     this.tasks().filter((task) => task.is_urgent && task.is_important)
@@ -68,6 +60,13 @@ export class EisenhowerMatrixComponent {
       tasks: this.notUrgentNotImportant,
     },
   ];
+
+  ngOnInit(): void {
+    // Cargar todas las tareas al inicializar
+    this.tasksService.getAllTasks().subscribe((tasks) => {
+      this.tasksService.tasks.set(tasks);
+    });
+  }
 
   drop(event: CdkDragDrop<ITask[]>) {
     if (event.previousContainer === event.container) {
