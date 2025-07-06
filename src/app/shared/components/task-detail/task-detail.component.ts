@@ -148,20 +148,7 @@ export class TaskDetailComponent {
         console.log('Valor recibido en time_start:', task.time_start, 'Valor limpio:', cleanTimeStart);
       }
     });
-
-    // Actualiza la tarea seleccionada al modificar el formulario
-    this.taskForm.valueChanges.subscribe(val => {
-      const task = this.selectedTask();
-      if (task) {
-        task.title = val.title;
-        task.description = val.description;
-        task.due_date = val.due_date ? val.due_date.toISOString().split('T')[0] : null;
-        task.is_completed = val.is_completed;
-        task.is_urgent = val.is_urgent;
-        task.is_important = val.is_important;
-        // Las subtasks se gestionan aparte
-      }
-    });
+    // Eliminado el valueChanges.subscribe para evitar que los cambios se reflejen en tiempo real en la tarea original
   }
 
   // Métodos para subtasks como array simple
