@@ -94,6 +94,16 @@ export class EisenhowerMatrixComponent {
         break;
     }
 
-    this.tasksService.updateTaskProperties(task.id, properties);
+    // Actualizar en el backend
+    this.tasksService.updateTaskPropertiesByUuid(task.uuid, properties).subscribe({
+      next: (updatedTask) => {
+        // Actualizar el estado local solo después de que el backend confirme el cambio
+        this.tasksService.updateTaskProperties(task.id, properties);
+      },
+      error: (error) => {
+        console.error('Error updating task properties:', error);
+        // Aquí podrías añadir alguna notificación al usuario si lo deseas
+      }
+    });
   }
 }
