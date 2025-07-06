@@ -130,23 +130,19 @@ export class TaskListComponent {
 
   onCreateTask(event: { task: any, course_uuid?: string }) {
     const { task, course_uuid } = event;
-    // Asignar la categoría según el contexto
     if (this.isCourse) {
       task.category = 'course_related';
     } else {
       task.category = 'custom';
     }
-    // Validar que el course_uuid sea válido y no sea 'tasks'
     const isValidCourseUuid = course_uuid && course_uuid !== 'tasks' && course_uuid !== '';
     if (isValidCourseUuid) {
       this.projectService.createTaskByProf(course_uuid!, task).subscribe({
         next: (newTask) => {
-          console.log('Tarea de curso creada exitosamente:', newTask);
           this.closeTaskFormModal();
           this.showTaskFormModal = false;
         },
         error: (error) => {
-          console.error('Error al crear la tarea de curso:', error);
           this.snackBar.open('No hemos podido registrar su tarea', 'Cerrar', {
             duration: 3000,
             horizontalPosition: 'center',
@@ -158,12 +154,10 @@ export class TaskListComponent {
     } else {
       this.projectService.createTask(task).subscribe({
         next: (newTask) => {
-          console.log('Tarea creada exitosamente:', newTask);
           this.closeTaskFormModal();
           this.showTaskFormModal = false;
         },
         error: (error) => {
-          console.error('Error al crear la tarea:', error);
           this.snackBar.open('No hemos podido registrar su tarea', 'Cerrar', {
             duration: 3000,
             horizontalPosition: 'center',

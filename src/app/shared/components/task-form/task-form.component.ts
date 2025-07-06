@@ -73,19 +73,15 @@ export class TaskFormComponent implements OnInit {
   ngOnInit() {
     let uuid = this.course_uuid;
     if (!uuid) {
-      // Extraer el último segmento de la URL como UUID
       const urlSegments = this.router.url.split('/').filter(Boolean);
       uuid = urlSegments[urlSegments.length - 1];
-      console.log('UUID extraído de la URL:', uuid);
     }
     if (uuid) {
       this.course_uuid_final = uuid;
-      // Si quieres seguir mostrando el log de la llamada al servicio, puedes dejarlo, pero ya no es necesario para el envío
     }
   }
 
   closeForm() {
-    console.log('Cerrando formulario');
     this.close.emit();
     setTimeout(() => {
       window.location.reload();
@@ -160,7 +156,7 @@ export class TaskFormComponent implements OnInit {
   onSubtaskBlur(index: number, event: Event) {
     const target = event.target as HTMLInputElement;
     const value = target.value.trim();
-    
+
     if (value === '') {
       this.subtasks.splice(index, 1);
     } else {
@@ -169,48 +165,21 @@ export class TaskFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Formulario válido:', this.taskForm.valid);
-    console.log('Errores del formulario:', this.taskForm.errors);
-    console.log('Estado de los campos:');
-    console.log(
-      'Title:',
-      this.taskForm.get('title')?.value,
-      'Válido:',
-      this.taskForm.get('title')?.valid
-    );
-    console.log(
-      'Description:',
-      this.taskForm.get('description')?.value,
-      'Válido:',
-      this.taskForm.get('description')?.valid
-    );
-    console.log(
-      'Due date:',
-      this.taskForm.get('due_date')?.value,
-      'Válido:',
-      this.taskForm.get('due_date')?.valid
-    );
-    console.log('Subtareas:', this.subtasks);
-
     if (this.taskForm.valid) {
       const taskData = this.taskForm.value as any;
 
-      // Convertir due_date a formato SQL (aaaa-mm-dd) en una sola línea
       if (taskData.due_date instanceof Date) {
         taskData.due_date = `${taskData.due_date.getFullYear()}-${(taskData.due_date.getMonth() + 1).toString().padStart(2, '0')}-${taskData.due_date.getDate().toString().padStart(2, '0')}`;
       } else if (typeof taskData.due_date === 'string' && taskData.due_date.length > 10) {
-        // Si es un string largo tipo ISO
         taskData.due_date = taskData.due_date.split('T')[0];
       }
 
-      // Convertir time_start a formato hh:mm:ss
       if (taskData.time_start instanceof Date) {
         taskData.time_start = `${taskData.time_start.getHours().toString().padStart(2, '0')}:${taskData.time_start.getMinutes().toString().padStart(2, '0')}:${taskData.time_start.getSeconds().toString().padStart(2, '0')}`;
       } else if (typeof taskData.time_start === 'string' && /^\d{2}:\d{2}$/.test(taskData.time_start)) {
         taskData.time_start = taskData.time_start + ':00';
       }
 
-      // Calcular time_end
       if (
         typeof taskData.time_start === 'string' &&
         /^\d{2}:\d{2}:\d{2}$/.test(taskData.time_start) &&
@@ -224,16 +193,13 @@ export class TaskFormComponent implements OnInit {
         delete taskData.time_estimated;
       }
 
-      // Filtrar subtareas vacías y agregar al objeto de datos
       taskData.subtasks = this.subtasks.filter(subtask => subtask && subtask.trim() !== '');
-      // No enviar course_uuid en el body, sino como argumento aparte
       if (this.course_uuid_final) {
-        // Emitir el uuid como segundo argumento
         this.createTask.emit({ task: taskData, course_uuid: this.course_uuid_final });
       } else {
         this.createTask.emit({ task: taskData });
       }
-      this.showSuccessMessage(); // Mostrar alerta de éxito
+      this.showSuccessMessage();
     } else {
       this.taskForm.markAllAsTouched();
     }

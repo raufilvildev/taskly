@@ -119,9 +119,7 @@ export class TaskDetailComponent {
     // Sincroniza el formulario con la tarea seleccionada
     effect(() => {
       const task = this.selectedTask();
-      console.log('DEBUG - task recibido en effect:', task);
       if (task) {
-        // Inicializar subtasks como array simple
         this.subtasks = (task.subtasks || []).map(subtask => ({
           title: subtask.title,
           is_completed: !!subtask.is_completed
@@ -145,10 +143,8 @@ export class TaskDetailComponent {
         }, { emitEvent: false });
         this.taskForm.get('time_start')?.setValue(cleanTimeStart, { emitEvent: false });
         this.taskForm.get('time_start')?.updateValueAndValidity();
-        console.log('Valor recibido en time_start:', task.time_start, 'Valor limpio:', cleanTimeStart);
       }
     });
-    // Eliminado el valueChanges.subscribe para evitar que los cambios se reflejen en tiempo real en la tarea original
   }
 
   // Métodos para subtasks como array simple

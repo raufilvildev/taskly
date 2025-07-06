@@ -58,33 +58,24 @@ export class ListGroupsComponent implements OnInit {
   }
 
   loadTasksByPeriod(period: 'today' | 'week' | 'month') {
-    // Usar el método correcto según si estamos en un curso o no
     if (this.isCourse && this.course_uuid) {
-      // Si estamos en un curso, usar getTasksByCourseUuid
-      console.log('🎓 Cargando tareas del curso:', this.course_uuid, 'período:', period);
       this.projectService.getTasksByCourseUuid(this.course_uuid, period).subscribe({
         next: (tasks) => {
-          console.log('✅ Tareas del curso cargadas:', tasks.length, 'tareas');
           this.currentTasks = tasks;
           this.applyFilters();
         },
         error: (error) => {
-          console.error('❌ Error loading tasks by course and period:', error);
           this.currentTasks = [];
           this.applyFilters();
         }
       });
     } else {
-      // Si no estamos en un curso, usar getTasksByPeriod
-      console.log('🏠 Cargando tareas generales, período:', period);
       this.projectService.getTasksByPeriod(period).subscribe({
         next: (tasks) => {
-          console.log('✅ Tareas generales cargadas:', tasks.length, 'tareas');
           this.currentTasks = tasks;
           this.applyFilters();
         },
         error: (error) => {
-          console.error('❌ Error loading tasks by period:', error);
           this.currentTasks = [];
           this.applyFilters();
         }
