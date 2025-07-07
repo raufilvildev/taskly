@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
@@ -9,6 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
   standalone: true,
   templateUrl: './call-to-action.component.html',
   styleUrls: ['./call-to-action.component.css'],
+ imports: [RouterLink],
 })
 export class CallToActionComponent implements AfterViewInit, OnDestroy {
   @ViewChild('ctaSection') ctaSection!: ElementRef<HTMLElement>;
