@@ -16,33 +16,32 @@
         {{ course.title }}
       </h1>
 
-      @if (user.role === 'teacher') {
-        <div class="flex flex-wrap gap-3 items-center">
-      <button
-        (click)="showCourseForm = true"
-        class="flex items-center justify-center gap-2 px-3 py-2 rounded-full text-sm font-medium text-black bg-custom-background border border-custom-accent-dark hover:bg-custom-accent-dark hover:text-white dark:bg-purple-100 dark:border-purple-900 dark:hover:bg-purple-900 dark:hover:text-white transition-all duration-200 cursor-pointer"
-      >
-        <mat-icon class="text-base">edit</mat-icon>
-        <span class="hidden sm:inline">Editar</span>
-      </button>
+      <div class="flex flex-wrap gap-3 items-center">
+        @if (user.role === 'teacher') {
+          <button
+            (click)="showCourseForm = true"
+            class="flex items-center justify-center gap-2 px-3 py-2 rounded-full text-sm font-medium text-black bg-custom-background border border-custom-accent-dark hover:bg-custom-accent-dark hover:text-white dark:bg-purple-100 dark:border-purple-900 dark:hover:bg-purple-900 dark:hover:text-white transition-all duration-200 cursor-pointer"
+          >
+            <mat-icon class="text-base">edit</mat-icon>
+            <span class="hidden sm:inline">Editar</span>
+          </button>
 
-      <button
-        (click)="showDeleteConfirmation = true"
-        class="flex items-center justify-center gap-2 px-3 py-2 rounded-full text-sm font-medium text-black bg-custom-background  hover:bg-red-500 hover:text-white dark:bg-purple-100 dark:hover:bg-red-800 dark:hover:text-white transition-all duration-200 cursor-pointer"
-      >
-        <mat-icon class="text-base">delete</mat-icon>
-        <span class="hidden sm:inline">Borrar</span>
-      </button>
-
-      <button
-        (click)="exportPdfViewCourse(); showDownloadPdf = true"
-        class="flex items-center justify-center gap-2 px-3 py-2 rounded-full text-sm font-medium text-black bg-custom-background border border-custom-accent-dark hover:bg-custom-accent-dark hover:text-white dark:bg-purple-100 dark:border-purple-900 dark:hover:bg-purple-900 dark:hover:text-white transition-all duration-200 cursor-pointer"
-      >
-        <mat-icon class="text-base">picture_as_pdf</mat-icon>
-        <span class="hidden sm:inline">Exportar</span>
-      </button>
-    </div>  
-      }
+          <button
+            (click)="showDeleteConfirmation = true"
+            class="flex items-center justify-center gap-2 px-3 py-2 rounded-full text-sm font-medium text-black bg-custom-background hover:bg-red-500 hover:text-white dark:bg-purple-100 dark:hover:bg-red-800 dark:hover:text-white transition-all duration-200 cursor-pointer"
+          >
+            <mat-icon class="text-base">delete</mat-icon>
+            <span class="hidden sm:inline">Borrar</span>
+          </button>
+        }
+        <button
+          (click)="exportPdfViewCourse(); showDownloadPdf = true"
+          class="flex items-center justify-center gap-2 px-3 py-2 rounded-full text-sm font-medium text-black bg-custom-background border border-custom-accent-dark hover:bg-custom-accent-dark hover:text-white dark:bg-purple-100 dark:border-purple-900 dark:hover:bg-purple-900 dark:hover:text-white transition-all duration-200 cursor-pointer"
+        >
+          <mat-icon class="text-base">picture_as_pdf</mat-icon>
+          <span class="hidden sm:inline">Exportar</span>
+        </button>
+      </div>
     </div>
   </div>
 
